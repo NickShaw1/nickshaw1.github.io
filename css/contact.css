@@ -98,6 +98,14 @@
   transition: transform 0.3s linear, opacity 0.5s linear;
 }
 
+.socialsbox a {
+  color: #2ca78c;
+}
+
+.socialsbox a:hover {
+  color: #1c856f;
+}
+
 .socialsbox img:hover {
   opacity: 0.8;
   transform: scale(1.2);
