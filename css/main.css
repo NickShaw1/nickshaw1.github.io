@@ -18,7 +18,7 @@
   color: #eceef1;
   position: fixed;
   top: 0;
-  left: 0;
+  right: 0;
   overflow-x: hidden;
   transition: 0.3s ease;
   z-index: 1000;
@@ -38,7 +38,7 @@
 }
 
 .sidebar.open {
-  width: 100%;
+  width: 50%;
   margin: 0;
   padding: 0;
 }

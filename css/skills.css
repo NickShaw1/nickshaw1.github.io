@@ -43,6 +43,7 @@ body {
 .skills h1 {
   line-height: 3.3rem;
   font-size: 3rem;
+  margin-bottom: 1rem;
 }
 
 .skills1 {
@@ -52,7 +53,7 @@ body {
 
 .skillswrapper img {
   padding: 0;
-  width: 70%;
+  width: 60%;
   height: auto;
 }
 
@@ -65,33 +66,35 @@ body {
 }
 
 .bullets {
-  background-color: #272728;
-  color: #eceef1;
+  background-color: #eceef1;
+  color: #272728;
   padding: 0 2rem 2rem 2rem;
 }
 
 .bullets h2 {
   font-size: 2.5rem;
-  line-height: 2.75rem;
+  line-height: 2.9rem;
 }
 
 .bulletscard h2 {
   font-size: 2.5rem;
   line-height: 2.75rem;
+  margin-bottom: 1rem;
 }
 
 .bullets-list {
-  background-color: #272728;
+  background-color: #eceef1;
+  color: #272728;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  color: #eceef1;
   width: 100%;
 }
 
 .bullets1 {
+  margin-top: -2px;
   padding: 0 2rem 2rem 2rem;
-  background-color: #272728;
+  background-color: #eceef1;
   display: flex;
   flex-direction: column;
   justify-items: center;
@@ -124,8 +127,8 @@ p {
 
 .exercises {
   padding: 0 2rem 0 2rem;
-  background-color: #eceef1;
-  color: #272728;
+  color: #eceef1;
+  background-color: #272728;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
