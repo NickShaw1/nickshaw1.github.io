@@ -332,6 +332,7 @@ nav {
 @media (max-width: 982px) {
   .hero {
     width: 90%;
+    top: 5vh;
   }
 
   .hero h1 {
