@@ -1,0 +1,282 @@
+.blogs-main {
+  position: relative;
+  background-color: eceef1;
+  color: #272728;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-content: center;
+  align-items: flex-start;
+  width: 70%;
+  height: auto;
+  max-width: 100%;
+  margin: 5% auto 0;
+  border: none;
+}
+
+.main ul {
+  list-style-type: disc;
+  padding-left: 1rem;
+}
+
+.blog-header {
+  background-color: #eceef1;
+  color: #272728;
+  border: none;
+  padding: 0 2rem 2rem 2rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.blog {
+  background-color: #eceef1;
+  color: #272728;
+  border: none;
+  padding: 0 2rem 2rem 2rem;
+}
+
+.blog-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.blog-title h1 {
+  line-height: 3.3rem;
+  font-size: 3rem;
+  margin-left: 2rem;
+  margin-bottom: 1rem;
+}
+
+.blog-title p {
+  margin-left: 2rem;
+}
+
+.blog-image img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+  margin-top: 2rem;
+}
+
+.blog-date {
+  display: flex;
+  flex-direction: row;
+  margin-left: 2rem;
+}
+
+.blog-date1 img {
+  width: 20px;
+}
+
+.blog-date2 p {
+  margin: 0;
+  padding: 0 0 0 1rem;
+}
+
+.blog-date2 a {
+  color: #2ca78c;
+  text-decoration: none;
+}
+
+.blog-date2 a:hover {
+  opacity: 0.8;
+}
+
+.main {
+  background-color: #eceef1;
+  color: #272728;
+  border: none;
+  padding: 0 2rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  margin-top: -1px;
+}
+
+.main ul {
+  list-style-type: disc;
+  padding-left: 1rem;
+}
+
+.main ol {
+  list-style-type: disc;
+  padding-left: 1rem;
+}
+
+.main a {
+  color: #2ca78c;
+  text-decoration: none;
+}
+
+.main a:hover {
+  opacity: 0.8;
+}
+
+.main h5 {
+  font-size: 1.2rem;
+  line-height: 1.32rem;
+}
+
+.main h6 {
+  font-size: 1.1rem;
+  line-height: 1.21rem;
+  font-weight: 500;
+  margin-top: 1.67rem;
+  margin-top: 1.67rem;
+}
+
+.main ul,
+li {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.highlight {
+  margin: 0;
+  padding: 0;
+  background-color: #2ca78c;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  max-width: 50%; /* Limits the container to 50% of the page width */
+  margin: 0 auto; /* Centers the container horizontally */
+  padding-top: 28.125%; /* This gives the 16:9 aspect ratio (9 / 16 = 0.5625, so 0.5625 * 100 = 56.25%) */
+  height: 0; /* The height is calculated from padding-top */
+}
+
+.video-container iframe {
+  position: absolute; /* Position the iframe inside the container */
+  top: 0;
+  left: 0;
+  width: 100%; /* Makes iframe fill the container */
+  height: 100%; /* Makes iframe fill the container */
+}
+
+.footer {
+  background-color: #eceef1;
+  color: #272728;
+  border: none;
+  padding: 0 2rem 2rem 2rem;
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+  margin-top: -1px;
+}
+
+.footer1 {
+  margin: -1px 0 7px 0;
+  padding: 0;
+  align-self: center;
+}
+
+.footer2 {
+  margin: 0 0 0 1rem;
+  padding: 0;
+  align-self: center;
+  justify-self: center;
+}
+
+.footer a {
+  color: #2ca78c;
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+  margin-top: -1px;
+}
+
+.footer a:hover {
+  opacity: 0.8;
+}
+
+.footer2 img {
+  width: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+@media (max-width: 1095px) {
+  .blogs-main {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .video-container {
+    position: relative;
+    width: 80%;
+    max-width: 50%;
+    margin: 0 auto;
+    padding-top: 28.125%;
+    height: 0;
+  }
+
+  .blog-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .blog-title p {
+    margin-left: 0;
+  }
+
+  .blog-title h1 {
+    margin-left: 0;
+    padding-top: 0;
+    margin-top: 1rem;
+  }
+
+  .blog-image img {
+    width: 200px;
+    height: 200px;
+    border-radius: 150px;
+    margin-top: 2rem;
+  }
+
+  .blog-date {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0;
+  }
+
+  .blog-title h1 {
+    text-align: center;
+  }
+
+  .blog-date1 img {
+    width: 20px;
+  }
+}
+
+@media (max-width: 605px) {
+  .blog-date {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .blog-title h1 {
+    text-align: left;
+  }
+
+  .video-container {
+    position: relative;
+    width: 90%;
+    max-width: 50%;
+    margin: 0 auto;
+    padding-top: 28.125%;
+    height: 0;
+  }
+}

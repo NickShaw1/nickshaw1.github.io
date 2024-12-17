@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Nick Shaw, a Software Test Manager with over 11 years of experience in test planning, automation testing, and project delivery. Explore my skills, CV, and contact information."
+    />
+    <meta
+      name="keywords"
+      content="Software Test Manager, QA Professional, Test Automation, Manual Testing, Test Planning, Quality Assurance, Nick Shaw, Testing Services, Software Testing"
+    />
+    <meta
+      property="og:title"
+      content="Nick Shaw - Experienced Software Test Manager"
+    />
+    <meta
+      property="og:description"
+      content="Over 11 years of experience in QA, test automation, and software testing. Let's ensure your software is reliable and effective."
+    />
+    <meta property="og:image" content="../images/nick.jpg" />
+    <meta property="og:url" content="https://www.nickshawqa.com" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Nick Shaw - Software Test Manager & QA Expert"
+    />
+    <meta
+      name="twitter:description"
+      content="Specializing in test planning, automation, and QA management with over a decade of experience."
+    />
+    <meta name="twitter:image" content="../images/nick.jpg" />
+    <link rel="stylesheet" href="../css/blogs.css" />
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <title>
+      Nick Shaw - Experienced Software Test Manager & QA Professional
+    </title>
+    <script src="../js/sidebar.js" type="text/javascript" defer></script>
+  </head>
+
+  <body>
+    <nav class="navbar" aria-label="Main navigation">
+      <div class="logo" tabindex="0">
+        <a href="../index.html" title="Go to Home">
+          <img src="../images/logo.png" alt="Nick Shaw's logo" title="Home" />
+        </a>
+      </div>
+      <div class="menu">
+        <ul>
+          <li><a href="../about.html" title="About me">About</a></li>
+          <li><a href="../skills.html" title="Skills">Skills</a></li>
+          <li>
+            <a href="../files/NickShawCV.pdf" target="_blank" title="CV/Resume"
+              >CV</a
+            >
+          </li>
+        </ul>
+        <div class="contact">
+          <a
+            href="../contact.html"
+            class="contact-button"
+            title="Contact me"
+            tabindex="0"
+          >
+            Contact
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Button to toggle sidebar (only visible below 768px) -->
+    <button
+      id="sidebarToggle"
+      class="sidebar-toggle"
+      aria-label="Open sidebar"
+      tabindex="0"
+    >
+      &#9776;
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar" aria-hidden="true" aria-labelledby="sidebarToggle">
+      <img src="../images/logo.png" alt="Logo Sidebar" tabindex="-1" />
+      <a href="../index.html" tabindex="-1">Home</a>
+      <a href="../about.html" tabindex="-1">About</a>
+      <a href="../skills.html" tabindex="-1">Skills</a>
+      <a href="../contact.html" tabindex="-1">Contact</a>
+    </div>
+
+    <main class="blogs-main" id="main-content">
+      <section class="blog-header">
+        <div class="blog-image">
+          <img src="../images/nick.jpg" alt="Nick" />
+        </div>
+        <div class="blog-title">
+          <h1 tabindex="0">
+            Setting Up Playwright in VS Code for Automated Testing
+          </h1>
+          <div class="blog-date">
+            <div class="blog-date1">
+              <img src="../images/blogs/calendar.png" />
+            </div>
+            <div class="blog-date2">
+              <p>12th December 2024 - <a href="../contact.html">Nick</a></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="main">
+        <div>
+          <p>
+            This is a guide on setting up Playwright for test automation using
+            VS Code, covering the installation of essential tools like Node.js,
+            VS Code, and necessary extensions, along with configuring and
+            running Playwright tests.
+          </p>
+          <h5 tabindex="0">Step 1: Sign up for a Github account</h5>
+          <p>
+            Creating a GitHub account is straightforward and gives you access to
+            a platform for hosting, sharing, and collaborating on code
+            repositories.
+          </p>
+          <p>Follow these steps:</p>
+          <ul>
+            <li>
+              Visit GitHub's Website
+              <ul>
+                <li>
+                  Open your browser and go to
+                  <a href="https://github.com" target="_blank">Github</a>.
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <br />
+          <ul>
+            <li>
+              Click "Sign Up":
+              <ul>
+                <li>
+                  On the homepage, locate the "Sign Up" button (usually in the
+                  top-right corner) and click it.
+                </li>
+                <li>Go through the sign up process.</li>
+              </ul>
+            </li>
+          </ul>
+          <h5 tabindex="0">Step 2: Installing VS Code</h5>
+          <p>
+            Getting started required setting up several tools on my machine.
+            First and foremost:
+          </p>
+          <h6>Visual Studio Code (VS Code).</h6>
+          <ul>
+            <li>
+              What is VS Code?
+              <ul>
+                <li>
+                  VS Code is a lightweight, open-source code editor developed by
+                  Microsoft. It’s tailored for building and debugging modern web
+                  and cloud applications, making it an indispensable tool for
+                  developers and testers alike.
+                </li>
+              </ul>
+            </li>
+            <br />
+            <li>
+              Download and install VS Code:
+              <ul>
+                <li>
+                  You can download the latest version of VS Code from the
+                  <a
+                    href="https://code.visualstudio.com/download"
+                    target="_blank"
+                    >official website</a
+                  >
+                  .
+                </li>
+                <li>
+                  Note: During the Visual Studio Code installation, check the
+                  option to add VS Code to your system's PATH. This enables you
+                  to open folders or files directly in VS Code from the terminal
+                  using the code command. Without this, you'll need to manually
+                  navigate to files and folders within the VS Code interface,
+                  which can slow down your workflow.
+                </li>
+              </ul>
+            </li>
+            <br />
+            <li>
+              Helpful Resource
+              <ul>
+                <li>
+                  If you’re new to the installation process, there is an
+                  extremely useful YouTube channel called ProgrammingKnowledge
+                  that (among other things) offers a detailed walkthrough:
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <br />
+          <div class="video-container">
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/cu_ykIfBprI?si=VXcJ16ZQjA020S1u"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <h5 tabindex="0">Step 3: Installing Node.js</h5>
+          <p>
+            To set up automated testing workflows, installing Node.js is
+            essential. This tool enables JavaScript to run on servers, making it
+            perfect for building fast, scalable applications.
+          </p>
+          <h6>Node.js</h6>
+          <ul>
+            <li>
+              What is Node.js?
+              <ul>
+                <li>
+                  Node.js is a runtime environment that allows you to execute
+                  JavaScript outside the browser. It’s widely used in modern
+                  development for everything from backend services to automation
+                  tools.
+                </li>
+              </ul>
+            </li>
+            <br />
+            <li>
+              Download Node.js
+              <ul>
+                <li>
+                  Visit the
+                  <a href="https://nodejs.org/en" target="_blank"
+                    >official website</a
+                  >
+                  to download the latest version suitable for your system: .
+                </li>
+              </ul>
+            </li>
+            <br />
+            <li>
+              Helpful Resource:
+              <ul>
+                <li>
+                  If you prefer visual guidance, check out this detailed
+                  tutorial from ProgrammingKnowledge on YouTube:
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <br />
+          <div class="video-container">
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/06X51c6WHsQ?si=6_yZ_6sfxuXKxgbq"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <br />
+          <ul>
+            <li>
+              Verify the installation
+              <ul>
+                <li>
+                  Note: Remember to click the 'Add to path' checkbox. When
+                  installing Node.js, ensure you select the option to add it to
+                  your system's PATH. This allows you to run node and npm
+                  commands from any terminal window, ensuring that your Node.js
+                  installation is accessible globally. Without this, your system
+                  won't recognize these commands outside their installation
+                  directory, leading to errors and disruptions in your workflow.
+                </li>
+                <li>
+                  Once installed, you can confirm Node.js is set up correctly by
+                  opening your terminal and running the following commands:
+                  <ul>
+                    <li>node -v</li>
+                    <li>npm -v</li>
+                  </ul>
+                </li>
+                <li>
+                  These commands will display the installed versions of Node.js
+                  and npm (Node Package Manager). If both return version
+                  numbers, you’re good to go!
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <h5 tabindex="0">Step 4: Installing VS Code extensions</h5>
+          <p>
+            To maximize productivity and streamline testing workflows with
+            Playwright, installing the right VS Code extensions is key. Below is
+            a curated list of some extensions that I found that have been
+            helpful. They're all pretty standard, but can enhance Python,
+            JavaScript, and TypeScript testing in Playwright:
+          </p>
+          <h6>
+            JavaScript, TypeScript and Python extensions for Playwright testing
+            in VS Code:
+          </h6>
+          <ul>
+            <li>
+              <b>Playwright Test for VS Code</b>
+              <ul>
+                <li>
+                  Integrates Playwright into VS Code, offering features like
+                  test discovery, debugging, and execution directly within the
+                  editor.
+                </li>
+              </ul>
+            </li>
+            <br />
+            <li>
+              <b>Python</b>
+              <ul>
+                <li>
+                  Provides robust support for Python, including IntelliSense,
+                  linting, debugging, and testing functionalities for
+                  Python-based Playwright projects.
+                </li>
+              </ul>
+            </li>
+            <br />
+            <li>
+              <b>Pytest</b>
+              <ul>
+                <li>
+                  Ideal for those using pytest as the test framework for
+                  Playwright tests. This extension simplifies running and
+                  debugging pytest tests.
+                </li>
+              </ul>
+            </li>
+            <br />
+            <li>
+              <b>ESLint</b>
+              <ul>
+                <li>
+                  Ensures your JavaScript and TypeScript code adheres to best
+                  practices, which is especially helpful for maintaining
+                  high-quality Playwright test scripts.
+                </li>
+              </ul>
+            </li>
+            <br />
+            <li>
+              <b>Prettier (Code Formatter)</b>
+              <ul>
+                <li>
+                  Maintains consistent code formatting across Python,
+                  JavaScript, and TypeScript files, which is crucial for
+                  collaborative projects.
+                </li>
+              </ul>
+            </li>
+            <br />
+            <li>
+              <b>Snippets for Playwright</b>
+              <ul>
+                <li>
+                  Provides common Playwright code snippets, speeding up test
+                  script creation with reusable patterns.
+                </li>
+              </ul>
+            </li>
+            <br />
+            <li>
+              <b>Debugger for Chrome</b>
+              <ul>
+                <li>
+                  Enables you to debug Playwright tests running in the Chromium
+                  browser, helping to diagnose complex browser-specific issues
+                  effectively.
+                </li>
+              </ul>
+            </li>
+            <br />
+            <li>
+              <b>TypeScript Hero</b>
+              <ul>
+                <li>
+                  Enhances TypeScript development with features like automatic
+                  import management and navigation helpers.
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <p>
+            Note: These extensions can collectively enhance your coding
+            experience, improve productivity, and ensure a smoother workflow
+            when testing with Playwright in VS Code. Ultimately, it's down to
+            your preferences, but these are the extensions I started with.
+          </p>
+          <h5 tabindex="0">Step 5: Set up a new project in VS Code</h5>
+          <ul>
+            <li>
+              Open a terminal in VS Code (CTRL + ~ for Windows users) and create
+              a new project directory:
+              <ul>
+                <li>mkdir playwright-project</li>
+                <li>cd playwright-project</li>
+              </ul>
+            </li>
+            <li>
+              Initialize the project:
+              <ul>
+                <li>npm init -y</li>
+              </ul>
+            </li>
+            <li>
+              This generates a package.json file to manage project dependencies.
+            </li>
+          </ul>
+          <h5 tabindex="0">Step 6: Installing and configuring Playwright</h5>
+          <h6>Install Playwright</h6>
+          <p>
+            In the VS Code terminal, navigate to the folder where you want to
+            set up your Playwright project. Then execute the following commands
+            step by step:
+          </p>
+          <ol>
+            <li>
+              Install Playwright and its test runner:
+              <ul>
+                <li>npm install -D @playwright/test</li>
+              </ul>
+            </li>
+            <li>
+              Install browser binaries:
+              <ul>
+                <li>npx playwright install</li>
+              </ul>
+            </li>
+            <li>
+              Initialize Playwright with default configurations:
+              <ul>
+                <li>npx playwright init</li>
+              </ul>
+            </li>
+          </ol>
+          <p>Note on TypeScript Configuration:</p>
+          <ul>
+            <li>
+              By default, when you initialize Playwright with the npx playwright
+              init command, it generates a playwright.config.ts file, which is a
+              TypeScript file.
+            </li>
+            <li>
+              However, Playwright fully supports both JavaScript and TypeScript,
+              so if you prefer to use JavaScript, you can easily do so by
+              renaming the configuration file to playwright.config.js and
+              writing your test files in JavaScript.
+            </li>
+          </ul>
+          <h6>Folder Structure</h6>
+          <p>
+            After initialization, Playwright creates a folder structure like
+            this:
+          </p>
+          <p>
+            playwright-project/ <br />├── tests/ <br />├── .gitignore <br />├──
+            playwright.config.ts (or playwright.config.js if you renamed it)
+          </p>
+          <h6>Create a test file</h6>
+          <p>
+            import { test, expect } from '@playwright/test';<br /><br />test('basic
+            test', async ({ page }) => {<br />await
+            page.goto('https://example.com');<br />
+            const title = await page.title();<br />
+            expect(title).toBe('Example Domain');<br />
+            });<br />
+          </p>
+          <h6>Run the test file</h6>
+          <ul>
+            <li>
+              Run the test using Playwright's CLI:
+              <ul>
+                <li>npx playwright test</li>
+              </ul>
+            </li>
+            <li>
+              From here, you can view results in the terminal or a generated
+              HTML report.
+              <ul>
+                <li>npx playwright show-report</li>
+              </ul>
+            </li>
+          </ul>
+          <h5 tabindex="0">Step 7: Alternative approach</h5>
+          <p>
+            If the steps above seem too complicated or confusing, you can always
+            refer to the official Playwright documentation for a clear,
+            step-by-step guide, found
+            <a
+              href="https://playwright.dev/docs/getting-started-vscode"
+              target="_blank"
+            >
+              here</a
+            >.
+          </p>
+          <p>
+            The Playwright team is incredibly helpful, with everything clearly
+            explained. They even have a video that walks you through the
+            process.
+          </p>
+          <br />
+          <div class="video-container">
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/Xz6lhEzgI5I?si=8FOWS6ajQes_CCo2"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <br />
+          <p>
+            Additionally, and perhaps this is a little taboo to say (although I
+            don't think it is,) don't be afraid to use chatgpt to get used to
+            the process outlined above. It's imperfect, but with a bit of
+            fiddling around you should be able to get everything set up without
+            any major issues.
+          </p>
+          <h5 tabindex="0">Conclusion</h5>
+          <ul>
+            <li>
+              As long as you have VS Code and Node.js installed, with both paths
+              added to your environment variables, you're well on your way to
+              getting started with Playwright.
+            </li>
+            <li>
+              A few helpful extensions, particularly the 'Playwright Test for VS
+              Code', will enhance your workflow, making testing more efficient.
+              With just a few simple terminal commands, you can quickly set up
+              Playwright and begin automating tests.
+            </li>
+            <li>
+              Don’t forget to reference the helpful videos above - they provide
+              valuable insights and guidance as you navigate the setup process
+              and dive into the world of test automation. With some drive and
+              practice, you’ll be up and running in no time. It works on my
+              machine!
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <footer>
+        <div class="footer">
+          <div class="footer1">
+            <p>
+              <a href="../skills.html" title="Return to the skills page link"
+                >Click here to return to the Skills page.</a
+              >
+            </p>
+          </div>
+          <div class="footer2">
+            <img src="../images/blogs/back.png" />
+          </div>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>
