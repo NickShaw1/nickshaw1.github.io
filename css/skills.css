@@ -280,6 +280,7 @@ p {
     justify-content: flex-start;
     justify-items: flex-start;
     align-items: flex-start;
+    margin-top: 0;
     padding: 1rem 0 0 0;
   }
 
@@ -289,6 +290,7 @@ p {
     align-items: center;
     justify-content: flex-start;
     gap: 0.5rem;
+    font-size: 0.9rem;
   }
 
   .skills2 img {
