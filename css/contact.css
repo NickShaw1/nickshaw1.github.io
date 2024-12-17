@@ -103,7 +103,7 @@
 }
 
 .socialsbox b:hover {
-  color: #1c856f;
+  opacity: 0.8;
 }
 
 .socialsbox img:hover {
