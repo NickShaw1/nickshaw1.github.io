@@ -412,6 +412,7 @@ nav {
   .lede img {
     height: 250px;
     width: 250px;
+    margin-right: 0;
   }
 
   .hero p {
