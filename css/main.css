@@ -332,7 +332,7 @@ nav {
 @media (max-width: 982px) {
   .hero {
     width: 90%;
-    top: 5vh;
+    top: 15vh;
   }
 
   .hero h1 {
@@ -361,6 +361,7 @@ nav {
   .hero {
     position: absolute;
     transform: none;
+    top: 5vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -394,6 +395,8 @@ nav {
     gap: 0;
   }
   .blurb li {
+    display: flex;
+    align-items: center;
     font-size: 1.3rem;
   }
 
