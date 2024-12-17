@@ -179,7 +179,7 @@ p {
 }
 
 .blog-entry a:hover {
-  color: #1c856f;
+  opacity: 0.8;
 }
 
 @media (max-width: 1274px) {
