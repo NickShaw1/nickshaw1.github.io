@@ -268,12 +268,13 @@ p {
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    width: 50%;
+    width: 90%;
     height: auto;
     padding: 0;
   }
 
   .bullets1 {
+    width: 80%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
