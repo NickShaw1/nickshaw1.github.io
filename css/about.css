@@ -28,12 +28,13 @@ body {
   background-color: #eceef1;
   color: #272728;
   border: none;
-  padding: 0 2rem 2rem 2rem;
+  padding: 0 2rem 1.5rem 2rem;
 }
 
 .intro h1 {
   line-height: 3.3rem;
   font-size: 3rem;
+  margin-bottom: 1.5rem;
 }
 
 .aboutme {
