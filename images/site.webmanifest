@@ -1,5 +1,5 @@
 {
-  "name": "Nick Shaw - QA",
+  "name": "Nick Shaw - QA Professional",
   "short_name": "NS QA",
   "icons": [
     {
@@ -16,6 +16,6 @@
     }
   ],
   "theme_color": "#ffffff",
-  "background_color": "#f6f6f6",
+  "background_color": "#ffffff",
   "display": "standalone"
 }
