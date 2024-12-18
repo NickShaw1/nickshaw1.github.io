@@ -22,10 +22,10 @@
   background-color: #eceef1;
   color: #272728;
   border: none;
-  padding: 0 2rem 1rem 2rem;
+  padding: 2rem 2rem 1rem 2rem;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .blog {
@@ -46,6 +46,7 @@
   font-size: 3rem;
   margin-left: 2rem;
   margin-bottom: 1rem;
+  margin-top: 0rem;
 }
 
 .blog-title p {
@@ -56,7 +57,7 @@
   width: 100px;
   height: 100px;
   border-radius: 50px;
-  margin-top: 2rem;
+  margin-top: 0rem;
 }
 
 .blog-date {
@@ -243,7 +244,7 @@ li {
     width: 200px;
     height: 200px;
     border-radius: 150px;
-    margin-top: 2rem;
+    margin-top: 1rem;
   }
 
   .blog-date {
