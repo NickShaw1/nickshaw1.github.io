@@ -95,6 +95,7 @@ body {
 .learning h3 {
   font-size: 2rem;
   line-height: 2.1rem;
+  margin-bottom: 1.5rem;
 }
 
 .learning a {
@@ -225,6 +226,7 @@ body {
 .adventures h5 {
   font-size: 1.6rem;
   line-height: 1.76rem;
+  margin-bottom: 1.5rem;
 }
 
 .slideshow-container {
