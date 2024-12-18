@@ -80,7 +80,7 @@ body {
 }
 
 .aboutme2 p {
-  width: 90%;
+  width: 95%;
 }
 
 .highlight {
@@ -433,6 +433,10 @@ body {
 }
 
 @media (max-width: 982px) {
+  .aboutme2 p {
+    width: 100%;
+  }
+
   .cards-section {
     margin-top: -1px;
     display: flex;
