@@ -79,6 +79,10 @@ body {
   width: 60%;
 }
 
+.aboutme2 p {
+  width: 90%;
+}
+
 .highlight {
   background-color: #2ca78c;
   font-size: 2rem;
@@ -213,7 +217,7 @@ body {
 }
 
 .outside2 img {
-  width: 65%;
+  width: 55%;
   height: auto;
 }
 
