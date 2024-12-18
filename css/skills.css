@@ -165,7 +165,7 @@ p {
 .entries img {
   max-width: 80%;
   max-width: 200px;
-  padding: 1rem 1rem;
+  padding: 1rem 1rem 1rem 0;
   cursor: pointer;
 }
 
