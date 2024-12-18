@@ -96,6 +96,7 @@ body {
   font-size: 2rem;
   line-height: 2.1rem;
   margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
 }
 
 .learning a {
@@ -161,7 +162,7 @@ body {
 .outsidework {
   background-color: #272728;
   color: #eceef1;
-  padding: 3rem 2rem 2rem 2rem;
+  padding: 2rem 2rem 2rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -227,6 +228,7 @@ body {
   font-size: 1.6rem;
   line-height: 1.76rem;
   margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
 }
 
 .slideshow-container {
