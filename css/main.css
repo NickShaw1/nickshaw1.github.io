@@ -12,7 +12,7 @@
 
 /* Sidebar Styling */
 .sidebar {
-  width: 0; /* Sidebar hidden by default */
+  width: 0;
   height: 100vh;
   background-color: #272728;
   color: #eceef1;
