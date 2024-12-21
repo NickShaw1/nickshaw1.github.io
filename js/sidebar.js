@@ -57,8 +57,18 @@ function initializeTabIndexState() {
   updateSidebarTabIndices(isSidebarVisible);
 }
 
-// Event listener for back/forward navigation
-window.addEventListener("popstate", closeSidebar);
+// Close sidebar when navigating back/forward in browser history
+window.addEventListener("popstate", () => {
+  closeSidebar();
+});
+
+// Force close sidebar when the page is shown (fixes Safari behavior)
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted) {
+    // If page is loaded from cache (common in Safari), reset sidebar state
+    closeSidebar();
+  }
+});
 
 // Other event listeners
 sidebarToggleButton.addEventListener("click", toggleSidebar);
