@@ -18,6 +18,20 @@ function toggleSidebar() {
   updateSidebarTabIndices(isSidebarVisible);
 }
 
+function closeSidebar() {
+  if (sidebar.classList.contains("open")) {
+    sidebar.classList.remove("open");
+    sidebarToggleButton.classList.remove("active");
+    sidebar.setAttribute("aria-hidden", "true");
+
+    if (mainContent) {
+      mainContent.inert = false;
+    }
+
+    updateSidebarTabIndices(false);
+  }
+}
+
 function updateSidebarTabIndices(isSidebarVisible) {
   sidebar
     .querySelectorAll("a, button, input, select, textarea")
@@ -28,15 +42,7 @@ function updateSidebarTabIndices(isSidebarVisible) {
 
 function handleResize() {
   if (window.innerWidth > 768 && sidebar.classList.contains("open")) {
-    sidebar.classList.remove("open");
-    sidebarToggleButton.classList.remove("active");
-    sidebar.setAttribute("aria-hidden", "true");
-
-    if (mainContent) {
-      mainContent.inert = false;
-    }
-
-    updateSidebarTabIndices(false);
+    closeSidebar();
   }
 }
 
@@ -51,6 +57,10 @@ function initializeTabIndexState() {
   updateSidebarTabIndices(isSidebarVisible);
 }
 
+// Event listener for back/forward navigation
+window.addEventListener("popstate", closeSidebar);
+
+// Other event listeners
 sidebarToggleButton.addEventListener("click", toggleSidebar);
 window.addEventListener("resize", handleResize);
 window.addEventListener("load", initializeTabIndexState);
