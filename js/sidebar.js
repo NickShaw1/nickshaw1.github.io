@@ -1,6 +1,6 @@
 const sidebar = document.querySelector(".sidebar");
 const sidebarToggleButton = document.querySelector(".sidebar-toggle");
-const mainContent = document.querySelector("main"); // Adjust this selector to match your content
+const mainContent = document.querySelector("main");
 
 function toggleSidebar() {
   sidebar.classList.toggle("open");
@@ -9,12 +9,10 @@ function toggleSidebar() {
   const isSidebarVisible = sidebar.classList.contains("open");
   sidebar.setAttribute("aria-hidden", isSidebarVisible ? "false" : "true");
 
-  // Apply the 'inert' attribute to the main content when the sidebar is open
   if (mainContent) {
     mainContent.inert = isSidebarVisible;
   }
 
-  // Manage sidebar focusability
   updateSidebarTabIndices(isSidebarVisible);
 }
 
@@ -57,20 +55,16 @@ function initializeTabIndexState() {
   updateSidebarTabIndices(isSidebarVisible);
 }
 
-// Close sidebar when navigating back/forward in browser history
 window.addEventListener("popstate", () => {
   closeSidebar();
 });
 
-// Force close sidebar when the page is shown (fixes Safari behavior)
 window.addEventListener("pageshow", (event) => {
   if (event.persisted) {
-    // If page is loaded from cache (common in Safari), reset sidebar state
     closeSidebar();
   }
 });
 
-// Other event listeners
 sidebarToggleButton.addEventListener("click", toggleSidebar);
 window.addEventListener("resize", handleResize);
 window.addEventListener("load", initializeTabIndexState);
