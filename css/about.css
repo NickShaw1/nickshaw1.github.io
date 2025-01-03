@@ -648,6 +648,7 @@ body {
     align-items: center;
     text-align: center;
     background-color: #eceef1;
+    width: 100%;
   }
 
   .outside2 img {
@@ -663,14 +664,21 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin-left: 3rem;
-    padding: 1rem;
-    background-color: #ffffff;
+    margin: 0;
+    max-width: 100%;
+    background-color: #eceef1;
     border: 0;
-    border: 2px black solid;
   }
 
   .slideshow-container {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    height: auto;
+    background-color: #eceef1;
+  }
+
+  .slideshow-container img {
     margin-top: 1rem;
     margin-bottom: 1rem;
     width: 100%;
@@ -690,6 +698,7 @@ body {
     max-width: 95vw;
     margin: 0;
     padding: 0;
+    border: 2px solid #272728;
   }
 
   .location-title {
