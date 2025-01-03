@@ -641,6 +641,13 @@ body {
     height: auto;
   }
 
+  #myModal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
   .outside2 img {
     width: 50%;
     height: auto;
@@ -650,11 +657,14 @@ body {
   .modal-content {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    width: 80%;
   }
 
   .slideshow-container {
     margin-top: 1rem;
     margin-bottom: 1rem;
+    width: 100%;
   }
 
   .blurb-text {
