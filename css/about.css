@@ -793,6 +793,7 @@ body {
       position: relative;
       margin-top: 30px;
       border: 2px solid white;
+      border-radius: 10px;
     }
 
     .prev {
@@ -811,7 +812,7 @@ body {
     }
     .close {
       position: relative;
-      margin-top: 9px;
+      margin-top: 8px;
       display: flex;
       justify-self: center;
       border: 2px solid white;
