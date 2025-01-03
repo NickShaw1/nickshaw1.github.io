@@ -272,7 +272,7 @@ body {
 
 .slideshow-container {
   position: relative;
-  max-width: 50vw; 
+  max-width: 50vw;
   display: flex;
   justify-self: center;
   align-self: center;
@@ -299,30 +299,25 @@ body {
 }
 
 .modal {
-  display: flex; 
-  justify-content: center; 
-  align-items: center; 
-  position: fixed; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100vw; 
-  height: 100vh; 
-  background-color: rgba(
-    39,
-    39,
-    40,
-    0.9
-  ); 
-  z-index: 9999; 
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(39, 39, 40, 0.9);
+  z-index: 9999;
 }
 
 .modal-content {
   position: relative;
   display: flex;
-  flex-direction: column; 
-  justify-self: center; 
-  align-self: center; 
-  max-width: 50vw; 
+  flex-direction: column;
+  justify-self: center;
+  align-self: center;
+  max-width: 50vw;
   max-height: 100%;
   background-color: white;
   padding: 0px;
@@ -699,9 +694,9 @@ body {
 
     .prev,
     .next {
-      width: 28px;
-      height: 28px;
-      font-size: 0.9rem;
+      width: 30px;
+      height: 30px;
+      font-size: 1rem;
       top: 90%;
     }
   }
@@ -714,20 +709,6 @@ body {
     .slideshow-container img {
       width: 100%;
       height: auto;
-    }
-
-    .dots-container {
-      top: 5px;
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      margin: 0 3px;
-    }
-
-    .slide-text {
-      display: none;
     }
 
     .aboutme1 img {
@@ -791,8 +772,8 @@ body {
       background-color: transparent;
       position: relative;
       display: flex;
-      justify-content: center; 
-      text-align: center; 
+      justify-content: center;
+      text-align: center;
     }
 
     .slideshow-container img {
@@ -800,26 +781,26 @@ body {
       height: auto;
       border: 2px solid white;
     }
-    
+
     .slides {
       display: block;
       width: 100%;
     }
-    
+
     .prev,
     .next {
       display: inline-block;
-      position: relative; 
-      margin-top: 30px; 
+      position: relative;
+      margin-top: 30px;
       border: 2px solid white;
     }
-    
+
     .prev {
-      margin-right: 1rem; 
+      margin-right: 1rem;
     }
-    
+
     .next {
-      margin-left: 1.5rem; 
+      margin-left: 1.5rem;
     }
 
     .modal-buttons {
@@ -831,10 +812,9 @@ body {
     .close {
       position: relative;
       margin-top: 9px;
-      display:flex;
+      display: flex;
       justify-self: center;
       border: 2px solid white;
     }
-    
   }
 }
