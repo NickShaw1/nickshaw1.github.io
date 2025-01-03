@@ -434,6 +434,10 @@ body {
     object-fit: cover;
   }
 
+  .slideshow-container {
+    width: 100%;
+  }
+
   .slideshow-container img {
     width: 100%;
     height: auto;
@@ -654,7 +658,7 @@ body {
     justify-self: center;
     justify-content: center;
     align-items: center;
-    width: 90%;
+    width: 100%;
     padding: 1rem;
     background-color: #ffffff;
     border: 0;
