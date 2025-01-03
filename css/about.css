@@ -272,7 +272,7 @@ body {
 
 .slideshow-container {
   position: relative;
-  max-width: 50vw; /* Max width of modal content */
+  max-width: 50vw; 
   display: flex;
   justify-self: center;
   align-self: center;
@@ -299,30 +299,30 @@ body {
 }
 
 .modal {
-  display: flex; /* Flexbox for centering */
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  position: fixed; /* Fixed positioning to cover entire viewport */
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  position: fixed; 
   top: 0;
   left: 0;
-  width: 100vw; /* Full screen width */
-  height: 100vh; /* Full screen height */
+  width: 100vw; 
+  height: 100vh; 
   background-color: rgba(
     39,
     39,
     40,
     0.9
-  ); /* Dark semi-transparent background */
-  z-index: 9999; /* Ensure it’s on top of all other content */
+  ); 
+  z-index: 9999; 
 }
 
 .modal-content {
   position: relative;
   display: flex;
-  flex-direction: column; /* Stack content vertically */
-  justify-self: center; /* Center content vertically */
-  align-self: center; /* Center content horizontally */
-  max-width: 50vw; /* Max width of modal content */
+  flex-direction: column; 
+  justify-self: center; 
+  align-self: center; 
+  max-width: 50vw; 
   max-height: 100%;
   background-color: white;
   padding: 0px;
@@ -781,5 +781,60 @@ body {
       display: flex;
       justify-content: center;
     }
+
+    .modal-content {
+      background-color: transparent;
+      border: transparent;
+    }
+
+    .slideshow-container {
+      background-color: transparent;
+      position: relative;
+      display: flex;
+      justify-content: center; 
+      text-align: center; 
+    }
+
+    .slideshow-container img {
+      width: 100vw;
+      height: auto;
+      border: 2px solid white;
+    }
+    
+    .slides {
+      display: block;
+      width: 100%;
+    }
+    
+    .prev,
+    .next {
+      display: inline-block;
+      position: relative; 
+      margin-top: 30px; 
+      border: 2px solid white;
+    }
+    
+    .prev {
+      margin-right: 1rem; 
+    }
+    
+    .next {
+      margin-left: 1.5rem; 
+    }
+
+    .modal-buttons {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .close {
+      position: relative;
+      margin-top: 9px;
+      display:flex;
+      justify-self: center;
+      border: 2px solid white;
+    }
+    
   }
 }
