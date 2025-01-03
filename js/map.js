@@ -214,7 +214,6 @@ locations.forEach(function (location) {
   var marker = L.marker([location.lat, location.lon]).addTo(map);
   marker.bindPopup(location.name);
 
-  // Open modal on click
   marker.on("click", function () {
     openModal(location);
   });
@@ -230,47 +229,51 @@ var touchStartX = 0;
 var touchEndX = 0;
 
 window.onload = function () {
-  modal.style.display = "none"; // Ensures modal is hidden initially
+  modal.style.display = "none";
 };
 
 function openModal(location) {
   console.log("Opening modal for", location.name);
+
+  // Disable background scrolling
+  document.documentElement.style.overflow = "hidden";
+
   slideImages = location.images.map(function (image) {
     return image.src;
   });
   slideTexts = location.images.map(function (image) {
     return image.text;
   });
-  currentSlide = 0; // Reset slide index
+  currentSlide = 0;
   showSlide(currentSlide);
-  modal.style.opacity = 1;
-  modal.style.visibility = "visible"; // Show modal
-  modal.style.display = "block"; // Open modal
 
-  // Reset touch variables
+  modal.style.opacity = 1;
+  modal.style.visibility = "visible";
+  modal.style.display = "block";
+
   touchStartX = 0;
   touchEndX = 0;
 
-  // Optionally, log to check if this code is being executed
   console.log("Modal opened");
 }
 
 function closeModal() {
-  modal.style.opacity = 0; // Fade out
-  modal.style.visibility = "hidden"; // Hide modal
+  // Re-enable background scrolling
+  document.documentElement.style.overflow = "auto";
+
+  modal.style.opacity = 0;
+  modal.style.visibility = "hidden";
 }
 
 function showSlide(index) {
   var slideshowContainer = document.querySelector(".slideshow-container");
-  slideshowContainer.innerHTML = ""; // Clear previous content
+  slideshowContainer.innerHTML = "";
 
-  // Create image element
   var img = document.createElement("img");
   img.src = slideImages[index];
   img.className = "mySlides active";
   slideshowContainer.appendChild(img);
 
-  // Create or update text overlay
   var textOverlay = document.querySelector(".text-overlay");
   if (!textOverlay) {
     textOverlay = document.createElement("div");
@@ -287,11 +290,10 @@ function changeSlide(n) {
   showSlide(currentSlide);
 }
 
-// Add touch start and end event listeners
 modal.addEventListener(
   "touchstart",
   function (event) {
-    touchStartX = event.changedTouches[0].screenX; // Get starting X coordinate
+    touchStartX = event.changedTouches[0].screenX;
   },
   false
 );
@@ -299,14 +301,11 @@ modal.addEventListener(
 modal.addEventListener(
   "touchend",
   function (event) {
-    touchEndX = event.changedTouches[0].screenX; // Get ending X coordinate
+    touchEndX = event.changedTouches[0].screenX;
 
-    // Check the swipe direction
     if (touchStartX - touchEndX > 50) {
-      // Swipe left (go to next slide)
       changeSlide(1);
     } else if (touchEndX - touchStartX > 50) {
-      // Swipe right (go to previous slide)
       changeSlide(-1);
     }
   },

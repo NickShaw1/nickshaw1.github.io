@@ -11,6 +11,10 @@ body {
   padding: 0;
 }
 
+.no-scroll {
+  overflow: hidden;
+}
+
 .about-main {
   position: relative;
   display: grid;
