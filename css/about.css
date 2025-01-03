@@ -698,7 +698,7 @@ body {
     max-width: 95vw;
     margin: 0;
     padding: 0;
-    border: 2px solid #272728;
+    border-radius: 5px;
   }
 
   .location-title {
