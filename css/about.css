@@ -793,29 +793,30 @@ body {
       position: relative;
       margin-top: 30px;
       border: 2px solid white;
-      border-radius: 10px;
+      border-radius: 20%;
     }
+  }
 
-    .prev {
-      margin-right: 1rem;
-    }
+  .prev {
+    margin-right: 1rem;
+  }
 
-    .next {
-      margin-left: 1.5rem;
-    }
+  .next {
+    margin-left: 1.5rem;
+  }
 
-    .modal-buttons {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-    .close {
-      position: relative;
-      margin-top: 8px;
-      display: flex;
-      justify-self: center;
-      border: 2px solid white;
-    }
+  .modal-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .close {
+    position: relative;
+    margin-top: 8px;
+    display: flex;
+    justify-self: center;
+    border: 2px solid white;
+    border-radius: 50%;
   }
 }
