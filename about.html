@@ -59,7 +59,17 @@
     <meta name="apple-mobile-web-app-title" content="NS QA" />
     <title>Nick Shaw - Experienced Software Tester & QA Professional</title>
     <script src="js/sidebar.js" type="text/javascript" defer></script>
-    <script src="js/slides.js" type="text/javascript" defer></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
   </head>
 
   <body>
@@ -239,55 +249,28 @@
           by Shinkansen to Kyoto, followed by a stop in Hiroshima, and finally
           return to Tokyo. It’s shaping up to be our most epic adventure yet!
         </p>
-        <p>A few of the photos from our previous trips can be seen below.</p>
-        <div class="slideshow-container">
-          <div class="slide fade">
-            <img
-              src="images/about/trips/paris.jpg"
-              alt="Paris, France - View from Tour Montparnasse"
-            />
-            <div class="slide-text">Paris, France</div>
-          </div>
-          <div class="slide fade">
-            <img
-              src="images/about/trips/venice.jpg"
-              alt="Venice, Italy - View from Rialto bridge"
-            />
-            <div class="slide-text">Venice, Italy</div>
-          </div>
-          <div class="slide fade">
-            <img
-              src="images/about/trips/valleyoffire.jpg"
-              alt="Valley of Fire, Nevada, USA"
-            />
-            <div class="slide-text">Valley of Fire, Nevada, USA</div>
-          </div>
-          <div class="slide fade">
-            <img
-              src="images/about/trips/yosemite.jpg"
-              alt="Yosemite Valley, California, USA"
-            />
-            <div class="slide-text">Yosemite Valley, California, USA</div>
-          </div>
-          <div class="slide fade">
-            <img
-              src="images/about/trips/goldengate.jpg"
-              alt="The Golden Gate bridge, California, USA"
-            />
-            <div class="slide-text">
-              The Golden Gate Bridge, California, USA
-            </div>
-          </div>
+        <p>
+          You can view some photographs of these trips by clicking on the pins
+          on the map below.
+        </p>
 
-          <div class="dots-container">
-            <span class="dot" onclick="currentSlide(1)"></span>
-            <span class="dot" onclick="currentSlide(2)"></span>
-            <span class="dot" onclick="currentSlide(3)"></span>
-            <span class="dot" onclick="currentSlide(4)"></span>
-            <span class="dot" onclick="currentSlide(5)"></span>
+        <div id="map"></div>
+
+        <div id="myModal" class="modal">
+          <div class="modal-content">
+            <div class="slideshow-container">
+              <!-- This is where the images will be dynamically added by the JS -->
+            </div>
+            <!-- Navigation buttons wrapped in .modal-buttons -->
+            <div class="modal-buttons">
+              <button class="prev" onclick="changeSlide(-1)">&#10094;</button>
+              <button class="next" onclick="changeSlide(1)">&#10095;</button>
+              <button class="close" onclick="closeModal()">X</button>
+            </div>
           </div>
         </div>
       </section>
     </main>
+    <script src="js/map.js" defer></script>
   </body>
 </html>
