@@ -273,8 +273,6 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
   background-color: #eceef1;
   z-index: 9999;
 }
@@ -286,7 +284,6 @@ body {
   justify-self: center;
   align-self: center;
   max-width: 70%;
-  max-height: 80vh;
   background-color: white;
   padding: 0px;
   border: 2px #272728 solid;
@@ -332,7 +329,6 @@ body {
 
 .slideshow-container img {
   width: 100%;
-  max-height: 80vh;
   object-fit: contain;
 }
 
