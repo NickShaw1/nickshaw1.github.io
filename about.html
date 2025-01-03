@@ -257,13 +257,19 @@
         <div id="map"></div>
 
         <div id="myModal" class="modal">
+          <div class="logo1"><img src="images/logosmall.png" /></div>
           <div class="modal-content">
             <div class="slideshow-container"></div>
-            <div class="modal-buttons">
-              <button class="prev" onclick="changeSlide(-1)">&#10094;</button>
-              <button class="next" onclick="changeSlide(1)">&#10095;</button>
-              <button class="close" onclick="closeModal()">X</button>
+            <div class="blurb-text">
+              <div class="location-title"></div>
+              <div class="location-place"></div>
+              <div class="location-text"></div>
             </div>
+          </div>
+          <div class="modal-buttons">
+            <button class="close" onclick="closeModal()">&times;</button>
+            <button class="prev" onclick="changeSlide(-1)">&#8592;</button>
+            <button class="next" onclick="changeSlide(1)">&#8594;</button>
           </div>
         </div>
       </section>
