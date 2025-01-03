@@ -356,19 +356,18 @@ body {
   font-size: 1.8rem;
   width: 40px;
   height: 40px;
-  color: #f7f7f7;
-  background-color: #1c856f;
-  border: 2px solid #1c856f;
-  border-radius: 50%;
+  color: #272728;
+  background-color: transparent;
   cursor: pointer;
   z-index: 4;
   transition: transform 0.3s ease;
   position: absolute;
   bottom: 10%;
+  border: none;
 }
 
 .close:hover {
-  color: rgb(247, 247, 247, 0.7);
+  color: rgba(28, 28, 28, 0.7);
 }
 
 .modal-buttons {
@@ -390,22 +389,20 @@ body {
 
 .prev,
 .next {
-  color: rgb(247, 247, 247);
+  color: #272728;
   cursor: pointer;
   width: 40px;
   height: 40px;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 2rem;
   border: none;
-  background-color: #1c856f;
-  border-radius: 50%;
+  background-color: transparent;
   transition: transform 0.3s ease;
-  border: 2px solid #1c856f;
 }
 
 .prev:hover,
 .next:hover {
-  color: rgb(247, 247, 247, 0.7);
+  color: rgba(28, 28, 28, 0.7);
 }
 
 .logo1 {
@@ -658,7 +655,10 @@ body {
     display: flex;
     flex-direction: column;
     justify-self: center;
-    width: 90%;
+    justify-content: center;
+    width: 100%;
+    margin-left: 1rem;
+    margin-right: 1rem;
     max-width: 100%;
   }
 
