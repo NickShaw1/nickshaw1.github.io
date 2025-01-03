@@ -55,6 +55,16 @@ function initializeTabIndexState() {
   updateSidebarTabIndices(isSidebarVisible);
 }
 
+// Close the sidebar when clicking outside of it (on the window)
+function handleTouchOutside(event) {
+  if (
+    !sidebar.contains(event.target) &&
+    !sidebarToggleButton.contains(event.target)
+  ) {
+    closeSidebar();
+  }
+}
+
 window.addEventListener("popstate", () => {
   closeSidebar();
 });
@@ -68,5 +78,8 @@ window.addEventListener("pageshow", (event) => {
 sidebarToggleButton.addEventListener("click", toggleSidebar);
 window.addEventListener("resize", handleResize);
 window.addEventListener("load", initializeTabIndexState);
+
+// Detect touch events to close sidebar if the user touches outside
+window.addEventListener("touchstart", handleTouchOutside, true);
 
 initializeTabIndexState();
