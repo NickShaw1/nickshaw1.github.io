@@ -11,10 +11,6 @@ body {
   padding: 0;
 }
 
-.no-scroll {
-  overflow: hidden;
-}
-
 .about-main {
   position: relative;
   display: grid;
@@ -661,7 +657,6 @@ body {
     width: 90%;
     padding: 1rem;
     background-color: #ffffff;
-    width: 90%;
     border: 0;
     border: 2px black solid;
   }
