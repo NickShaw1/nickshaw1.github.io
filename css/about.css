@@ -344,8 +344,8 @@ body {
 }
 
 .close {
-  top: 0.8rem;
-  right: 0.8rem;
+  top: 0.5rem;
+  right: 0.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -446,8 +446,6 @@ body {
   }
 
   .close {
-    top: 0.4rem;
-    right: 0.4rem;
     width: 32px;
     height: 32px;
   }
