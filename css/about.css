@@ -353,12 +353,12 @@ body {
   justify-content: center;
   align-items: center;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 2rem;
+  font-size: 1.8rem;
   width: 40px;
   height: 40px;
   color: #f7f7f7;
   background-color: #1c856f;
-  border: 2px solid #272728;
+  border: 2px solid #1c856f;
   border-radius: 50%;
   cursor: pointer;
   z-index: 4;
@@ -368,7 +368,7 @@ body {
 }
 
 .close:hover {
-  border: 2px solid #ffffff;
+  color: rgb(247, 247, 247, 0.7);
 }
 
 .modal-buttons {
@@ -400,12 +400,12 @@ body {
   background-color: #1c856f;
   border-radius: 50%;
   transition: transform 0.3s ease;
-  border: 2px solid #272728;
+  border: 2px solid #1c856f;
 }
 
 .prev:hover,
 .next:hover {
-  border: 2px solid rgb(255, 255, 255);
+  color: rgb(247, 247, 247, 0.7);
 }
 
 .logo1 {
@@ -663,6 +663,15 @@ body {
     width: 100%;
     max-width: 100%;
     margin-bottom: 1rem;
+  }
+
+  .location-title {
+    text-align: center;
+    font-size: 1.5rem;
+  }
+
+  .location-place {
+    text-align: center;
   }
 }
 
