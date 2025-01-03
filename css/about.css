@@ -657,8 +657,9 @@ body {
   .modal-content {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    width: 80%;
+    justify-self: center;
+    width: 90%;
+    max-width: 100%;
   }
 
   .slideshow-container {
