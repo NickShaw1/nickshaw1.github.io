@@ -592,6 +592,12 @@ body {
 }
 
 @media (max-width: 982px) {
+  .logo1 {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+
   .aboutme2 p {
     width: 100%;
   }
@@ -661,12 +667,6 @@ body {
 }
 
 @media (max-width: 805px) {
-  .logo1 {
-    display: flex;
-    justify-content: center;
-    margin-top: 0.5rem;
-  }
-
   .aboutme1 img {
     padding: 0 2rem 2rem 0;
     width: 60%;
