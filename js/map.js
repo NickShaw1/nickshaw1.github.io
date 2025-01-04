@@ -43,7 +43,7 @@ var locations = [
 
       {
         src: "/images/about/trips/norcal/norcal5.jpg",
-        text: "McWay Falls in Big Sur plunges gracefully into the Pacific Ocean, surrounded by stunning coastal cliffs.",
+        text: "McWay Falls in Big Sur plunges gracefully into the Pacific Ocean, surrounded by beautiful coastal cliffs.",
         title: "McWay Falls",
         place: "Big Sur, USA",
       },
@@ -84,7 +84,7 @@ var locations = [
 
       {
         src: "/images/about/trips/socal/socal5.jpg",
-        text: "San Diego Zoo is home to diverse wildlife, offering a world-renowned experience for animal lovers.",
+        text: "San Diego Zoo is home to all kinds of diverse wildlife, offering a world-renowned experience for animal lovers.",
         title: "San Diego Zoo",
         place: "San Diego, USA",
       },
@@ -125,7 +125,7 @@ var locations = [
 
       {
         src: "/images/about/trips/nyc/nyc5.jpg",
-        text: "Walden Pond in Cambridge, Massachusetts, is famous for its tranquil beauty and association with Henry David Thoreau.",
+        text: "Walden Pond in Cambridge, Massachusetts, is famous for its association with Henry David Thoreau. I studied Walden in University and was fascinated with Transcendalism.",
         title: "Walden Pond",
         place: "Cambridge, USA",
       },
@@ -145,28 +145,28 @@ var locations = [
 
       {
         src: "/images/about/trips/portugal/portugal2.jpg",
-        text: "The Douro Valley is known for its stunning riverside views and lush vineyards, ideal for wine lovers.",
+        text: "The Douro Valley is known for its beautiful riverside views and lush vineyards, ideal for wine lovers.",
         title: "Douro Valley",
         place: "Portugal",
       },
 
       {
         src: "/images/about/trips/portugal/portugal3.jpg",
-        text: "The Arouca Bridge in Portugal is one of the world’s longest pedestrian suspension bridges.",
+        text: "The Arouca Bridge is one of the world’s longest pedestrian suspension bridges.",
         title: "Arouca Bridge",
         place: "Portugal",
       },
 
       {
         src: "/images/about/trips/portugal/portugal4.jpg",
-        text: "Porto, Portugal is a vibrant city known for its historic architecture, scenic riverside, and world-famous port wine.",
+        text: "Porto is a vibrant city known for its historic architecture, scenic riverside, and world-famous port wine.",
         title: "Porto",
         place: "Portugal",
       },
 
       {
         src: "/images/about/trips/portugal/portugal5.jpg",
-        text: "The Dom Luis Bridge in Porto offers spectacular views of the city and the Douro River.",
+        text: "The Dom Luis Bridge in Porto offers great views of the city and the Douro River.",
         title: "Dom Luis Bridge",
         place: "Porto, Portugal",
       },
@@ -241,14 +241,14 @@ var locations = [
 
       {
         src: "/images/about/trips/mallorca/mallorca4.jpg",
-        text: "Port de Sóller is a charming coastal town with a picturesque harbor and stunning views of the Mediterranean Sea.",
+        text: "Port de Sóller is a charming coastal town with a picturesque harbour by the Mediterranean Sea.",
         title: "Port de Sóller",
         place: "Mallorca, Spain",
       },
 
       {
         src: "/images/about/trips/mallorca/mallorca5.jpg",
-        text: "The Port de Pollensa coastline offers tranquil beaches with turquoise waters and spectacular views of surrounding mountains.",
+        text: "Pollensa coastline's turquoise waters and spectacular views of surrounding mountains were a real highlight.",
         title: "Pollensa Coastline",
         place: "Mallorca, Spain",
       },
@@ -275,21 +275,21 @@ var locations = [
 
       {
         src: "/images/about/trips/venice/venice3.jpg",
-        text: "Piazza San Marco is a grand open space surrounded by historic architecture, cafés, and a vibrant atmosphere.",
+        text: "Piazza San Marco is a grand open space surrounded by historic architecture, cafés, lots of pigeons and a vibrant atmosphere.",
         title: "Piazza San Marco",
         place: "Venice, Italy",
       },
 
       {
         src: "/images/about/trips/venice/venice4.jpg",
-        text: "The Bridge of Sighs connects the Doge’s Palace to the prison, offering a picturesque view over the Rio di Palazzo.",
+        text: "The Bridge of Sighs, named for the sighs of prisoners who, after being sentenced, were led across the bridge from the Doge’s Palace. .",
         title: "Bridge of Sighs",
         place: "Venice, Italy",
       },
 
       {
         src: "/images/about/trips/venice/venice5.jpg",
-        text: "Burano, with its colorful houses and charming canals, is a peaceful escape known for its lace-making tradition.",
+        text: "Burano, with its colourful houses and charming canals, is a peaceful escape known for its lace-making tradition.",
         title: "Burano",
         place: "Venice, Italy",
       },
