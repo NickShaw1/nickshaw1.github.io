@@ -936,12 +936,13 @@ body {
     font-size: 0.9rem;
     margin-top: 0.5rem;
     padding: 0;
-    padding-left: 0.5rem;
+    padding-left: 0.7rem;
   }
 
   .blurb-text {
     margin-bottom: 0;
     display: flex;
+
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
@@ -952,14 +953,15 @@ body {
     font-size: 0.8rem;
     margin-bottom: 0;
     margin-top: 0;
-    padding-left: 0.5rem;
+    padding-left: 0.7rem;
   }
 
   .location-text {
     text-align: left;
     font-size: 0.8rem;
     margin-bottom: 0.5rem;
-    padding-left: 0.5rem;
+    padding-left: 0.7rem;
+    width: 90%;
   }
 
   .mySlides:active {
@@ -982,5 +984,6 @@ body {
     height: auto;
     object-fit: contain;
     background-color: #ffffff;
+    border-radius: 10px;
   }
 }
