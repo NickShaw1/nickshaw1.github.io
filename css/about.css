@@ -351,8 +351,9 @@ body {
 }
 
 .close {
-  top: 0.5rem;
-  right: 0.5rem;
+  box-sizing: border-box;
+  top: 0.7rem;
+  right: 0.7rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -381,7 +382,7 @@ body {
   justify-content: center;
   justify-self: center;
   align-items: center;
-  margin-top: 1rem;
+  margin-top: 2rem;
   width: 100%;
 }
 
@@ -395,6 +396,7 @@ body {
 
 .prev,
 .next {
+  box-sizing: border-box;
   color: #eceef1;
   cursor: pointer;
   width: 40px;
@@ -416,6 +418,7 @@ body {
 
 .logo1 {
   display: none;
+  margin-bottom: 0;
 }
 /* Maps end */
 
@@ -604,6 +607,7 @@ body {
     display: flex;
     justify-self: center;
     justify-content: center;
+    align-self: center;
     width: 40%;
     margin-top: 0.5rem;
     margin-left: 1rem;

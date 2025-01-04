@@ -87,9 +87,15 @@ function changeSlide(n) {
 }
 
 // Close modal if clicking outside the image container (on the modal background)
+// But ignore clicks on the prev/next buttons
 modal.addEventListener("click", function (e) {
   // Check if the click was outside the modal-content area (where the images are displayed)
-  if (!e.target.closest(".modal-content")) {
+  // and if it's not on the prev/next buttons
+  if (
+    !e.target.closest(".modal-content") &&
+    !e.target.closest(".prev") &&
+    !e.target.closest(".next")
+  ) {
     closeModal();
   }
 });
