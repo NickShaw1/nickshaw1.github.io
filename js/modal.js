@@ -12,6 +12,7 @@ function preventTouchMove(e) {
 }
 
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+let isPinchZooming = false;
 
 function openModal(location) {
   console.log("Opening modal for", location.name);
@@ -20,7 +21,7 @@ function openModal(location) {
   lastScrollPosition = window.scrollY;
 
   // Safari fix: Lock body scroll using position: fixed
-  if (isSafari) {
+  if (isSafari && !isPinchZooming) {
     document.body.style.position = "fixed";
     document.body.style.top = `-${lastScrollPosition}px`;
     document.body.style.left = "0";
@@ -57,12 +58,12 @@ function openModal(location) {
 // Close modal
 function closeModal() {
   // Re-enable background scrolling
-  if (isSafari) {
-    document.body.style.position = ""; // Reset position property
-    document.body.style.top = "";
-    document.body.style.left = "";
-    document.body.style.right = "";
-    document.body.style.width = "";
+  if (isSafari && !isPinchZooming) {
+    document.body.style.position = ''; // Reset position property
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.width = '';
   }
 
   // Remove touchmove event listener (mobile Safari fix)
@@ -78,6 +79,7 @@ function closeModal() {
   modal.style.display = "none";
   console.log("Modal closed, scroll position restored");
 }
+
 
 // Reset map pins state if needed
 function resetMapPinsState() {
