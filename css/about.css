@@ -382,6 +382,8 @@ body {
 }
 
 .modal-buttons2 {
+  visibility: hidden; /* Initially hidden */
+  pointer-events: none; /* Initially not interactive */
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -393,6 +395,12 @@ body {
   width: 100%;
   padding: 1rem 0;
   z-index: 1004;
+  transition: visibility 0s, opacity 0.3s ease; /* Smooth transition */
+}
+
+.modal.open .modal-buttons2 {
+  visibility: visible; /* Make visible when modal is open */
+  pointer-events: auto; /* Make buttons interactive */
 }
 
 .prev {
@@ -744,7 +752,7 @@ body {
   }
 
   .modal-buttons2 {
-    bottom: 0%;
+    bottom: 1%;
   }
 }
 

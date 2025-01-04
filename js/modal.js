@@ -27,6 +27,16 @@ function openModal(location) {
 
   // Show modal
   modal.style.display = "block";
+
+  // Trigger visibility and interaction immediately when the modal opens
+  modal.style.opacity = 1;
+  modal.style.visibility = "visible";
+  modal.style.pointerEvents = "auto"; // Enable interaction with the modal and buttons
+
+  // Add 'open' class to trigger button visibility
+  modal.classList.add("open");
+
+  // Trigger animation (if needed)
   requestAnimationFrame(() => {
     modal.style.opacity = 1;
     modal.style.visibility = "visible";
@@ -38,9 +48,12 @@ function closeModal() {
   // Re-enable background scrolling
   document.documentElement.classList.remove("no-scroll");
 
-  // Hide modal
+  // Hide modal and buttons
+  modal.classList.remove("open"); // Remove 'open' class
   modal.style.opacity = 0;
   modal.style.visibility = "hidden";
+  modal.style.pointerEvents = "none"; // Disable interaction with the modal
+
   setTimeout(() => {
     modal.style.display = "none";
   }, 300); // Matches CSS transition duration
@@ -49,18 +62,6 @@ function closeModal() {
   window.scrollTo(0, lastScrollPosition);
 
   console.log("Modal closed, scroll position restored");
-}
-
-// Show a specific slide
-function showSlide(index) {
-  const { src, text, title, place } = slideData[index];
-  slideshowContainer.innerHTML = `
-    <img src="${src}" class="mySlides active" alt="${title}">
-  `;
-
-  updateTextContent(".location-text", text.replace(/\n/g, "<br>"));
-  updateTextContent(".location-title", title);
-  updateTextContent(".location-place", place);
 }
 
 // Update modal text content
@@ -84,13 +85,13 @@ modal.addEventListener("click", function (e) {
   // Prevent closing modal if the click is on the prev or next buttons
   const isClickInsideModal = e.target.closest(".modal-content");
   const isClickOnControlButton = e.target.closest(".prev, .next");
-  
+
   if (isClickOnControlButton) {
-    return;  // Early exit, do not close modal when clicking prev/next
+    return; // Early exit, do not close modal when clicking prev/next
   }
 
   if (!isClickInsideModal) {
-    closeModal();  // Close modal if clicked outside the modal-content area
+    closeModal(); // Close modal if clicked outside the modal-content area
   }
 });
 
@@ -117,3 +118,8 @@ function trapFocus(event) {
     event.preventDefault();
   }
 }
+
+modal.addEventListener("touchstart", (event) => {
+  console.log("Touch started on modal");
+  // Other logic
+});
