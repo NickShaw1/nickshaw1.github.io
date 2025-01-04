@@ -315,10 +315,8 @@ locations.forEach(function (location) {
   marker.bindPopup(location.name);
 
   marker.on("click", function () {
-    // Close all open popups
     map.closePopup();
 
-    // Open the new modal
     openModal(location);
   });
 });
