@@ -986,4 +986,33 @@ body {
     background-color: #ffffff;
     border-radius: 10px;
   }
+
+  .close {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    position: fixed;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .prev:hover,
+  .next:hover {
+    background-color: #2ca78c;
+  }
+}
+
+/* Keep the hover effect for non-touchscreen devices */
+@media (hover: hover) and (pointer: fine) {
+  .prev:hover,
+  .next:hover {
+    color: rgba(247, 247, 247, 0.7);
+    background-color: #197a65;
+  }
+}
+
+.prev:active,
+.next:active {
+  color: rgba(247, 247, 247, 0.7);
+  background-color: #197a65;
 }
