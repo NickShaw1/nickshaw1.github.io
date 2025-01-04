@@ -12,10 +12,10 @@ body {
 }
 
 .no-scroll {
-  overflow: hidden; 
-  position: fixed; 
+  overflow: hidden;
+  position: fixed;
   width: 100%;
-  height: 100%; 
+  height: 100%;
   top: 0;
   left: 0;
   z-index: 900;
@@ -396,7 +396,7 @@ body {
   bottom: 3%;
   left: 50%;
   transform: translateX(-50%);
-  max-width: 90%; 
+  max-width: 90%;
   padding: 1rem 0;
   z-index: 9999;
   visibility: visible;
@@ -906,5 +906,46 @@ body {
 
   .modal-buttons2 {
     bottom: 3%;
+  }
+}
+
+@media (max-height: 450px) {
+  .logo1 {
+    display: none;
+  }
+
+  .modal-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 80%;
+    margin: 0;
+    max-width: 80%;
+    height: auto;
+    background-color: white;
+    border: 2px solid white;
+    position: fixed;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+  }
+
+  .location-title {
+    font-size: 0.9rem;
+  }
+
+  .blurb-text {
+    margin-bottom: 0;
+  }
+
+  .location-place {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+  }
+
+  .location-text {
+    font-size: 0.9rem;
   }
 }
