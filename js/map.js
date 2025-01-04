@@ -138,7 +138,7 @@ var locations = [
     images: [
       {
         src: "/images/about/trips/portugal/portugal1.jpg",
-        text: "The Douro Valley in Portugal offers picturesque landscapes with terraced vineyards and the serene Douro River.",
+        text: "The Douro Valley in Portugal features scenic landscapes, with terraced vineyards stretching along the Douro River.",
         title: "Douro Valley",
         place: "Portugal",
       },
