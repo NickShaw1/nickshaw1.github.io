@@ -1,4 +1,3 @@
-// modal.js
 var modal = document.getElementById("myModal");
 var closeBtn = document.getElementsByClassName("close")[0];
 var currentSlide = 0;
@@ -87,4 +86,13 @@ function changeSlide(n) {
   showSlide(currentSlide);
 }
 
+// Close modal if clicking outside the image container (on the modal background)
+modal.addEventListener("click", function (e) {
+  // Check if the click was outside the modal-content area (where the images are displayed)
+  if (!e.target.closest(".modal-content")) {
+    closeModal();
+  }
+});
+
+// Close the modal when the close button is clicked
 closeBtn.onclick = closeModal;
