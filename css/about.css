@@ -906,7 +906,7 @@ body {
   }
 }
 
-@media (max-width: 935px) and (max-height: 431px) {
+@media (max-width: 1235px) and (max-height: 431px) {
   .logo1 {
     display: none;
   }
@@ -934,13 +934,13 @@ body {
     margin-top: 0rem;
     padding: 0;
     padding-left: 0.7rem;
+    padding-top: 0.5rem;
     width: 90%;
   }
 
   .blurb-text {
     margin-bottom: 0;
     display: flex;
-
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
@@ -968,23 +968,22 @@ body {
   }
 
   .slideshow-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 0;
+    width: 100%;
     max-width: 309px;
-    max-height: 180px;
-    height: auto;
-    background-color: #ffffff;
-    border: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: white;
   }
 
   .slideshow-container img {
     margin-top: 0;
-    max-width: 309px;
+    width: 100%;
     height: auto;
-    object-fit: contain;
-    background-color: #ffffff;
+    display: block;
+    padding: 0;
     border-radius: 10px;
+    background-color: white;
   }
 }
 
