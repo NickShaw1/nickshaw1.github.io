@@ -16,35 +16,35 @@ var locations = [
       {
         src: "/images/about/trips/norcal/norcal1.jpg",
         text: "Yosemite National Park's Tunnel View offers a breathtaking panoramic vista of iconic granite peaks and valleys.",
-        title: "Yosemite National Park - Tunnel View",
+        title: "Tunnel View",
         place: "Yosemite, USA",
       },
 
       {
         src: "/images/about/trips/norcal/norcal2.jpg",
-        text: "From Glacier Point, Yosemite National Park presents a dramatic view of the park's vast landscape and Half Dome.",
-        title: "Yosemite National Park - Glacier Point",
+        text: "From Glacier Point, Yosemite National Park presents a dramatic view of both Half Dome and the park's vast landscape.",
+        title: "Glacier Point",
         place: "Yosemite, USA",
       },
 
       {
         src: "/images/about/trips/norcal/norcal3.jpg",
         text: "Vernal Falls in Yosemite National Park cascades beautifully over the granite rocks, offering a refreshing sight.",
-        title: "Yosemite National Park - Vernal Falls",
+        title: "Vernal Falls",
         place: "Yosemite, USA",
       },
 
       {
         src: "/images/about/trips/norcal/norcal4.jpg",
         text: "The Golden Gate Bridge in San Francisco spans the bay, symbolizing the city's engineering marvel and scenic beauty.",
-        title: "San Francisco - Golden Gate Bridge",
+        title: "Golden Gate Bridge",
         place: "San Francisco, USA",
       },
 
       {
         src: "/images/about/trips/norcal/norcal5.jpg",
         text: "McWay Falls in Big Sur plunges gracefully into the Pacific Ocean, surrounded by stunning coastal cliffs.",
-        title: "Big Sur - McWay Falls",
+        title: "McWay Falls",
         place: "Big Sur, USA",
       },
     ],
@@ -152,7 +152,7 @@ var locations = [
 
       {
         src: "/images/about/trips/portugal/portugal3.jpg",
-        text: "The Arouca Bridge in Portugal is one of the world’s longest pedestrian suspension bridges, offering stunning views.",
+        text: "The Arouca Bridge in Portugal is one of the world’s longest pedestrian suspension bridges.",
         title: "Arouca Bridge",
         place: "Portugal",
       },
@@ -179,21 +179,21 @@ var locations = [
     images: [
       {
         src: "/images/about/trips/paris/paris1.jpg",
-        text: "The Eiffel Tower is a striking iron lattice structure offering panoramic views, symbolizing modern engineering and architecture.",
+        text: "The Eiffel Tower, completed in 1889, is a renowned landmark in Paris, France.",
         title: "Eiffel Tower",
         place: "Paris, France",
       },
 
       {
         src: "/images/about/trips/paris/paris2.jpg",
-        text: "Notre Dame Cathedral is a Gothic masterpiece with intricate design and stained glass windows, despite enduring centuries of damage.",
-        title: "Notre Dame Cathedral",
+        text: "Notre-Dame Cathedral is located on the Île de la Cité, an island in the Seine River in central Paris.",
+        title: "Notre Dame",
         place: "Paris, France",
       },
 
       {
         src: "/images/about/trips/paris/paris3.jpg",
-        text: "Sacré-Coeur Basilica is a white-domed church offering panoramic city views, symbolizing faith and national unity.",
+        text: "Sacré-Coeur Basilica is a white-domed church located in Montmartre, Paris.",
         title: "Sacré Coeur",
         place: "Paris, France",
       },
@@ -227,8 +227,8 @@ var locations = [
 
       {
         src: "/images/about/trips/mallorca/mallorca2.jpg",
-        text: "The winding road to Cala Sa Calobra offers dramatic views and thrilling turns through Mallorca's rugged landscape.",
-        title: "The Winding Road to Cala Sa Calobra",
+        text: "Dramatic views and thrilling turns through Mallorca's rugged landscape.",
+        title: "Road to Sa Calobra",
         place: "Mallorca, Spain",
       },
 
@@ -249,7 +249,7 @@ var locations = [
       {
         src: "/images/about/trips/mallorca/mallorca5.jpg",
         text: "The Port de Pollensa coastline offers tranquil beaches with turquoise waters and spectacular views of surrounding mountains.",
-        title: "Port de Pollensa Coastline",
+        title: "Pollensa Coastline",
         place: "Mallorca, Spain",
       },
     ],
@@ -262,7 +262,7 @@ var locations = [
       {
         src: "/images/about/trips/venice/venice1.jpg",
         text: "The Grand Canal offers stunning views from the Rialto Bridge, lined with historic buildings and bustling gondolas.",
-        title: "Grand Canal View from Rialto Bridge",
+        title: "Grand Canal View",
         place: "Venice, Italy",
       },
 
