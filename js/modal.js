@@ -61,8 +61,8 @@ function closeModal() {
   console.log("Modal closed, scroll position restored");
 }
 
+// Reset map pins state if needed
 function resetMapPinsState() {
-  // Ensure all map pins are clickable again, if needed
   mapPins.forEach((pin) => {
     pin.addEventListener("click", handlePinClick); // Re-attach click listeners if they were detached
   });
