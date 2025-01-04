@@ -50,11 +50,14 @@ modal.addEventListener("touchend", (event) => {
   const deltaY = touchStartY - touchEndY;
 
   // Detect primarily horizontal swipe
-  if (Math.abs(deltaX) > SWIPE_THRESHOLD && Math.abs(deltaY) < SWIPE_VERTICAL_LIMIT) {
+  if (
+    Math.abs(deltaX) > SWIPE_THRESHOLD &&
+    Math.abs(deltaY) < SWIPE_VERTICAL_LIMIT
+  ) {
     if (deltaX > 0) {
-      changeSlide(-1); // Swipe left
+      changeSlide(1); // Swipe left
     } else {
-      changeSlide(1); // Swipe right
+      changeSlide(-1); // Swipe right
     }
   }
 });
