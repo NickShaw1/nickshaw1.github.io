@@ -909,7 +909,7 @@ body {
   }
 }
 
-@media (max-height: 389px) {
+@media (max-width: 844px) and (max-height: 390px) {
   .logo1 {
     display: none;
   }
