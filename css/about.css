@@ -12,8 +12,14 @@ body {
 }
 
 .no-scroll {
-  overflow: hidden;
-  height: 100%;
+  .no-scroll {
+    overflow: hidden; /* Prevent scrolling */
+    position: fixed; /* Ensure it doesn't disrupt layout */
+    width: 100%; /* Ensure full width */
+    height: 100%; /* Ensure full height */
+    top: 0;
+    left: 0;
+  }
 }
 
 .about-main {
@@ -293,7 +299,7 @@ body {
   overflow-y: auto;
   display: flex;
   flex-direction: row;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -60%);
   align-self: center;
