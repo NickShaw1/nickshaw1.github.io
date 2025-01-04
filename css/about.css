@@ -476,6 +476,7 @@ body {
 
   .close {
     min-height: 40px;
+    max-height: 40px;
     max-width: 40px;
   }
 
@@ -883,7 +884,6 @@ body {
   .modal-content {
     display: flex;
     flex-direction: column;
-    justify-self: center;
     justify-content: center;
     align-items: center;
     width: 80%;
@@ -891,14 +891,14 @@ body {
     max-width: 80%;
     height: auto;
     background-color: white;
-    border: 0;
-    top: 30%;
-    left: 40%;
-    transform: translate(-50%, -45%);
-    border: white 2px solid;
+    border: 2px solid white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .modal-buttons2 {
-    bottom: 12%;
+    bottom: 3%;
   }
 }
