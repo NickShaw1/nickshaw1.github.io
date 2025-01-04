@@ -35,8 +35,10 @@ function openModal(location) {
   currentSlide = 0;
   showSlide(currentSlide);
 
-  // Show modal
+  // Show modal immediately
   modal.style.display = "block";
+
+  // After modal is displayed, adjust opacity and visibility
   requestAnimationFrame(() => {
     modal.style.opacity = 1;
     modal.style.visibility = "visible";
@@ -51,19 +53,15 @@ function closeModal() {
   // Remove touchmove event listener (mobile Safari fix)
   document.body.removeEventListener("touchmove", preventTouchMove);
 
-  // Hide modal
-  modal.style.opacity = 0;
-  modal.style.visibility = "hidden";
+  // Hide modal using only display to avoid layout shift
+  modal.style.display = "none";
+
+  // Restore scroll position after modal is fully hidden
   setTimeout(() => {
-    modal.style.display = "none";
-  }, 300); // Matches CSS transition duration
+    window.scrollTo(0, lastScrollPosition);
+  }, 300); // Ensure this happens after modal closes
 
-  // Restore scroll position
-  window.scrollTo(0, lastScrollPosition);
-
-  // Fix layout issues on Safari mobile
-  document.body.offsetHeight; // Force layout recalculation
-
+  // Fix layout issues on Safari mobile, but move this after modal close
   console.log("Modal closed, scroll position restored");
 }
 
@@ -133,3 +131,14 @@ function trapFocus(event) {
     event.preventDefault();
   }
 }
+
+const images = document.querySelectorAll(".slideshow-container img");
+
+images.forEach((img) => {
+  // Add a load event listener to each image
+  img.addEventListener("load", function () {
+    // When the image is loaded, remove the aspect ratio CSS rule
+    const slideshowItem = this.closest(".slideshow-container");
+    slideshowItem.style.aspectRatio = ""; // Reset aspect ratio to auto
+  });
+});
