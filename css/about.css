@@ -366,20 +366,19 @@ body {
   font-size: 1.8rem;
   width: 40px;
   height: 40px;
-  color: #eceef1;
-  background-color: #2ca78c;
+  color: #2ca78c;
+  background-color: transparent;
   cursor: pointer;
   z-index: 1000;
   transition: transform 0.3s ease;
   position: absolute;
   bottom: 10%;
   border-radius: 50%;
-  border: 2px #eceef1 solid;
+  border: none;
 }
 
 .close:hover {
-  color: rgba(247, 247, 247, 0.7);
-  background-color: #197a65;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .modal-buttons2 {
@@ -418,6 +417,10 @@ body {
   border-radius: 50%;
   border: 2px solid #eceef1;
   transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
 }
 
 .prev:hover,

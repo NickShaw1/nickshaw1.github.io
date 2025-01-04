@@ -1,104 +1,114 @@
-var modal = document.getElementById("myModal");
-var closeBtn = document.getElementsByClassName("close")[0];
-var currentSlide = 0;
-var slideImages = [];
-var slideTexts = [];
-var slideTitles = [];
-var slidePlaces = [];
+const modal = document.getElementById("myModal");
+const closeBtn = document.querySelector(".close");
+const modalContent = modal.querySelector(".modal-content");
+const slideshowContainer = modal.querySelector(".slideshow-container");
+let currentSlide = 0;
+let slideData = [];
+let lastScrollPosition = 0;
 
-var lastScrollPosition = 0; // Variable to store the last scroll position
-
+// Open modal
 function openModal(location) {
   console.log("Opening modal for", location.name);
 
-  // Store the current scroll position
+  // Save scroll position and disable background scrolling
   lastScrollPosition = window.scrollY;
-
-  // Disable background scrolling
   document.documentElement.classList.add("no-scroll");
-  modal.style.overflowY = "auto"; // Allow scrolling inside the modal
 
-  slideImages = location.images.map((image) => image.src);
-  slideTexts = location.images.map((image) => image.text);
-  slideTitles = location.images.map((image) => image.title);
-  slidePlaces = location.images.map((image) => image.place);
+  // Populate slide data
+  slideData = location.images.map(({ src, text, title, place }) => ({
+    src,
+    text,
+    title,
+    place,
+  }));
 
   currentSlide = 0;
   showSlide(currentSlide);
 
-  modal.style.opacity = 1;
-  modal.style.visibility = "visible";
+  // Show modal
   modal.style.display = "block";
+  requestAnimationFrame(() => {
+    modal.style.opacity = 1;
+    modal.style.visibility = "visible";
+  });
 }
 
+// Close modal
 function closeModal() {
   // Re-enable background scrolling
   document.documentElement.classList.remove("no-scroll");
-  modal.style.overflowY = "hidden"; // Disable scrolling inside the modal
 
+  // Hide modal
   modal.style.opacity = 0;
   modal.style.visibility = "hidden";
+  setTimeout(() => {
+    modal.style.display = "none";
+  }, 300); // Matches CSS transition duration
 
-  // Restore the scroll position
+  // Restore scroll position
   window.scrollTo(0, lastScrollPosition);
 
   console.log("Modal closed, scroll position restored");
 }
 
+// Show a specific slide
 function showSlide(index) {
-  var slideshowContainer = document.querySelector(".slideshow-container");
-  slideshowContainer.innerHTML = ""; // Clear existing content
+  const { src, text, title, place } = slideData[index];
+  slideshowContainer.innerHTML = `
+    <img src="${src}" class="mySlides active" alt="${title}">
+  `;
 
-  var img = document.createElement("img");
-  img.src = slideImages[index];
-  img.className = "mySlides active";
-  slideshowContainer.appendChild(img);
-
-  var locationTextContainer = document.querySelector(".location-text");
-  if (!locationTextContainer) {
-    locationTextContainer = document.createElement("div");
-    locationTextContainer.className = "location-text";
-    modal.querySelector(".modal-content").appendChild(locationTextContainer);
-  }
-  locationTextContainer.innerHTML = slideTexts[index].replace(/\n/g, "<br>");
-
-  var titleContainer = document.querySelector(".location-title");
-  if (!titleContainer) {
-    titleContainer = document.createElement("div");
-    titleContainer.className = "location-title";
-    modal.querySelector(".modal-content").appendChild(titleContainer);
-  }
-  titleContainer.textContent = slideTitles[index];
-
-  var placeContainer = document.querySelector(".location-place");
-  if (!placeContainer) {
-    placeContainer = document.createElement("div");
-    placeContainer.className = "location-place";
-    modal.querySelector(".modal-content").appendChild(placeContainer);
-  }
-  placeContainer.textContent = slidePlaces[index];
+  updateTextContent(".location-text", text.replace(/\n/g, "<br>"));
+  updateTextContent(".location-title", title);
+  updateTextContent(".location-place", place);
 }
 
-function changeSlide(n) {
-  currentSlide += n;
-  if (currentSlide >= slideImages.length) currentSlide = 0;
-  if (currentSlide < 0) currentSlide = slideImages.length - 1;
+// Update modal text content
+function updateTextContent(selector, content) {
+  let element = modal.querySelector(selector);
+  if (!element) {
+    element = document.createElement("div");
+    element.className = selector.slice(1);
+    modalContent.appendChild(element);
+  }
+  element.innerHTML = content;
+}
+
+// Change slide
+function changeSlide(offset) {
+  currentSlide = (currentSlide + offset + slideData.length) % slideData.length;
   showSlide(currentSlide);
 }
 
-// Close modal if clicking outside the image container (on the modal background)
-// But ignore clicks on the prev/next buttons
 modal.addEventListener("click", function (e) {
-  // Check if the click was outside the modal-content area (where the images are displayed)
-  // and if it's not on the prev/next buttons
-  if (
-    !e.target.closest(".modal-content") &&
-    !e.target.closest(".prev") &&
-    !e.target.closest(".next")
-  ) {
+  // Close modal only if the click is outside the modal-content area
+  const isClickInsideModal = e.target.closest(".modal-content");
+  const isClickOnControlButton = e.target.closest(".prev, .next");
+  if (!isClickInsideModal && !isClickOnControlButton) {
     closeModal();
   }
 });
 
 // Close the modal when the close button is clicked
-closeBtn.onclick = closeModal;
+closeBtn.addEventListener("click", closeModal);
+
+// Trap focus inside modal for accessibility
+modal.addEventListener("keydown", (e) => {
+  if (e.key === "Tab") trapFocus(e);
+});
+
+function trapFocus(event) {
+  const focusableElements = modal.querySelectorAll(
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  );
+  const firstElement = focusableElements[0];
+  const lastElement = focusableElements[focusableElements.length - 1];
+
+  if (event.shiftKey && document.activeElement === firstElement) {
+    lastElement.focus();
+    event.preventDefault();
+  } else if (!event.shiftKey && document.activeElement === lastElement) {
+    firstElement.focus();
+    event.preventDefault();
+  }
+}
