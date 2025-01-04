@@ -297,7 +297,7 @@ body {
   overflow-y: auto;
   display: flex;
   flex-direction: row;
-  top: 38%;
+  top: 47%;
   left: 50%;
   transform: translate(-50%, -60%);
   align-self: center;
@@ -391,7 +391,7 @@ body {
   justify-content: center;
   align-items: center;
   position: fixed;
-  bottom: 1%;
+  bottom: 3%;
   left: 50%;
   transform: translateX(-50%);
   max-width: 90%; /* Limit width for mobile */
@@ -749,7 +749,7 @@ body {
   }
 
   .modal-buttons2 {
-    bottom: 1%;
+    bottom: 5%;
   }
 }
 
