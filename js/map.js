@@ -282,7 +282,7 @@ var locations = [
 
       {
         src: "/images/about/trips/venice/venice4.jpg",
-        text: "The Bridge of Sighs, named for the sighs of prisoners who, after being sentenced, were led across the bridge from the Doge’s Palace. .",
+        text: "The Bridge of Sighs, named for the sighs of prisoners who, after being sentenced, were led across the bridge from the Doge’s Palace.",
         title: "Bridge of Sighs",
         place: "Venice, Italy",
       },
