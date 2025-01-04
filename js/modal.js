@@ -11,13 +11,22 @@ function preventTouchMove(e) {
   e.preventDefault();
 }
 
-// Open modal
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
 function openModal(location) {
   console.log("Opening modal for", location.name);
 
   // Save scroll position and disable background scrolling
   lastScrollPosition = window.scrollY;
-  document.documentElement.classList.add("no-scroll");
+
+  // Safari fix: Lock body scroll using position: fixed
+  if (isSafari) {
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${lastScrollPosition}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    document.body.style.width = "100%";
+  }
 
   // Prevent touchmove event on body (mobile Safari fix)
   document.body.addEventListener("touchmove", preventTouchMove, {
@@ -48,13 +57,22 @@ function openModal(location) {
 // Close modal
 function closeModal() {
   // Re-enable background scrolling
-  document.documentElement.classList.remove("no-scroll");
+  if (isSafari) {
+    document.body.style.position = ""; // Reset position property
+    document.body.style.top = "";
+    document.body.style.left = "";
+    document.body.style.right = "";
+    document.body.style.width = "";
+  }
 
   // Remove touchmove event listener (mobile Safari fix)
   document.body.removeEventListener("touchmove", preventTouchMove);
 
   // Restore scroll position immediately before modal hides
   window.scrollTo(0, lastScrollPosition);
+
+  // Force reflow to ensure scroll position restoration
+  document.body.getBoundingClientRect();
 
   // Hide modal using only display to avoid layout shift
   modal.style.display = "none";
