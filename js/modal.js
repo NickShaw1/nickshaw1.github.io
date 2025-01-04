@@ -6,9 +6,14 @@ let currentSlide = 0;
 let slideData = [];
 let lastScrollPosition = 0;
 
-// Prevent background scrolling on mobile Safari
 function preventTouchMove(e) {
-  e.preventDefault();
+  // Check for vertical scrolling and prevent only that
+  if (e.touches.length === 1 && (e.scale || 1) === 1) {
+    // Prevent vertical scrolling but allow pinch-zooming
+    if (Math.abs(e.touches[0].screenY - e.touches[1]?.screenY || 0) > 0) {
+      e.preventDefault();
+    }
+  }
 }
 
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
@@ -59,11 +64,11 @@ function openModal(location) {
 function closeModal() {
   // Re-enable background scrolling
   if (isSafari && !isPinchZooming) {
-    document.body.style.position = ''; // Reset position property
-    document.body.style.top = '';
-    document.body.style.left = '';
-    document.body.style.right = '';
-    document.body.style.width = '';
+    document.body.style.position = ""; // Reset position property
+    document.body.style.top = "";
+    document.body.style.left = "";
+    document.body.style.right = "";
+    document.body.style.width = "";
   }
 
   // Remove touchmove event listener (mobile Safari fix)
@@ -79,7 +84,6 @@ function closeModal() {
   modal.style.display = "none";
   console.log("Modal closed, scroll position restored");
 }
-
 
 // Reset map pins state if needed
 function resetMapPinsState() {
