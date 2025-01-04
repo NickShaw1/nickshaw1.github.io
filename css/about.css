@@ -299,7 +299,7 @@ body {
   overflow-y: auto;
   display: flex;
   flex-direction: row;
-  top: 40%;
+  top: 38%;
   left: 50%;
   transform: translate(-50%, -60%);
   align-self: center;
