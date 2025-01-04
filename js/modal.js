@@ -6,6 +6,11 @@ let currentSlide = 0;
 let slideData = [];
 let lastScrollPosition = 0;
 
+// Prevent background scrolling on mobile Safari
+function preventTouchMove(e) {
+  e.preventDefault();
+}
+
 // Open modal
 function openModal(location) {
   console.log("Opening modal for", location.name);
@@ -13,6 +18,11 @@ function openModal(location) {
   // Save scroll position and disable background scrolling
   lastScrollPosition = window.scrollY;
   document.documentElement.classList.add("no-scroll");
+
+  // Prevent touchmove event on body (mobile Safari fix)
+  document.body.addEventListener("touchmove", preventTouchMove, {
+    passive: false,
+  });
 
   // Populate slide data
   slideData = location.images.map(({ src, text, title, place }) => ({
@@ -38,6 +48,9 @@ function closeModal() {
   // Re-enable background scrolling
   document.documentElement.classList.remove("no-scroll");
 
+  // Remove touchmove event listener (mobile Safari fix)
+  document.body.removeEventListener("touchmove", preventTouchMove);
+
   // Hide modal
   modal.style.opacity = 0;
   modal.style.visibility = "hidden";
@@ -47,6 +60,9 @@ function closeModal() {
 
   // Restore scroll position
   window.scrollTo(0, lastScrollPosition);
+
+  // Fix layout issues on Safari mobile
+  document.body.offsetHeight; // Force layout recalculation
 
   console.log("Modal closed, scroll position restored");
 }
