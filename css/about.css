@@ -895,7 +895,7 @@ body {
     height: auto;
     background-color: white;
     border: 2px solid white;
-    position: absolute;
+    position: fixed;
     top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
