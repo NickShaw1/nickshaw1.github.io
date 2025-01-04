@@ -309,7 +309,6 @@ var locations = [
     ],
   },
 ];
-
 locations.forEach(function (location) {
   var marker = L.marker([location.lat, location.lon]).addTo(map);
   marker.bindPopup(location.name);
@@ -324,6 +323,8 @@ var closeBtn = document.getElementsByClassName("close")[0];
 var currentSlide = 0;
 var slideImages = [];
 var slideTexts = [];
+var slideTitles = [];
+var slidePlaces = [];
 
 var touchStartX = 0;
 var touchStartY = 0;
@@ -335,11 +336,19 @@ window.onload = function () {
   modal.style.display = "none";
 };
 
+let lastScrollPosition = 0; // Variable to store the last scroll position
+
 function openModal(location) {
   console.log("Opening modal for", location.name);
 
+  // Store the current scroll position
+  lastScrollPosition = window.scrollY;
+
   // Disable background scrolling by adding the class
   document.documentElement.classList.add("no-scroll");
+
+  // Enable modal scroll
+  modal.style.overflowY = "auto"; // Allow scrolling inside the modal
 
   slideImages = location.images.map(function (image) {
     return image.src;
@@ -372,8 +381,16 @@ function closeModal() {
   // Re-enable background scrolling
   document.documentElement.classList.remove("no-scroll");
 
+  // Disable modal scroll
+  modal.style.overflowY = "hidden"; // Disable scrolling inside the modal
+
   modal.style.opacity = 0;
   modal.style.visibility = "hidden";
+
+  // Restore the scroll position to where it was before the modal was opened
+  window.scrollTo(0, lastScrollPosition);
+
+  console.log("Modal closed, scroll position restored");
 }
 
 function showSlide(index) {
@@ -386,37 +403,31 @@ function showSlide(index) {
   img.className = "mySlides active";
   slideshowContainer.appendChild(img);
 
-  // Create a new container for the text
+  // Update text content for location text
   var locationTextContainer = document.querySelector(".location-text");
   if (!locationTextContainer) {
     locationTextContainer = document.createElement("div");
     locationTextContainer.className = "location-text";
     modal.querySelector(".modal-content").appendChild(locationTextContainer);
   }
-
-  // Update the text content with the relevant image text, replacing \n with <br>
   locationTextContainer.innerHTML = slideTexts[index].replace(/\n/g, "<br>");
 
-  // Create and display the title
+  // Update the title
   var titleContainer = document.querySelector(".location-title");
   if (!titleContainer) {
     titleContainer = document.createElement("div");
     titleContainer.className = "location-title";
     modal.querySelector(".modal-content").appendChild(titleContainer);
   }
-
-  // Set the title content (add the title for the current slide)
   titleContainer.textContent = slideTitles[index];
 
-  // Create and display the place
+  // Update the place
   var placeContainer = document.querySelector(".location-place");
   if (!placeContainer) {
     placeContainer = document.createElement("div");
     placeContainer.className = "location-place";
     modal.querySelector(".modal-content").appendChild(placeContainer);
   }
-
-  // Set the place content
   placeContainer.textContent = slidePlaces[index];
 }
 

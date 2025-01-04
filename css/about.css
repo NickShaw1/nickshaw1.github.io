@@ -253,8 +253,6 @@ body {
   justify-self: center;
 }
 
-/* Modal and slideshow styling */
-
 #myModal {
   display: none;
   position: fixed;
@@ -271,6 +269,12 @@ body {
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
+#myModal.open {
+  display: flex;
+  opacity: 1;
+  visibility: visible;
+}
+
 .modal {
   display: flex;
   justify-content: center;
@@ -284,6 +288,7 @@ body {
 
 .modal-content {
   position: relative;
+  overflow-y: auto;
   display: flex;
   flex-direction: row;
   justify-self: center;
@@ -590,10 +595,11 @@ body {
 @media (max-width: 982px) {
   .logo1 {
     display: flex;
-    justify-self: center;
-    justify-content: center;
+    justify-self: flex-start;
+    justify-content: flex-start;
     width: 40%;
     margin-top: 0.5rem;
+    margin-left: 1rem;
   }
 
   .aboutme2 p {
