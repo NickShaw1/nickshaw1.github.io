@@ -53,16 +53,19 @@ function closeModal() {
   // Remove touchmove event listener (mobile Safari fix)
   document.body.removeEventListener("touchmove", preventTouchMove);
 
+  // Restore scroll position immediately before modal hides
+  window.scrollTo(0, lastScrollPosition);
+
   // Hide modal using only display to avoid layout shift
   modal.style.display = "none";
-
-  // Restore scroll position after modal is fully hidden
-  setTimeout(() => {
-    window.scrollTo(0, lastScrollPosition);
-  }, 300); // Ensure this happens after modal closes
-
-  // Fix layout issues on Safari mobile, but move this after modal close
   console.log("Modal closed, scroll position restored");
+}
+
+function resetMapPinsState() {
+  // Ensure all map pins are clickable again, if needed
+  mapPins.forEach((pin) => {
+    pin.addEventListener("click", handlePinClick); // Re-attach click listeners if they were detached
+  });
 }
 
 // Show a specific slide
