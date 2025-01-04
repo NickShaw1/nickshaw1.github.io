@@ -246,11 +246,13 @@ body {
 #map {
   border-radius: 10px;
   margin-top: 2rem;
-  height: 300px;
+  height: 350px;
   width: 80%;
   z-index: 1;
   display: flex;
   justify-self: center;
+  padding-bottom: 4rem;
+  margin-bottom: 2rem;
 }
 
 #myModal {
@@ -291,9 +293,12 @@ body {
   overflow-y: auto;
   display: flex;
   flex-direction: row;
-  justify-self: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
   align-self: center;
-  max-width: 70%;
+  width: 70%;
+  max-width: 1677px;
   background-color: white;
   padding: 0px;
   margin-top: 5rem;
@@ -377,13 +382,18 @@ body {
   background-color: #197a65;
 }
 
-.modal-buttons {
+.modal-buttons2 {
   display: flex;
+  flex-direction: row;
   justify-content: center;
-  justify-self: center;
   align-items: center;
-  margin-top: 2rem;
+  position: fixed;
+  bottom: 1%; 
+  left: 50%;
+  transform: translateX(-50%); 
   width: 100%;
+  padding: 1rem 0; 
+  z-index: 1000; 
 }
 
 .prev {
@@ -422,6 +432,20 @@ body {
 }
 /* Maps end */
 
+@media (max-width: 1900px) {
+  .modal-content {
+    top: 45%;
+    max-width: 1677px;
+  }
+}
+
+@media (max-width: 1700px) {
+  .modal-content {
+    top: 45%;
+    width: 85%;
+  }
+}
+
 @media (max-width: 1476px) {
   .cards-section {
     margin-top: -1px;
@@ -450,25 +474,20 @@ body {
     object-fit: cover;
   }
 
-  .slideshow-container {
-    width: 100%;
-  }
-
-  .slideshow-container img {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-  }
-
   .close {
     min-height: 40px;
+    max-width: 40px;
+  }
+
+  .modal-content {
+    top: 45%;
+    width: 85%;
   }
 
   .prev,
   .next {
     min-height: 40px;
-    top: 93%;
-    margin-bottom: 4rem;
+    max-width: 40px;
   }
 }
 
@@ -486,6 +505,13 @@ body {
 
   .location-title {
     font-size: 1.3rem;
+  }
+
+  .modal-content {
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    width: 85%;
   }
 }
 
@@ -573,30 +599,20 @@ body {
     padding: 2rem 2rem 0rem 2rem;
   }
 
-  .blurb-text {
-    font-size: 1rem;
-    width: 30%;
+  #myModal {
+    display: flex;
+    justify-content: center;
+    justify-self: center;
+    align-items: center;
+    text-align: center;
+    background-color: #272728;
+    width: 100%;
   }
 
-  .location-title {
-    font-weight: bold;
-    padding-left: 1rem;
-    margin-top: 0.5rem;
-    font-size: 1rem;
-    width: 80%;
-  }
-
-  .location-place {
-    padding-left: 1rem;
-    font-style: italic;
-    width: 80%;
-  }
-
-  .location-text {
-    margin-top: 2rem;
-    padding-left: 1rem;
-    width: 80%;
-    margin-right: 0;
+  .outside2 img {
+    width: 50%;
+    height: auto;
+    padding: 2rem 2rem 0rem 2rem;
   }
 }
 
@@ -607,7 +623,6 @@ body {
     align-self: center;
     width: 100%;
     margin-top: 0.5rem;
-    margin-left: 1rem;
   }
 
   .aboutme2 p {
@@ -653,22 +668,6 @@ body {
     height: auto;
   }
 
-  #myModal {
-    display: flex;
-    justify-content: center;
-    justify-self: center;
-    align-items: center;
-    text-align: center;
-    background-color: #272728;
-    width: 100%;
-  }
-
-  .outside2 img {
-    width: 50%;
-    height: auto;
-    padding: 2rem 2rem 0rem 2rem;
-  }
-
   .mySlides {
     margin: 0;
     padding: 0;
@@ -682,12 +681,15 @@ body {
     align-items: center;
     width: 100%;
     margin: 0;
+    margin-top: 4.5rem;
     max-width: 100%;
     background-color: #272728;
     border: 0;
   }
 
   .slideshow-container {
+    display: flex;
+    justify-content: center;
     margin-top: 1rem;
     width: 100%;
     height: auto;
@@ -696,22 +698,22 @@ body {
 
   .slideshow-container img {
     margin-top: 1rem;
-    width: 100%;
-    background-color: #272728;
+    width: 600px;
+    height: 450px;
+    background-color: white;
     border: 2px solid white;
   }
 
   .blurb-text {
-    border: 2px solid white;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     justify-self: center;
     align-items: center;
     background-color: #ffffff;
-    width: 70%;
+    width: 604px;
+    height: 150px;
     max-width: 95vw;
-    margin-left: 4px;
     padding: 0;
   }
 
@@ -735,6 +737,10 @@ body {
     margin-top: 1rem;
     margin-bottom: 1rem;
     padding: 0;
+  }
+
+  .modal-buttons2 {
+    bottom: 0%; /* Positions it at the bottom of the viewport */
   }
 }
 
@@ -788,9 +794,112 @@ body {
     z-index: 1;
     display: flex;
     justify-content: center;
+
+  }
+}
+
+@media (max-width: 640px) {
+  .mySlides.active {
+    margin: 0;
+    width: 100%;
+    background-color: white;
+  }
+
+  .mySlides {
+    background-color: white;
+  }
+
+  .logo1 {
+    margin-bottom: 2rem;
   }
 
   .modal-content {
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    margin: 0;
+    max-width: 80%;
+    height: auto;
+    background-color: white;
+    border: 0;
+    top: 30%;
+    left: 40%;
+    transform: translate(-50%, -45%);
+    border: white 2px solid;
+  }
+
+  .slideshow-container {
+    display: flex;
+    justify-content: center;
     margin-top: 0;
+    width: 98%;
+    max-width: 100%;
+    height: auto;
+    background-color: #ffffff;
+    border: none;
+  }
+
+  .slideshow-container img {
+    margin-top: 0;
+    width: 80%;
+    height: auto;
+    background-color: #ffffff;
+  }
+
+  .blurb-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    justify-self: center;
+    align-items: center;
+    background-color: white;
+    width: 100%;
+    height: auto;
+    padding: 0;
+    border-top: #ffffff 2px solid;
+  }
+
+  .location-text {
+    width: 90%;
+  }
+
+  .location-title {
+    margin-top: 1rem;
+    width: 90%;
+  }
+
+  .location-place {
+    width: 90%;
+  }
+
+  .modal-buttons2 {
+    bottom: 7%; /* Positions it at the bottom of the viewport */
+  }
+}
+
+@media (max-width: 460px) {
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    margin: 0;
+    max-width: 80%;
+    height: auto;
+    background-color: white;
+    border: 0;
+    top: 30%;
+    left: 40%;
+    transform: translate(-50%, -45%);
+    border: white 2px solid;
+  }
+
+  .modal-buttons2 {
+    bottom: 12%; /* Positions it at the bottom of the viewport */
   }
 }
