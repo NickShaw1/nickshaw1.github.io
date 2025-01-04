@@ -393,6 +393,7 @@ body {
   max-width: 90%; /* Limit width for mobile */
   padding: 1rem 0;
   z-index: 9999;
+  visibility: visible;
 }
 
 .prev {
