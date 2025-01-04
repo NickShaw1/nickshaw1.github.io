@@ -369,7 +369,7 @@ body {
   color: #2ca78c;
   background-color: transparent;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 1004;
   transition: transform 0.3s ease;
   position: absolute;
   bottom: 10%;
@@ -877,10 +877,6 @@ body {
   .location-place {
     width: 90%;
   }
-
-  .modal-buttons2 {
-    bottom: 3%;
-  }
 }
 
 @media (max-width: 460px) {
@@ -899,9 +895,5 @@ body {
     top: 48%;
     left: 50%;
     transform: translate(-50%, -50%);
-  }
-
-  .modal-buttons2 {
-    bottom: 1%;
   }
 }
