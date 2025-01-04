@@ -314,18 +314,11 @@ locations.forEach(function (location) {
   var marker = L.marker([location.lat, location.lon]).addTo(map);
   marker.bindPopup(location.name);
 
-  // Adding a custom class to the popup or an HTML element in the popup
-  marker.getPopup()._contentNode.classList.add("map-pin");
-
   marker.on("click", function () {
-    map.closePopup(); // Close any open popups
-    openModal(location); // Open the modal with location data
-  });
-});
+    // Close all open popups
+    map.closePopup();
 
-// Listen for clicks on elements with the 'map-pin' class
-document.addEventListener("click", function (e) {
-  if (e.target.matches(".map-pin")) {
-    openModal(location); // Open the modal when the 'map-pin' is clicked
-  }
+    // Open the new modal
+    openModal(location);
+  });
 });
