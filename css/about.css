@@ -260,7 +260,7 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #eceef1;
+  background-color: #272728;
   z-index: 9999;
   justify-content: center;
   align-items: center;
@@ -296,14 +296,13 @@ body {
   max-width: 70%;
   background-color: white;
   padding: 0px;
-  border: 2px #272728 solid;
   margin-top: 5rem;
+  border: 2px white solid;
 }
 
 .blurb-text {
   font-size: 1rem;
   width: 30%;
-  border-left: 2px #272728 solid;
 }
 
 .location-title {
@@ -335,17 +334,20 @@ body {
   justify-self: center;
   align-self: center;
   background-color: #eceef1;
+  border: 2px white;
 }
 
 .slideshow-container img {
   width: 100%;
   object-fit: contain;
+  border: 2px white;
 }
 
 .mySlides {
   width: 100%;
   height: auto;
   object-fit: contain;
+  border: 2px white;
 }
 
 .close {
@@ -356,20 +358,22 @@ body {
   align-items: center;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1.8rem;
-  width: 40px;
-  height: 40px;
-  color: #272728;
-  background-color: transparent;
+  width: 25px;
+  height: 25px;
+  color: #eceef1;
+  background-color: #2ca78c;
   cursor: pointer;
-  z-index: 4;
+  z-index: 1000;
   transition: transform 0.3s ease;
   position: absolute;
   bottom: 10%;
-  border: none;
+  border-radius: 50%;
+  border: 2px #eceef1 solid;
 }
 
 .close:hover {
-  color: rgba(28, 28, 28, 0.7);
+  color: rgba(247, 247, 247, 0.7);
+  background-color: #197a65;
 }
 
 .modal-buttons {
@@ -391,20 +395,23 @@ body {
 
 .prev,
 .next {
-  color: #272728;
+  color: #eceef1;
   cursor: pointer;
   width: 40px;
   height: 40px;
   font-weight: bold;
-  font-size: 2rem;
+  font-size: 1rem;
   border: none;
-  background-color: transparent;
+  background-color: #2ca78c;
+  border-radius: 50%;
+  border: 2px solid #eceef1;
   transition: transform 0.3s ease;
 }
 
 .prev:hover,
 .next:hover {
-  color: rgba(28, 28, 28, 0.7);
+  color: rgba(247, 247, 247, 0.7);
+  background-color: #197a65;
 }
 
 .logo1 {
@@ -595,8 +602,8 @@ body {
 @media (max-width: 982px) {
   .logo1 {
     display: flex;
-    justify-self: flex-start;
-    justify-content: flex-start;
+    justify-self: center;
+    justify-content: center;
     width: 40%;
     margin-top: 0.5rem;
     margin-left: 1rem;
@@ -651,7 +658,7 @@ body {
     justify-self: center;
     align-items: center;
     text-align: center;
-    background-color: #eceef1;
+    background-color: #272728;
     width: 100%;
   }
 
@@ -659,6 +666,11 @@ body {
     width: 50%;
     height: auto;
     padding: 2rem 2rem 0rem 2rem;
+  }
+
+  .mySlides {
+    margin: 0;
+    padding: 0;
   }
 
   .modal-content {
@@ -670,39 +682,36 @@ body {
     width: 100%;
     margin: 0;
     max-width: 100%;
-    background-color: #eceef1;
+    background-color: #272728;
     border: 0;
   }
 
   .slideshow-container {
     margin-top: 1rem;
-    margin-bottom: 1rem;
     width: 100%;
     height: auto;
-    background-color: #eceef1;
+    background-color: #272728;
   }
 
   .slideshow-container img {
     margin-top: 1rem;
-    margin-bottom: 1rem;
     width: 100%;
-    background-color: #eceef1;
-    border: 2px solid #272728;
+    background-color: #272728;
+    border: 2px solid white;
   }
 
   .blurb-text {
-    border-left: 0;
+    border: 2px solid white;
     display: flex;
     flex-direction: column;
     justify-content: center;
     justify-self: center;
     align-items: center;
     background-color: #ffffff;
-    width: 100%;
+    width: 70%;
     max-width: 95vw;
-    margin: 0;
+    margin-left: 4px;
     padding: 0;
-    border-radius: 5px;
   }
 
   .location-title {
@@ -780,6 +789,6 @@ body {
   }
 
   .modal-content {
-    margin-top: 2rem;
+    margin-top: 0;
   }
 }

@@ -214,7 +214,7 @@ var locations = [
     ],
   },
   {
-    name: "Mallorca,",
+    name: "Mallorca",
     lat: 39.6955,
     lon: 3.0176,
     images: [
@@ -309,186 +309,16 @@ var locations = [
     ],
   },
 ];
+
 locations.forEach(function (location) {
   var marker = L.marker([location.lat, location.lon]).addTo(map);
   marker.bindPopup(location.name);
 
   marker.on("click", function () {
+    // Close all open popups
+    map.closePopup();
+
+    // Open the new modal
     openModal(location);
   });
 });
-
-var modal = document.getElementById("myModal");
-var closeBtn = document.getElementsByClassName("close")[0];
-var currentSlide = 0;
-var slideImages = [];
-var slideTexts = [];
-var slideTitles = [];
-var slidePlaces = [];
-
-var touchStartX = 0;
-var touchStartY = 0;
-var touchEndX = 0;
-var touchEndY = 0;
-var isMultiTouch = false;
-
-window.onload = function () {
-  modal.style.display = "none";
-};
-
-let lastScrollPosition = 0; // Variable to store the last scroll position
-
-function openModal(location) {
-  console.log("Opening modal for", location.name);
-
-  // Store the current scroll position
-  lastScrollPosition = window.scrollY;
-
-  // Disable background scrolling by adding the class
-  document.documentElement.classList.add("no-scroll");
-
-  // Enable modal scroll
-  modal.style.overflowY = "auto"; // Allow scrolling inside the modal
-
-  slideImages = location.images.map(function (image) {
-    return image.src;
-  });
-  slideTexts = location.images.map(function (image) {
-    return image.text;
-  });
-  slideTitles = location.images.map(function (image) {
-    return image.title; // Add the title property
-  });
-  slidePlaces = location.images.map(function (image) {
-    return image.place; // Add the place property
-  });
-  currentSlide = 0;
-  showSlide(currentSlide);
-
-  modal.style.opacity = 1;
-  modal.style.visibility = "visible";
-  modal.style.display = "block";
-
-  touchStartX = 0;
-  touchStartY = 0;
-  touchEndX = 0;
-  touchEndY = 0;
-
-  console.log("Modal opened");
-}
-
-function closeModal() {
-  // Re-enable background scrolling
-  document.documentElement.classList.remove("no-scroll");
-
-  // Disable modal scroll
-  modal.style.overflowY = "hidden"; // Disable scrolling inside the modal
-
-  modal.style.opacity = 0;
-  modal.style.visibility = "hidden";
-
-  // Restore the scroll position to where it was before the modal was opened
-  window.scrollTo(0, lastScrollPosition);
-
-  console.log("Modal closed, scroll position restored");
-}
-
-function showSlide(index) {
-  var slideshowContainer = document.querySelector(".slideshow-container");
-  slideshowContainer.innerHTML = ""; // Clear existing content
-
-  // Create the image element
-  var img = document.createElement("img");
-  img.src = slideImages[index];
-  img.className = "mySlides active";
-  slideshowContainer.appendChild(img);
-
-  // Update text content for location text
-  var locationTextContainer = document.querySelector(".location-text");
-  if (!locationTextContainer) {
-    locationTextContainer = document.createElement("div");
-    locationTextContainer.className = "location-text";
-    modal.querySelector(".modal-content").appendChild(locationTextContainer);
-  }
-  locationTextContainer.innerHTML = slideTexts[index].replace(/\n/g, "<br>");
-
-  // Update the title
-  var titleContainer = document.querySelector(".location-title");
-  if (!titleContainer) {
-    titleContainer = document.createElement("div");
-    titleContainer.className = "location-title";
-    modal.querySelector(".modal-content").appendChild(titleContainer);
-  }
-  titleContainer.textContent = slideTitles[index];
-
-  // Update the place
-  var placeContainer = document.querySelector(".location-place");
-  if (!placeContainer) {
-    placeContainer = document.createElement("div");
-    placeContainer.className = "location-place";
-    modal.querySelector(".modal-content").appendChild(placeContainer);
-  }
-  placeContainer.textContent = slidePlaces[index];
-}
-
-function changeSlide(n) {
-  currentSlide += n;
-  if (currentSlide >= slideImages.length) currentSlide = 0;
-  if (currentSlide < 0) currentSlide = slideImages.length - 1;
-  showSlide(currentSlide);
-}
-
-// Enhanced swipe and pinch detection
-modal.addEventListener(
-  "touchstart",
-  function (event) {
-    if (event.touches.length > 1) {
-      isMultiTouch = true;
-      return;
-    }
-    isMultiTouch = false;
-
-    touchStartX = event.touches[0].screenX;
-    touchStartY = event.touches[0].screenY;
-  },
-  false
-);
-
-modal.addEventListener(
-  "touchmove",
-  function (event) {
-    if (isMultiTouch) return; // Ignore swipe detection during multi-touch gestures
-  },
-  false
-);
-
-modal.addEventListener(
-  "touchend",
-  function (event) {
-    if (isMultiTouch) return; // Ignore swipe detection during multi-touch gestures
-
-    touchEndX = event.changedTouches[0].screenX;
-    touchEndY = event.changedTouches[0].screenY;
-
-    var deltaX = touchStartX - touchEndX;
-    var deltaY = touchStartY - touchEndY;
-
-    // Detect primarily horizontal swipe
-    if (Math.abs(deltaX) > 50 && Math.abs(deltaY) < 30) {
-      if (deltaX > 0) {
-        changeSlide(-1); // Swipe left
-      } else {
-        changeSlide(1); // Swipe right
-      }
-    }
-  },
-  false
-);
-
-closeBtn.onclick = closeModal;
-
-window.onclick = function (event) {
-  if (event.target == modal) {
-    closeModal();
-  }
-};
