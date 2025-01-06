@@ -981,6 +981,7 @@ body {
     height: auto;
     display: block;
     padding: 0;
+    padding-left:4px;
     border-radius: 10px;
     background-color: white;
   }
