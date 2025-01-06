@@ -312,7 +312,6 @@ body {
 
 .blurb-text {
   font-size: 1rem;
-  width: 30%;
 }
 
 .location-title {
@@ -320,19 +319,19 @@ body {
   padding-left: 1rem;
   margin-top: 0.5rem;
   font-size: 2rem;
-  width: 80%;
+  width: 90%;
 }
 
 .location-place {
   padding-left: 1rem;
   font-style: italic;
-  width: 80%;
+  width: 90%;
 }
 
 .location-text {
   margin-top: 2rem;
   padding-left: 1rem;
-  width: 80%;
+  width: 95%;
   margin-right: 0;
 }
 
