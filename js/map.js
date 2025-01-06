@@ -15,7 +15,7 @@ var locations = [
     images: [
       {
         src: "/images/about/trips/norcal/norcal1.jpg",
-        text: "Yosemite National Park's Tunnel View offers a breathtaking panoramic vista of iconic granite peaks and valleys.",
+        text: "Our favourite national park so far. Yosemite is a truly wondrous, beautiful place.",
         title: "Tunnel View",
         place: "Yosemite, USA",
       },
@@ -29,14 +29,14 @@ var locations = [
 
       {
         src: "/images/about/trips/norcal/norcal3.jpg",
-        text: "Vernal Falls in Yosemite National Park cascades beautifully over the granite rocks, offering a refreshing sight.",
+        text: "Vernal Falls in Yosemite National Park cascades beautifully over the granite rocks. A truly colossal waterfall when seen up close.",
         title: "Vernal Falls",
         place: "Yosemite, USA",
       },
 
       {
         src: "/images/about/trips/norcal/norcal4.jpg",
-        text: "The Golden Gate Bridge in San Francisco spans the bay, symbolizing the city's engineering marvel and scenic beauty.",
+        text: "The Golden Gate Bridge in San Francisco spans the bay, symbolising the city's engineering marvel and scenic beauty.",
         title: "Golden Gate Bridge",
         place: "San Francisco, USA",
       },
@@ -56,7 +56,7 @@ var locations = [
     images: [
       {
         src: "/images/about/trips/socal/socal1.jpg",
-        text: "Los Angeles at night, with its vibrant lights and dynamic skyline, showcases the city's iconic energy.",
+        text: "Los Angeles at night, with its vibrant lights and dynamic skyline. Like watching Heat, but better.",
         title: "Los Angeles at Night",
         place: "Los Angeles, USA",
       },
@@ -77,7 +77,7 @@ var locations = [
 
       {
         src: "/images/about/trips/socal/socal4.jpg",
-        text: "Pioneer Saloon in Goodsprings, Nevada, offers a historic glimpse into the Old West with its rustic charm.",
+        text: "Pioneer Saloon in Goodsprings, Nevada, offers a historic glimpse into the Old West with its rustic charm. Great concerts here!",
         title: "Pioneer Saloon",
         place: "Goodsprings, USA",
       },
@@ -104,28 +104,28 @@ var locations = [
 
       {
         src: "/images/about/trips/nyc/nyc2.jpg",
-        text: "From the World Trade Center, enjoy breathtaking views of Brooklyn and the surrounding New York skyline.",
+        text: "From the World Trade Center, enjoying views of Brooklyn and the surrounding New York skyline.",
         title: "View from WTC",
         place: "New York, USA",
       },
 
       {
         src: "/images/about/trips/nyc/nyc3.jpg",
-        text: "From Brooklyn, take in the iconic view of the World Trade Center towering over the cityscape.",
+        text: "Exploring Dumbo, I found this spot and snapped the World Trade Center towering over the cityscape.",
         title: "View from Brooklyn",
         place: "Brooklyn, USA",
       },
 
       {
         src: "/images/about/trips/nyc/nyc4.jpg",
-        text: "Provincetown in Cape Cod is known for its charming coastal views, art galleries, and historic lighthouses.",
+        text: "Provincetown in Cape Cod is known for its charming coastal views, art galleries, and historic lighthouses. A wild party town, too!",
         title: "Provincetown",
         place: "Cape Cod, USA",
       },
 
       {
         src: "/images/about/trips/nyc/nyc5.jpg",
-        text: "Walden Pond in Cambridge, Massachusetts, is famous for its association with Henry David Thoreau. I studied Walden in University and was fascinated with Transcendalism.",
+        text: "Walden Pond in Cambridge, Massachusetts, is famous for its association with Henry David Thoreau. I studied Walden in University and was fascinated by Transcendalism.",
         title: "Walden Pond",
         place: "Cambridge, USA",
       },
@@ -152,7 +152,7 @@ var locations = [
 
       {
         src: "/images/about/trips/portugal/portugal3.jpg",
-        text: "The Arouca Bridge is one of the world’s longest pedestrian suspension bridges.",
+        text: "The Arouca Bridge is one of the world’s longest pedestrian suspension bridges, A scary crossing!",
         title: "Arouca Bridge",
         place: "Portugal",
       },
@@ -179,7 +179,7 @@ var locations = [
     images: [
       {
         src: "/images/about/trips/paris/paris1.jpg",
-        text: "The Eiffel Tower, completed in 1889, is a renowned landmark in Paris, France.",
+        text: "The Eiffel Tower, completed in 1889, is a renowned landmark in Paris, France. Viewed from Tour Montparnasse.",
         title: "Eiffel Tower",
         place: "Paris, France",
       },
@@ -200,7 +200,7 @@ var locations = [
 
       {
         src: "/images/about/trips/paris/paris4.jpg",
-        text: "La Défense is a modern business district with striking skyscrapers and the Grand Arch, symbolizing France’s economic progress.",
+        text: "La Défense is a modern business district with striking skyscrapers and the Grand Arch, symbolising France’s economic progress.",
         title: "La Défense",
         place: "Paris, France",
       },
@@ -220,7 +220,7 @@ var locations = [
     images: [
       {
         src: "/images/about/trips/mallorca/mallorca1.jpg",
-        text: "Cala Sa Calobra is a serene beach surrounded by cliffs, offering crystal-clear waters and breathtaking Mediterranean views.",
+        text: "Cala Sa Calobra is set in a pretty cove surrounded by cliffs, offering crystal-clear waters and breathtaking Mediterranean views.",
         title: "Cala Sa Calobra",
         place: "Mallorca, Spain",
       },
@@ -234,7 +234,7 @@ var locations = [
 
       {
         src: "/images/about/trips/mallorca/mallorca3.jpg",
-        text: "Torrent de Pareis is a dramatic gorge where towering cliffs meet rushing waters, a haven for adventurous hikers.",
+        text: "Torrent de Pareis is a beautiful and rugged gorge, a haven for adventurous hikers.",
         title: "Torrent de Pareis",
         place: "Mallorca, Spain",
       },
@@ -268,7 +268,7 @@ var locations = [
 
       {
         src: "/images/about/trips/venice/venice2.jpg",
-        text: "The Rialto Bridge connects the districts with elegant stone arches, offering views of the Grand Canal’s lively activity.",
+        text: "The Rialto Bridge connects the districts with elegant stone arches, offering a perfect viewing spot of the Grand Canal.",
         title: "Rialto Bridge",
         place: "Venice, Italy",
       },
@@ -302,7 +302,7 @@ var locations = [
     images: [
       {
         src: "/images/about/trips/japan/japan1.jpg",
-        text: "I’ll soon be traveling to Tokyo, Mt. Fuji, Kyoto, and Hiroshima.",
+        text: "I’ll soon be travelling to Tokyo, Mt. Fuji, Kyoto, and Hiroshima.",
         title: "Japan Trip",
         place: "Planned - March 2025",
       },
