@@ -10,6 +10,14 @@ body {
   background-color: #eceef1;
 }
 
+html {
+  background: none !important;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 .main {
   position: relative;
   background-color: transparent;
