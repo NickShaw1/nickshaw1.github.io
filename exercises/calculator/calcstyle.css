@@ -69,7 +69,7 @@ html {
   grid-template-columns: repeat(4, 1fr);
   justify-items: center;
   row-gap: 10px;
-  column-gap: 0px; /* Explicitly set horizontal gap */
+  column-gap: 0px; 
   width: 100%;
   max-width: 300px;
   padding-top: 10px;
@@ -80,6 +80,9 @@ html {
 }
 
 button {
+  display: flex; 
+  justify-content: center;
+  align-items: center; 
   width: 3.25rem;
   height: 3.25rem;
   aspect-ratio: 1 / 1;
@@ -93,8 +96,8 @@ button {
   font-weight: bold;
   cursor: pointer;
   border: none;
-  -webkit-appearance: none; /* Reset Safari button styles */
-  -webkit-border-radius: 50%; /* Explicit border-radius for Safari */
+  -webkit-appearance: none;
+  -webkit-border-radius: 50%; 
 }
 
 button:hover {
