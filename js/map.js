@@ -125,7 +125,7 @@ var locations = [
 
       {
         src: "/images/about/trips/nyc/nyc5.jpg",
-        text: "Walden Pond in Cambridge, Massachusetts, is famous for its association with Henry David Thoreau. I studied Walden in University and was fascinated by Transcendalism.",
+        text: "Walden Pond in Cambridge, Massachusetts, is famous for its association with Henry David Thoreau. I studied Walden in University and was fascinated by Transcendentalism.",
         title: "Walden Pond",
         place: "Cambridge, USA",
       },
