@@ -69,7 +69,7 @@ html {
   grid-template-columns: repeat(4, 1fr);
   justify-items: center;
   row-gap: 10px;
-  column-gap: 0px; 
+  column-gap: 0px;
   width: 100%;
   max-width: 300px;
   padding-top: 10px;
@@ -80,9 +80,9 @@ html {
 }
 
 button {
-  display: flex; 
+  display: flex;
   justify-content: center;
-  align-items: center; 
+  align-items: center;
   width: 3.25rem;
   height: 3.25rem;
   aspect-ratio: 1 / 1;
@@ -96,8 +96,9 @@ button {
   font-weight: bold;
   cursor: pointer;
   border: none;
-  -webkit-appearance: none;
-  -webkit-border-radius: 50%; 
+  box-sizing: border-box;
+
+  -webkit-border-radius: 50%;
 }
 
 button:hover {
@@ -205,7 +206,7 @@ h1 {
   button {
     min-width: 45px;
     min-height: 45px;
-    max-width: 45px;
-    max-height: 45px;
+    max-width: 65px;
+    max-height: 65px;
   }
 }
