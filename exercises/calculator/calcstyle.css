@@ -1,0 +1,205 @@
+:root {
+  background-color: #272728;
+  color: #eceef1;
+  margin: 0;
+  --primary-color: #272728;
+  --highlight-color1: #2ca78c;
+}
+
+body {
+  background-color: #eceef1;
+  height: 100vh;
+}
+
+html {
+  background: none !important;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.main {
+  position: relative;
+  background-color: transparent;
+  color: #272728;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  align-items: center;
+  width: 70%;
+  height: auto;
+  max-width: 100%;
+  margin: 0% auto 0;
+  border: none;
+  padding: 2rem;
+  padding-top: 0;
+}
+
+#calculator {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: hsl(0, 0%, 20%);
+  border-radius: 15px;
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+#display {
+  width: 100%;
+  max-width: 300px;
+  margin: 0;
+  border-radius: 15px 15px 0 0;
+  font-size: 3rem;
+  text-align: left;
+  border: none;
+  background-color: hsl(0, 0%, 20%);
+  color: white;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  box-sizing: border-box;
+}
+
+#keys {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-items: center;
+  row-gap: 10px;
+  column-gap: 0px; /* Explicitly set horizontal gap */
+  width: 100%;
+  max-width: 300px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background-color: hsl(0, 0%, 15%);
+  border-radius: 0 0 15px 15px;
+  box-sizing: border-box;
+}
+
+button {
+  width: 8vw;
+  height: 8vw;
+  max-width: 3.25rem;
+  max-height: 3.25rem;
+  border-radius: 50%;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: hsl(0, 0%, 30%);
+  font-size: 1.6rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
+
+button:hover {
+  background-color: hsl(0, 0%, 40%);
+}
+
+button:active {
+  background-color: hsl(0, 0%, 45%);
+}
+
+.operator-btn {
+  background-color: hsl(167, 58%, 41%);
+}
+
+.operator-btn:hover {
+  background-color: hsl(167, 58%, 51%);
+}
+
+.operator-btn:active {
+  background-color: hsl(167, 58%, 61%);
+}
+
+#keys .operator-btn:last-child {
+  grid-column: 4;
+}
+
+.dark-operator-btn {
+  background-color: hsl(0, 0%, 55%);
+}
+
+.dark-operator-btn:hover {
+  background-color: hsl(0, 0%, 65%);
+}
+
+.dark-operator-btn:active {
+  background-color: hsl(0, 0%, 75%);
+}
+
+#sidebarToggle {
+  background-color: transparent !important;
+  width: 50px !important;
+  gap: 0 !important;
+  height: 30px !important;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+h1 {
+  font-family: "Poppins", sans-serif;
+  font-size: 2rem;
+  padding: none;
+  padding-bottom: 2rem;
+  padding-top: 2rem;
+  margin: 0;
+}
+
+.return {
+  background-color: #eceef1;
+  color: #272728;
+  border: none;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+  margin: 1rem;
+}
+
+.return1 {
+  margin: 0;
+  padding: 0;
+  align-self: center;
+}
+
+.return2 {
+  margin: 0 0 0 1rem;
+  padding: 0;
+  align-self: center;
+  justify-self: center;
+}
+
+.return a {
+  color: #2ca78c;
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+  margin-top: -1px;
+}
+
+.return a:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 650px) {
+  .main {
+    width: 100%;
+    padding: 0;
+  }
+
+  #calculator {
+    max-width: 250px;
+    min-width: 200px;
+  }
+
+  button {
+    min-width: 45px;
+    min-height: 45px;
+    max-width: 45px;
+    max-height: 45px;
+  }
+}
