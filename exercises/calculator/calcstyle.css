@@ -141,6 +141,9 @@ button:active {
   background-color: transparent !important;
   width: 50px !important;
   gap: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  margin-right: 0.6rem !important;
   height: 30px !important;
   cursor: pointer;
   font-weight: normal;
