@@ -252,7 +252,9 @@ html {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    width: 50%;
+    width: 80%;
+    padding: 1rem;
+    border: #2ca78c 2px solid;
   }
 
   .cat {
@@ -265,6 +267,7 @@ html {
 
   .right {
     width: 60%;
+    text-align: left;
   }
 
   .cat img {
