@@ -177,9 +177,6 @@ button#reset:active {
 }
 
 @media (max-width: 1200px) {
-  h1 {
-    font-size: 1.5rem;
-  }
   #flipper {
     display: flex;
     flex-direction: column;
