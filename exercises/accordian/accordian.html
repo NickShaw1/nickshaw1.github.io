@@ -36,7 +36,7 @@
       name="twitter:image"
       content="https://www.nickshawqa.com/images/twittercard.jpg"
     />
-    <link rel="stylesheet" href="reviews.css" />
+    <link rel="stylesheet" href="accordian.css" />
     <link rel="stylesheet" href="../../css/main.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -60,7 +60,7 @@
       href="../../images/apple-touch-icon.png"
     />
     <meta name="apple-mobile-web-app-title" content="NS QA" />
-    <title>Reviews</title>
+    <title>Accordian</title>
     <script src="../../js/sidebar.js" type="text/javascript" defer></script>
   </head>
 
@@ -124,26 +124,65 @@
       <a href="../../contact.html" tabindex="-1">Contact</a>
     </div>
 
-    <main class="main">
-      <h1>Reviews Carousel</h1>
-      <section class="container">
-        <div class="title">
-          <h2>Our Reviews</h2>
-          <div class="underline"></div>
+    <div class="section-center">
+      <h1>Accordian</h1>
+      <article class="question">
+        <div class="question-title">
+          <p>Do you offer international shipping?</p>
+          <button type="button" class="question-btn">
+            <span class="plus-icon">+</span>
+            <span class="minus-icon">-</span>
+          </button>
         </div>
-        <article class="review">
-          <div class="img-container"><img src="" id="person-img" alt="" /></div>
-          <h4 id="author"></h4>
-          <p id="job"></p>
-          <p id="info"></p>
-          <div class="button-container">
-            <button class="prev-btn">&#x2039;</button>
-            <button class="next-btn">&#x203A;</button>
-          </div>
-          <button class="random-btn">Surprise me</button>
-        </article>
-      </section>
-    </main>
+
+        <div class="question-text">
+          <div class="underline"></div>
+          <p>
+            Yes, we ship to most countries worldwide. Shipping costs and
+            delivery times vary based on the destination and will be calculated
+            at checkout. Please note that customs fees or import taxes may apply
+            in some regions.
+          </p>
+        </div>
+      </article>
+      <article class="question">
+        <div class="question-title">
+          <p>What is your return policy?</p>
+          <button type="button" class="question-btn">
+            <span class="plus-icon">+</span>
+            <span class="minus-icon">-</span>
+          </button>
+        </div>
+        <div class="question-text">
+          <div class="underline"></div>
+          <p>
+            We offer a 30-day return policy for most items. If you're not
+            satisfied with your purchase, you can return it for a refund or
+            exchange, provided the item is unused and in its original packaging.
+            Visit our returns page for detailed instructions.
+          </p>
+        </div>
+      </article>
+      <article class="question">
+        <div class="question-title">
+          <p>How can I track my order?</p>
+          <button type="button" class="question-btn">
+            <span class="plus-icon">&plus;</span>
+            <span class="minus-icon">&minus;</span>
+          </button>
+        </div>
+
+        <div class="question-text">
+          <div class="underline"></div>
+          <p>
+            Once your order has been shipped, you'll receive a confirmation
+            email with a tracking link. Simply click the link to view the status
+            of your delivery. You can also log into your account to track your
+            order history.
+          </p>
+        </div>
+      </article>
+    </div>
 
     <div class="return">
       <div class="return1">
@@ -157,6 +196,6 @@
       </div>
     </div>
 
-    <script src="reviews.js"></script>
+    <script src="accordian.js"></script>
   </body>
 </html>
