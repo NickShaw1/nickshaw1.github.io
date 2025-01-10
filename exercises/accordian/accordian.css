@@ -87,17 +87,17 @@ html {
   color: #272728;
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 100%;
   align-items: center;
-  justify-self: center;
+  justify-content: center;
 }
 
 .question {
   background-color: #272728;
   color: #eceef1;
+  width: 50%;
   margin-bottom: 2rem;
   box-shadow: #2ca78c 5px 5px 0;
-  width: 100%;
 }
 
 .question-title {
@@ -127,6 +127,7 @@ html {
   color: #eceef1;
   height: 30px;
   width: 30px;
+  box-sizing: border-box;
 }
 
 .question-btn:hover {
@@ -176,25 +177,25 @@ html {
 }
 
 @media (max-width: 1400px) {
-  .section-center {
+  .question {
     width: 60%;
   }
 }
 
 @media (max-width: 1000px) {
-  .section-center {
+  .question {
     width: 70%;
   }
 }
 
 @media (max-width: 800px) {
-  .section-center {
+  .question {
     width: 80%;
   }
 }
 
 @media (max-width: 600px) {
-  .section-center {
+  .question {
     width: 90%;
   }
 }

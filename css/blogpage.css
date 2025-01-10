@@ -311,6 +311,7 @@ body {
   color: #eceef1;
   height: 30px;
   width: 30px;
+  box-sizing: border-box;
 }
 
 .question-btn:hover {
