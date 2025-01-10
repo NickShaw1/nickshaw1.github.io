@@ -120,7 +120,7 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 1rem;
+  margin-right: 1rem;
   background-color: #2ca78c;
   border: #eceef1 2px solid;
   cursor: pointer;
@@ -129,6 +129,7 @@ html {
   width: 30px;
   box-sizing: border-box;
   text-align: center;
+  line-height: 30px;
 }
 
 .question-btn:hover {
