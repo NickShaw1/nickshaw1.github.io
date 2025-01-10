@@ -116,7 +116,7 @@ html {
 }
 
 .question-btn {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -130,6 +130,7 @@ html {
   box-sizing: border-box;
   text-align: center;
   line-height: 30px;
+  padding: 0;
 }
 
 .question-btn:hover {
