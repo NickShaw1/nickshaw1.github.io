@@ -158,6 +158,10 @@ body {
 }
 
 @media (max-width: 805px) {
+  .exercises h4 {
+    font-size: 1.5rem;
+  }
+
   .blog-entry {
     display: flex;
     flex-direction: column;
