@@ -192,7 +192,8 @@ section {
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    margin-bottom: 1rem;
+    padding-top: 0.1rem;
+    margin-bottom: 1.5rem;
     width: 100%;
   }
   .blog-entry img {
