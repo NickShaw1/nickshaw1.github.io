@@ -160,9 +160,10 @@
         const isSafari = /^((?!chrome|android).)*safari/i.test(
           navigator.userAgent
         );
+        const isAndroid = /android/i.test(navigator.userAgent);
         const videoElement = document.querySelector("video");
 
-        if (isSafari) {
+        if (isSafari || isAndroid) {
           videoElement.removeAttribute("controls");
         }
       });
