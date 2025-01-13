@@ -290,11 +290,46 @@ h1 {
   }
 }
 
+@media (max-width: 800px) {
+  .switch-btn {
+    bottom: 7%;
+    left: 39.5%;
+  }
+}
+
+@media (max-width: 700px) {
+  .switch-btn {
+    bottom: 7%;
+    left: 38.5%;
+    width: 9rem;
+    height: 3rem;
+  }
+}
+
 @media (max-width: 600px) {
   .switch-btn {
     bottom: 7%;
     left: 37%;
-    width: 9rem;
-    height: 3rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .switch-btn {
+    bottom: 7%;
+    left: 35%;
+  }
+}
+
+@media (max-width: 400px) {
+  .switch-btn {
+    bottom: 7%;
+    left: 29.5%;
+  }
+}
+
+@media (max-width: 350px) {
+  .switch-btn {
+    bottom: 7%;
+    left: 26%;
   }
 }
