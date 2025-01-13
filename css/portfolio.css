@@ -178,7 +178,6 @@ section {
 }
 
 @media (max-width: 805px) {
-
   .exercises h4 {
     font-size: 1.8rem;
     line-height: 2rem;
@@ -199,5 +198,13 @@ section {
     align-items: flex-start;
     padding: 0;
     width: 100%;
+  }
+
+  html {
+    background: none !important;
+  }
+
+  body {
+    background-color: #272728;
   }
 }
