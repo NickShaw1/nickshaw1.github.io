@@ -9,7 +9,7 @@ html {
 body {
   margin: 0;
   padding: 0;
-  margin-bottom: -2px;
+  margin-bottom: -2px !important;
 }
 
 .portfolio-main a {
@@ -31,7 +31,7 @@ body {
   max-width: 100%;
   margin: 5% auto 0;
   border: none;
-  margin-bottom: -2px;
+  margin-bottom: -2px !important;
 }
 
 .portfolio2 {
@@ -64,7 +64,7 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  margin-bottom: -2px;
+  margin-bottom: -2px !important;
 }
 
 .exercises h4 {
