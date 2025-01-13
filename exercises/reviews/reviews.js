@@ -32,7 +32,7 @@ const reviews = [
     author: "Bella Snuggleton",
     job: "CTO",
     img: "/exercises/reviews/cat5.jpg",
-    info: `"I really love it! It’s so easy to navigate and has transformed the way I work."`,
+    info: `"I really love it! It’s so easy to navigate and has completely transformed the way I work."`,
   },
 ];
 
