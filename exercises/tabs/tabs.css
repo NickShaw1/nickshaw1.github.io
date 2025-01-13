@@ -143,11 +143,13 @@ html {
   grid-template-columns: 1fr 1fr 1fr;
   justify-content: center;
   overflow: hidden;
+  color: #272728;
 }
 
 .tabs-content {
   padding: 2rem;
   padding-top: 0;
+  color: #272728;
 }
 
 .content {
@@ -156,6 +158,7 @@ html {
 
 .tab-btn:active {
   background-color: #f1f1f1;
+  color: #272728;
 }
 
 .tab-btn.active {
