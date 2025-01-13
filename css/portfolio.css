@@ -172,6 +172,13 @@ section {
     max-width: 100%;
     margin: 0;
   }
+  html {
+    background: none !important;
+  }
+
+  body {
+    background-color: #272728;
+  }
 }
 
 @media (max-width: 982px) {
@@ -198,13 +205,5 @@ section {
     align-items: flex-start;
     padding: 0;
     width: 100%;
-  }
-
-  html {
-    background: none !important;
-  }
-
-  body {
-    background-color: #272728;
   }
 }
