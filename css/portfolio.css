@@ -9,7 +9,6 @@ html {
 body {
   margin: 0;
   padding: 0;
-  margin-bottom: -2px !important;
 }
 
 .portfolio-main a {
@@ -31,7 +30,18 @@ body {
   max-width: 100%;
   margin: 5% auto 0;
   border: none;
-  margin-bottom: -2px !important;
+  padding: 0;
+}
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
+footer,
+section {
+  margin: 0;
+  padding: 0;
 }
 
 .portfolio2 {
@@ -80,7 +90,13 @@ body {
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
-  margin-bottom: -1px;
+  padding-bottom: 0;
+}
+
+.entries a {
+  padding: 0;
+  margin: 0;
+  display: block;
 }
 
 .entries img {
