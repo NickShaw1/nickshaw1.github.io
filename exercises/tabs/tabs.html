@@ -36,7 +36,7 @@
       name="twitter:image"
       content="https://www.nickshawqa.com/images/twittercard.jpg"
     />
-    <link rel="stylesheet" href="reviews.css" />
+    <link rel="stylesheet" href="tabs.css" />
     <link rel="stylesheet" href="../../css/main.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -60,7 +60,7 @@
       href="../../images/apple-touch-icon.png"
     />
     <meta name="apple-mobile-web-app-title" content="NS QA" />
-    <title>Reviews Carousel</title>
+    <title>Tabs</title>
     <script src="../../js/sidebar.js" type="text/javascript" defer></script>
   </head>
 
@@ -125,24 +125,74 @@
     </div>
 
     <main class="main">
-      <h1>Reviews Carousel</h1>
-      <section class="container">
-        <div class="title">
-          <h2>Our Reviews</h2>
-          <div class="underline"></div>
-        </div>
-        <article class="review">
-          <div class="img-container"><img src="" id="person-img" alt="" /></div>
-          <h4 id="author"></h4>
-          <p id="job"></p>
-          <p id="info"></p>
-          <div class="button-container">
-            <button class="prev-btn">&#x2039;</button>
-            <button class="next-btn">&#x203A;</button>
-          </div>
-          <button class="random-btn">Surprise me</button>
+      <h1>Tabs</h1>
+      <div class="tabs-center section center">
+        <article class="tabs-img">
+          <img
+            src="../../images/about/trips/socal/socal2.jpg"
+            alt="Valley of Fire"
+            title="Valley of Fire"
+          />
         </article>
-      </section>
+        <article class="tabs">
+          <div class="btn-container">
+            <button class="tab-btn active" data-id="location">Location</button>
+            <button class="tab-btn" data-id="history">History</button>
+            <button class="tab-btn" data-id="info">Information</button>
+          </div>
+          <article class="tabs-content">
+            <div class="content active" id="location">
+              <h4>Location</h4>
+              <p>
+                The Valley of Fire in Nevada is a state park known for its red
+                sandstone formations and desert scenery. Covering over 40,000
+                acres, it features unique rock formations like the Fire Wave,
+                ancient petroglyphs, and several hiking trails.
+              </p>
+              <p>
+                The park’s red rock terrain stands out vividly under the sun,
+                making it a popular spot for photography and outdoor activities.
+                Its rugged landscape and historical significance offer visitors
+                a chance to explore one of Nevada’s most striking natural areas.
+              </p>
+            </div>
+            <div class="content" id="history">
+              <h4>History</h4>
+              <p>
+                The Valley of Fire has a rich history, with evidence of human
+                activity dating back over 2,000 years. Ancient Native American
+                tribes, including the Ancestral Puebloans and Basketmakers, left
+                behind petroglyphs carved into the red sandstone.
+              </p>
+              <p>
+                The area was named "Valley of Fire" in the 1920s due to its
+                vibrant, flame-like rock formations. Established as Nevada’s
+                first state park in 1935, it preserves both its natural beauty
+                and cultural heritage, attracting visitors interested in its
+                archaeological significance.
+              </p>
+            </div>
+            <div class="content" id="info">
+              <h4>Information</h4>
+              <p>
+                The Valley of Fire is located about 50 miles northeast of Las
+                Vegas, making it an easy day trip for visitors.
+              </p>
+              <p>
+                The park is open year-round, though the best times to visit are
+                spring and fall when temperatures are more moderate. It has
+                several picnic areas, a visitor center with exhibits on geology
+                and local history, and two campgrounds offering basic amenities.
+              </p>
+              <p>
+                The park is a sought-after filming location, featured in movies,
+                commercials, and television shows, thanks to its striking and
+                dramatic landscape.
+              </p>
+            </div>
+          </article>
+        </article>
+      </div>
     </main>
 
     <div class="return">
@@ -157,6 +207,6 @@
       </div>
     </div>
 
-    <script src="reviews.js"></script>
+    <script src="tabs.js"></script>
   </body>
 </html>

@@ -25,14 +25,14 @@ const reviews = [
     author: "Jasper Tailington",
     job: "Chief Architect",
     img: "/exercises/reviews/cat4.jpg",
-    info: `"Game-changer! The interface is clean, and it makes everything so much easier. I can’t imagine working without it."`,
+    info: `"The interface is clean, and it makes everything so much easier. I can’t imagine working without it."`,
   },
   {
     id: 5,
     author: "Bella Snuggleton",
     job: "CTO",
     img: "/exercises/reviews/cat5.jpg",
-    info: `"This software is everything I needed! It’s so easy to navigate and has transformed the way I work."`,
+    info: `"Love it! It’s so easy to navigate and has transformed the way I work."`,
   },
 ];
 
