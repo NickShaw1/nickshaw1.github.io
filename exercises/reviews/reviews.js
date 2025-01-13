@@ -18,7 +18,7 @@ const reviews = [
     author: "Luna Pawsworth",
     job: "Test Lead",
     img: "/exercises/reviews/cat3.jpg",
-    info: `"Effortless to use! This software makes tasks so much faster and keeps everything organized. A must-have for sure."`,
+    info: `"Effortless to use! This software makes tasks so much faster and keeps everything organized. A must-have."`,
   },
   {
     id: 4,
@@ -32,7 +32,7 @@ const reviews = [
     author: "Bella Snuggleton",
     job: "CTO",
     img: "/exercises/reviews/cat5.jpg",
-    info: `"Love it! It’s so easy to navigate and has transformed the way I work."`,
+    info: `"I really love it! It’s so easy to navigate and has transformed the way I work."`,
   },
 ];
 
