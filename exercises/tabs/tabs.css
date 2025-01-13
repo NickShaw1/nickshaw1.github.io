@@ -123,6 +123,7 @@ html {
   cursor: pointer;
   padding: 1rem;
   font-family: "Poppins", sans-serif;
+  color: #272728;
 }
 
 .tab-btn:hover {
