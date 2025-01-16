@@ -122,16 +122,12 @@ function changeSlide(offset) {
 }
 
 modal.addEventListener("click", function (e) {
-  // Prevent closing modal if the click is on the prev or next buttons
-  const isClickInsideModal = e.target.closest(".modal-content");
-  const isClickOnControlButton = e.target.closest(".prev, .next");
+  const clickedInsideContent = e.target.closest(".modal-content");
+  const clickedControlButton = e.target.closest(".prev, .next");
 
-  if (isClickOnControlButton) {
-    return; // Early exit, do not close modal when clicking prev/next
-  }
-
-  if (!isClickInsideModal) {
-    closeModal(); // Close modal if clicked outside the modal-content area
+  // Ignore clicks on control buttons or inside modal content
+  if (clickedControlButton || clickedInsideContent) {
+    return;
   }
 });
 
