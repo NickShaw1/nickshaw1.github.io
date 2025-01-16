@@ -245,6 +245,15 @@ nav {
   align-items: center;
 }
 
+.lede a {
+  color: #2ca78c;
+  font-weight: bold;
+}
+
+.lede a:hover {
+  opacity: 0.8;
+}
+
 .lede img {
   width: 200x;
   height: 200px;
