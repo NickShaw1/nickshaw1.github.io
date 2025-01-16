@@ -94,6 +94,8 @@ html {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  -webkit-transform: translateZ(0); /* Forces hardware acceleration */
+  backface-visibility: hidden; /* Ensures proper rendering */
 }
 
 h1 {
