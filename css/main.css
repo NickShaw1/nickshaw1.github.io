@@ -90,12 +90,11 @@ body {
 
 html {
   background: url("../images/bg.jpg") no-repeat center center fixed;
-  -webkit-background-size: contain;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  -webkit-overflow-scrolling: touch;
+  background-size: cover; /* Use cover for full-screen background scaling */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling for mobile Safari */
   transform: translate3d(0, 0, 0); /* Trigger GPU acceleration */
+  height: 100%; /* Ensure full height of the viewport */
+  margin: 0;
 }
 
 h1 {
