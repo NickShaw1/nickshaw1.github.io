@@ -88,27 +88,17 @@ body {
   overflow-y: auto;
 }
 
-html,
-body {
-  height: 100%; /* Ensure full viewport height */
-  margin: 0; /* Remove default margin */
-  overflow: hidden; /* Prevent scrolling on body */
-}
-
-body::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw; /* Full viewport width */
-  height: 100vh; /* Full viewport height */
-  background: url("../images/bg.jpg") no-repeat center center;
-  background-size: cover; /* Ensure the background covers the entire viewport */
-  z-index: -1; /* Make sure it's behind all content */
-}
-
 html {
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling for mobile Safari */
+  background: url("../images/bg.jpg") no-repeat center center fixed;
+  background-size: cover; /* Ensure the background covers the viewport */
+  height: 100%; /* Full height of the viewport */
+  margin: 0;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+body {
+  height: 100%; /* Full height of the viewport */
+  margin: 0;
 }
 
 h1 {
