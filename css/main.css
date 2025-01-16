@@ -89,7 +89,7 @@ body {
 }
 
 html {
-  background: url("../images/bg.jpg") no-repeat center center fixed;
+  background: url("../images/bg.jpg") no-repeat center center/cover fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -501,11 +501,5 @@ nav {
   .lede p {
     font-size: 0.9rem;
     margin-bottom: 0;
-  }
-
-  @supports (-webkit-appearance: none) {
-    html {
-      background-image: none !important;
-    }
   }
 }
