@@ -88,26 +88,12 @@ body {
   overflow-y: auto;
 }
 
-html,
-body {
-  height: 100%; /* Ensure the full viewport height is covered */
-  margin: 0; /* Remove default margin */
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url("../images/bg.jpg") no-repeat center center;
-  background-size: cover; /* Make sure it covers the entire screen */
-  z-index: -1; /* Ensure it sits behind the content */
-}
-
 html {
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling for mobile Safari */
+  background: url("../images/bg.jpg") no-repeat center center fixed;
+  -webkit-background-size: contain;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 h1 {
@@ -516,11 +502,8 @@ nav {
     font-size: 0.9rem;
     margin-bottom: 0;
   }
-}
 
-@media (max-width: 767px) {
-  /* Safari issue workaround for smaller screens */
-  html {
-    background-attachment: scroll; /* Use scroll instead of fixed for mobile */
+  .blurb {
+    display: none;
   }
 }
