@@ -90,21 +90,10 @@ body {
 
 html {
   background: url("../images/bg.jpg") no-repeat center center fixed;
-  background-size: cover; /* Ensure the background covers the entire viewport */
-  height: 100%; /* Ensure html takes the full height */
-  margin: 0; /* Remove margin */
-
-  /* Fix for Safari issues with background attachment */
-  background-attachment: fixed;
-  -webkit-background-size: cover; /* Ensure Safari correctly scales the background */
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
-}
-
-/* For mobile devices to fix issues with fixed background */
-@media (max-width: 767px) {
-  html {
-    background-attachment: scroll; /* Use scroll instead of fixed for mobile devices */
-  }
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 h1 {
@@ -512,5 +501,11 @@ nav {
   .lede p {
     font-size: 0.9rem;
     margin-bottom: 0;
+  }
+
+  @supports (-webkit-appearance: none) {
+    html {
+      background-image: none !important;
+    }
   }
 }
