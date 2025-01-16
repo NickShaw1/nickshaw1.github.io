@@ -517,3 +517,10 @@ nav {
     margin-bottom: 0;
   }
 }
+
+@media (max-width: 767px) {
+  /* Safari issue workaround for smaller screens */
+  html {
+    background-attachment: scroll; /* Use scroll instead of fixed for mobile */
+  }
+}
