@@ -485,6 +485,7 @@ nav {
 
 /* Small mobile*/
 @media (max-width: 464px) {
+
   .hero h1 {
     font-size: 2rem;
     line-height: 2.5rem;
@@ -501,9 +502,5 @@ nav {
   .lede p {
     font-size: 0.9rem;
     margin-bottom: 0;
-  }
-
-  .blurb {
-    display: none;
   }
 }
