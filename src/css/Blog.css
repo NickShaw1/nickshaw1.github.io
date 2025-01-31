@@ -1,0 +1,359 @@
+.blog-title h1 {
+  font-family: "Poppins", sans-serif;
+  font-size: 6rem;
+  text-align: left;
+  line-height: 1.5;
+  position: relative;
+  margin-top: 0;
+  margin-bottom: 0;
+  height: auto;
+  overflow: hidden;
+  z-index: 2;
+  animation: riseFromBelow 0.5s ease-out forwards;
+}
+
+.blog-title h1::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 105%;
+  background-color: #0aff9d;
+  animation: slideInBlock 1.5s ease-out forwards;
+  z-index: 1;
+}
+
+.blog-main {
+  position: relative;
+  border-left: 2px solid rgba(10, 255, 157, 0.3);
+  border-bottom: 2px solid rgba(10, 255, 157, 0.3);
+  padding-left: 2rem;
+  margin-top: 3rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  text-align: left;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-bottom: 1rem;
+  overflow-y: hidden;
+}
+
+.blog-main p {
+  width: 95%;
+  margin-top: 0;
+}
+
+.blog-list {
+  border-right: 2px solid rgba(10, 255, 157, 0.3);
+  margin-right: 1rem;
+  padding-left: 1rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.blog-entries {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 2rem;
+  margin-bottom: 2rem;
+  border: 2px solid rgba(10, 255, 157, 0.3);
+  margin-right: 2rem;
+}
+
+.blog-entries-main {
+  padding-left: 2rem;
+  padding-top: 0;
+  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start !important;
+  align-items: flex-start;
+}
+
+.blog-entries-main h2 {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.blog-entries-main p {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.blog-entries-main a {
+  margin-top: 0 !important;
+  padding-top: 0;
+}
+
+.blog-img img {
+  width: 12rem;
+  height: auto;
+  object-fit: cover; /* or 'contain' depending on how you want the images to fill the container */
+  border: 2px solid #eaeceb;
+}
+.blog-entries-main h2 {
+  font-size: 1.5rem;
+  margin-top: 0;
+}
+
+.blog-header {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 1rem;
+  width: 90%;
+  align-items: center;
+}
+
+.blog-header img {
+  width: 6rem;
+  margin-right: 1rem;
+  border-radius: 50%;
+  border: 2px solid #eaeceb;
+}
+
+.date {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.date p {
+  margin-bottom: 0;
+}
+
+.date-img {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 0.5rem;
+  width: 100%;
+}
+
+.date-img2 {
+  width: 100%;
+}
+
+.date-img2 p {
+  margin-left: 1rem;
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 1rem;
+  font-style: italic;
+  width: 100%;
+}
+
+.blog-container {
+  margin-left: 3rem;
+  margin-right: 1rem;
+  border-right: 2px solid rgba(10, 255, 157, 0.3);
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+}
+
+.blog-container p {
+  width: 95%;
+}
+
+.video-container {
+  position: relative;
+  width: 90%;
+  max-width: 50%;
+  margin: 0 auto;
+  padding-top: 28.125%;
+  height: 0;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.blog-container ul {
+  display: flex;
+  flex-direction: column;
+  color: #eaeceb;
+  list-style: square;
+  padding-left: 0;
+  margin-left: 0;
+  margin: 0;
+  padding: 0;
+  font-weight: 200;
+}
+
+a {
+  cursor: pointer;
+}
+
+.blog-container li {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 0;
+  margin-left: 0;
+  font-weight: 200;
+}
+
+.blog-container ul a {
+  padding-bottom: 0.5rem;
+}
+
+.blog-container h2 {
+  padding-bottom: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.blog-container h6 {
+  font-size: 1.1rem;
+  padding-bottom: 0.5rem;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+pre {
+  background-color: #00fc7e09;
+  margin-top: 1rem;
+  margin-right: 2rem;
+  width: 60%;
+  padding: 15px;
+  border-radius: 5px;
+  overflow-x: auto;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+code {
+  font-family: "Courier New", Courier, monospace;
+  color: #f0f0f0;
+}
+
+.oldsite {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-size: 0.9rem;
+  font-style: italic;
+  padding: 0;
+  margin: 0;
+}
+
+.oldsite img {
+  max-width: 85%;
+}
+
+@media screen and (max-width: 768px) {
+  .blog-container {
+    margin-left: 1rem;
+  }
+
+  .blog-container p {
+    width: 90%;
+    padding-left: 2rem;
+  }
+
+  .blog-header {
+    width: 100%;
+  }
+
+  .blog-container h2,
+  .blog-container h6 {
+    padding-left: 2rem;
+    width: 90%;
+  }
+
+  pre {
+    margin-left: 1rem;
+    padding-left: 1rem;
+  }
+
+  .blog-main {
+    margin-top: 1rem;
+  }
+  .video-container {
+    position: relative;
+    width: 86%;
+    max-width: 100%;
+    padding-top: 56.25%;
+    height: 0;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+  }
+
+  pre {
+    background-color: #00fc7e09;
+    margin-top: 1rem;
+    width: auto;
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 16px;
+    line-height: 1.5;
+    box-sizing: content-box;
+  }
+
+  .blog-list {
+    padding-top: 0rem;
+  }
+
+  .blog-entries {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-right: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 0;
+  }
+
+  .blog-entries-main {
+    padding-left: 0;
+    padding-top: 0.5rem;
+    width: 90%;
+    padding-bottom: 0rem;
+  }
+
+  .blog-main h1 {
+    font-size: 3rem;
+  }
+
+  .blog-entries-main h2 {
+    padding-bottom: 0.5rem;
+  }
+
+  .blog-img img {
+    width: 95;
+    height: auto;
+    object-fit: cover; /* or 'contain' depending on how you want the images to fill the container */
+  }
+
+  .date-img {
+    width: 90%;
+  }
+
+  .date-img2 p {
+    margin-left: 0rem;
+  }
+
+  .date-img1 {
+    display: none;
+  }
+}
