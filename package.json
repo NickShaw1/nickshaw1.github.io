@@ -4,7 +4,7 @@
   "version": "0.0.2",
   "type": "module",
   "scripts": {
-    "homepage": "https://NickShaw1.github.io/nickshaw1.github.io",
+    "homepage": "https://NickShaw1.github.io/",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
