@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 
 const CURRENCIES = [
   { code: 'GBP', symbol: '£' },
@@ -18,11 +18,6 @@ export default function HolidayPlannerDemo() {
   const [items, setItems] = useState<{ label: string; cost: string }[]>([
     { label: '', cost: '' },
   ])
-
-  const isIOS = useMemo(() =>
-    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
-  , [])
 
   const labelClass  = 'font-mono text-[10px] tracking-widest uppercase text-text-muted mb-1'
   const inputClass  = 'w-full bg-bg-base border border-bg-border rounded px-3 py-2 text-text-primary text-[13px] font-mono placeholder:text-text-muted/40 focus:outline-none focus:border-accent/40 transition-colors duration-150 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
@@ -115,27 +110,27 @@ export default function HolidayPlannerDemo() {
             <div>
               <p className={labelClass}>Start date</p>
               <input
-                type={isIOS ? 'text' : 'date'}
-                placeholder={isIOS ? 'DD/MM/YYYY' : undefined}
+                type="date"
                 value={startDate}
+                placeholder="Start date"
                 onChange={e => { setStartDate(e.target.value); if (endDate && endDate < e.target.value) setEndDate('') }}
-                onClick={e => !isIOS && (e.currentTarget as HTMLInputElement).showPicker?.()}
+                onClick={e => (e.currentTarget as HTMLInputElement).showPicker?.()}
                 className={dateClass}
               />
             </div>
             <div>
               <p className={labelClass}>End date</p>
               <input
-                type={isIOS ? 'text' : 'date'}
-                placeholder={isIOS ? 'DD/MM/YYYY' : undefined}
+                type="date"
                 value={endDate}
-                min={isIOS ? undefined : (startDate || undefined)}
-                max={isIOS ? undefined : (maxEnd || undefined)}
+                placeholder="End date"
+                min={startDate || undefined}
+                max={maxEnd || undefined}
                 onChange={e => {
                   const val = e.target.value
                   if (!startDate || val >= startDate) setEndDate(val)
                 }}
-                onClick={e => !isIOS && (e.currentTarget as HTMLInputElement).showPicker?.()}
+                onClick={e => (e.currentTarget as HTMLInputElement).showPicker?.()}
                 className={dateClass}
               />
             </div>
