@@ -74,7 +74,7 @@ interface WeatherData {
 }
 
 function weatherGradient(code: number): string {
-  if (code === 0)  return 'from-[#0a1f4a] to-[#0d4a8a]'
+  if (code === 0)  return 'from-[#1a8fe3] to-[#56c8f5]'
   if (code <= 3)   return 'from-[#161f30] to-[#2a3f5a]'
   if (code <= 48)  return 'from-[#181818] to-[#383840]'
   if (code <= 67)  return 'from-[#080f1a] to-[#0a2545]'
@@ -159,7 +159,7 @@ export default function WeatherDemo() {
 
       <div className="rounded-card border border-bg-border overflow-hidden">
         <div className={`relative bg-gradient-to-br ${weather ? weatherGradient(weather.code) : 'from-[#1e2d40] to-[#3a5068]'} px-6 pt-6 pb-5 transition-all duration-700`}>
-          <div className="absolute right-5 top-5 opacity-30">
+          <div className="absolute right-5 top-5 opacity-70">
             <WeatherIcon code={weather?.code ?? 0} size={90} />
           </div>
 

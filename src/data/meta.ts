@@ -39,8 +39,8 @@ export const meta = {
 
   stats: {
     yearsExperience: '12',
-    teamSize:        '25',
-    certifications:  '5',
+    teamSize:        '25+',
+    bugsRaised:      '10,000+',
   },
 
   aboutSections: {

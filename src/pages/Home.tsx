@@ -157,8 +157,8 @@ export default function Home() {
               >
                 {[
                   { value: meta.stats.yearsExperience, label: 'Years exp.' },
+                  { value: meta.stats.bugsRaised,      label: 'Bugs raised' },
                   { value: meta.stats.teamSize,        label: 'Team size' },
-                  { value: meta.stats.certifications,  label: 'Certs' },
                 ].map(({ value, label }) => (
                   <div key={label} className="flex flex-col items-center py-4 px-3" role="listitem">
                     <span className="font-display font-bold text-xl text-accent leading-none mb-1">

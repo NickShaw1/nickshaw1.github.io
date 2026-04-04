@@ -34,16 +34,28 @@ interface ISSData { latitude: number; longitude: number; altitude: number; veloc
 interface CrewMember { name: string; craft: string }
 
 export default function ISSTrackerDemo() {
-  const mountRef    = useRef<HTMLDivElement>(null)
-  const frameRef    = useRef<number>(0)
-  const clockRef    = useRef(new THREE.Clock())
-  const markerRef   = useRef<THREE.Mesh | null>(null)
-  const ringRef     = useRef<THREE.Mesh | null>(null)
-  const ringMatRef  = useRef<THREE.MeshBasicMaterial | null>(null)
-  const cameraRef   = useRef<THREE.PerspectiveCamera | null>(null)
+  const mountRef        = useRef<HTMLDivElement>(null)
+  const frameRef        = useRef<number>(0)
+  const clockRef        = useRef(new THREE.Clock())
+  const markerRef       = useRef<THREE.Mesh | null>(null)
+  const ringRef         = useRef<THREE.Mesh | null>(null)
+  const ringMatRef      = useRef<THREE.MeshBasicMaterial | null>(null)
+  const cameraRef       = useRef<THREE.PerspectiveCamera | null>(null)
+  // Drag / free-look state (desktop only)
+  const userControlled  = useRef(false)
+  const isDragging      = useRef(false)
+  const lastMouse       = useRef({ x: 0, y: 0 })
+  const spherical       = useRef({ theta: 0, phi: Math.PI / 2 })
+  const [following, setFollowing] = useState(true)
+
   const [issData,  setIssData]  = useState<ISSData | null>(null)
   const [overText, setOverText] = useState<string>('')
   const [crew,     setCrew]     = useState<CrewMember[]>([])
+
+  const centreOnISS = useCallback(() => {
+    userControlled.current = false
+    setFollowing(true)
+  }, [])
 
   useEffect(() => {
     const mount = mountRef.current
@@ -58,7 +70,7 @@ export default function ISSTrackerDemo() {
 
     const scene  = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(45, W/H, 0.1, 1000)
-    camera.position.set(0, 0, 3)
+    camera.position.set(0, 0, 3.4)
     cameraRef.current = camera
 
     const starPos = new Float32Array(6000*3)
@@ -129,10 +141,25 @@ export default function ISSTrackerDemo() {
       ring.position.copy(marker.position)
       ring.lookAt(camera.position)
 
-      if (marker.position.lengthSq() > 0) {
+      if (userControlled.current) {
+        // Free-look: position camera from stored spherical coords
+        const { theta, phi } = spherical.current
+        const r = 3.4
+        camera.position.set(
+          r * Math.sin(phi) * Math.cos(theta),
+          r * Math.cos(phi),
+          r * Math.sin(phi) * Math.sin(theta),
+        )
+        camera.lookAt(0, 0, 0)
+      } else if (marker.position.lengthSq() > 0) {
+        // Follow ISS
         const target = marker.position.clone().normalize().multiplyScalar(3.4)
         camera.position.lerp(target, 0.03)
         camera.lookAt(0, 0, 0)
+        // Keep spherical in sync so free-look starts from current position
+        const r = camera.position.length()
+        spherical.current.phi   = Math.acos(Math.max(-1, Math.min(1, camera.position.y / r)))
+        spherical.current.theta = Math.atan2(camera.position.z, camera.position.x)
       }
 
       renderer.render(scene, camera)
@@ -235,6 +262,25 @@ export default function ISSTrackerDemo() {
     </div>
   )
 
+  // Pointer handlers — desktop (mouse) only
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== 'mouse') return
+    isDragging.current = true
+    userControlled.current = true
+    setFollowing(false)
+    lastMouse.current = { x: e.clientX, y: e.clientY }
+    e.currentTarget.setPointerCapture(e.pointerId)
+  }
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDragging.current) return
+    const dx = e.clientX - lastMouse.current.x
+    const dy = e.clientY - lastMouse.current.y
+    lastMouse.current = { x: e.clientX, y: e.clientY }
+    spherical.current.theta -= dx * 0.005
+    spherical.current.phi = Math.max(0.1, Math.min(Math.PI - 0.1, spherical.current.phi + dy * 0.005))
+  }
+  const handlePointerUp = () => { isDragging.current = false }
+
   return (
     <div className="mb-5">
       <p className="font-mono text-[10px] tracking-widest uppercase text-text-muted mb-3">Live demo</p>
@@ -242,10 +288,48 @@ export default function ISSTrackerDemo() {
       <div className="rounded-xl overflow-hidden" style={{ border:'1px solid rgba(10,255,157,0.12)', background:'#080d12' }}>
 
         <div className="relative w-full" style={{ height: 'clamp(260px, 45vw, 440px)' }}>
-          <div ref={mountRef} className="absolute inset-0" style={{ background: '#000306' }} />
+          <div
+            ref={mountRef}
+            className="absolute inset-0"
+            style={{ background: '#000306', cursor: isDragging.current ? 'grabbing' : 'grab' }}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onPointerLeave={handlePointerUp}
+          />
 
           <div className="absolute top-3 left-3 hidden sm:block" style={{ minWidth: 195 }}>{posPanel}</div>
           <div className="absolute top-3 right-3 hidden sm:block" style={{ maxWidth: 172 }}>{crewPanel}</div>
+
+          {/* Centre on ISS button — panel style, bottom left */}
+          <div className="absolute bottom-9 left-3 hidden sm:block">
+            <button
+              onClick={centreOnISS}
+              disabled={following}
+              style={{
+                ...panel,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 7,
+                cursor: following ? 'default' : 'pointer',
+                opacity: following ? 0.55 : 1,
+                transition: 'opacity 0.2s',
+                border: `1px solid ${following ? 'rgba(10,255,157,0.18)' : 'rgba(10,255,157,0.5)'}`,
+              }}
+            >
+              <span style={{
+                width: 7, height: 7, borderRadius: '50%', flexShrink: 0,
+                background: following ? '#0AFF9D' : 'transparent',
+                border: following ? 'none' : '1.5px solid #0AFF9D',
+                boxShadow: following ? '0 0 6px #0AFF9D88' : 'none',
+                transition: 'all 0.2s',
+              }} />
+              <span style={{ ...lbl, marginBottom: 0, fontSize: 9 }}>
+                {following ? 'Following ISS' : 'Centre on ISS'}
+              </span>
+            </button>
+          </div>
+
           <div className="absolute bottom-0 left-0 right-0 hidden sm:flex items-center justify-end px-3 py-1.5" style={{ background:'rgba(8,13,18,0.7)', borderTop:'1px solid rgba(10,255,157,0.08)' }}>
             <span style={{ ...dim, fontSize:7 }}>Earth texture: <span style={{ color:'#3d6070' }}>Solar System Scope (CC BY 4.0)</span></span>
           </div>
@@ -269,9 +353,14 @@ export default function ISSTrackerDemo() {
           <div className="px-4 py-3" style={{ borderTop:'1px solid rgba(10,255,157,0.1)' }}>
             <div style={{ ...lbl, marginBottom:6 }}>People in Space {crew.length > 0 && <span style={{ color:'#5a8a9a' }}>({crew.length})</span>}</div>
             {crew.length > 0
-              ? <div style={{ display:'flex', flexWrap:'wrap', gap:'2px 12px' }}>
-                  {crew.map(m => <span key={m.name} style={{ fontSize:10, color:'#dde6ee', fontFamily:'monospace' }}>{m.name}</span>)}
-                </div>
+              ? Object.entries(craftGroups).map(([craft, names]) => (
+                  <div key={craft} style={{ marginBottom:6 }}>
+                    <div style={{ ...dim, marginBottom:2 }}>{craft}</div>
+                    <div style={{ display:'flex', flexWrap:'wrap', gap:'2px 12px' }}>
+                      {names.map(n => <span key={n} style={{ fontSize:10, color:'#dde6ee', fontFamily:'monospace' }}>{n}</span>)}
+                    </div>
+                  </div>
+                ))
               : <span style={{ ...dim, fontSize:10 }}>Fetching…</span>
             }
           </div>

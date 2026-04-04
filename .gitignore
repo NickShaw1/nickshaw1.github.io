@@ -9,6 +9,10 @@ dist/
 .env.local
 .env.*.local
 
+# Claude Code & local tooling
+.claude/
+.playwright-mcp/
+
 # Editor & OS
 .DS_Store
 Thumbs.db

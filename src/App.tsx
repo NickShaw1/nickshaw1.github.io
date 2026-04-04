@@ -23,7 +23,7 @@ export default function App() {
   const location = useLocation()
 
   useEffect(() => {
-    if (!location.hash) window.scrollTo(0, 0)
+    if (!location.hash) window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   }, [location.pathname])
 
   return (

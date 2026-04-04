@@ -36,10 +36,9 @@ export const projects: ProjectItem[] = [
       body: 'A live ISS tracker built with Three.js. The Earth sphere uses a real texture map with a procedural cloud layer on top and an atmospheric glow rendered via a custom GLSL fresnel shader. The camera stays locked on the ISS at all times, smoothly tracking as it moves across the globe.',
       highlights: [
         'Atmospheric glow via a custom GLSL fresnel shader on a second transparent sphere',
-        'Converting live latitude and longitude to a 3D point on the sphere surface every 5 seconds',
-        'Reverse geocoding the ISS position to show the country or region it is flying over',
-        'Camera locked on the ISS using lerp interpolation for smooth tracking as position updates',
-        'Pulsing ring marker using RingGeometry that billboards toward the camera each frame',
+        'Mapping live lat/lng coordinates to a 3D point on the sphere surface using spherical-to-Cartesian conversion',
+        'Smooth camera tracking via lerp interpolation, keeping the ISS centred as position updates',
+        'Pulsing ring marker using RingGeometry, scaled and oriented toward the camera each frame for a radar-pulse effect',
         'Current crew fetched from a live API and grouped by spacecraft',
       ],
       codeSnippet: `// Convert lat/lng to a 3D point on the globe surface

@@ -7,6 +7,9 @@ import './styles/global.css'
 // For regular dev/preview, we render normally via the root element.
 import { createRoot } from 'react-dom/client'
 
+// Prevent browser from restoring scroll position on SPA navigation
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
+
 function renderApp() {
   const root = document.getElementById('root')
   if (!root) throw new Error('Root element not found')

@@ -1,24 +1,25 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 const COMMON_CURRENCIES = ['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'CHF', 'CNY', 'SEK', 'NZD', 'MXN', 'SGD', 'NOK', 'DKK', 'PLN']
 
 export default function CurrencyConverterDemo() {
-  const [amount, setAmount]   = useState('1')
-  const [from,   setFrom]     = useState('GBP')
-  const [to,     setTo]       = useState('USD')
-  const [result, setResult]   = useState<number | null>(null)
-  const [rate,   setRate]     = useState<number | null>(null)
-  const [status, setStatus]   = useState<'idle' | 'loading' | 'error'>('idle')
+  const [amount, setAmount] = useState('1')
+  const [from,   setFrom]   = useState('GBP')
+  const [to,     setTo]     = useState('USD')
+  const [result, setResult] = useState<number | null>(null)
+  const [rate,   setRate]   = useState<number | null>(null)
+  const [status, setStatus] = useState<'idle' | 'loading' | 'error'>('idle')
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  async function convert() {
-    if (!amount || isNaN(Number(amount))) return
+  async function fetchRate(fromCcy: string, toCcy: string, amt: string) {
+    if (!amt || isNaN(Number(amt)) || Number(amt) <= 0) { setResult(null); return }
     setStatus('loading')
     try {
-      const res  = await fetch(`https://api.frankfurter.dev/v2/rates?base=${from}&quotes=${to}`)
+      const res  = await fetch(`https://api.frankfurter.dev/v2/rates?base=${fromCcy}&quotes=${toCcy}`)
       const data = await res.json()
       const r    = data[0].rate
       setRate(r)
-      setResult(parseFloat(amount) * r)
+      setResult(parseFloat(amt) * r)
       setStatus('idle')
     } catch (err) {
       console.error('Currency fetch error:', err)
@@ -26,10 +27,16 @@ export default function CurrencyConverterDemo() {
     }
   }
 
+  // Debounced live conversion on any input change
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(() => fetchRate(from, to, amount), 400)
+    return () => { if (debounceRef.current) clearTimeout(debounceRef.current) }
+  }, [amount, from, to])
+
   function swap() {
     setFrom(to)
     setTo(from)
-    setResult(null)
   }
 
   const fieldClass = "w-full bg-bg-elevated border border-bg-border rounded px-4 py-3 font-mono text-[15px] text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-colors duration-150 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
@@ -45,10 +52,10 @@ export default function CurrencyConverterDemo() {
           <p className={`${labelClass} mb-1`}>Amount</p>
           <input
             type="number"
+            inputMode="decimal"
             min="0"
             value={amount}
-            onChange={e => { if (e.target.value.replace('.', '').length <= 10) { setAmount(e.target.value); setResult(null) } }}
-            onKeyDown={e => { if (e.key === 'Enter') convert() }}
+            onChange={e => { if (e.target.value.replace('.', '').length <= 10) setAmount(e.target.value) }}
             className={fieldClass}
             placeholder="0"
           />
@@ -57,7 +64,7 @@ export default function CurrencyConverterDemo() {
         <div className="flex items-end gap-3">
           <div className="flex-1">
             <p className={`${labelClass} mb-1`}>From</p>
-            <select value={from} onChange={e => { setFrom(e.target.value); setResult(null) }} className={selectClass}>
+            <select value={from} onChange={e => setFrom(e.target.value)} className={selectClass}>
               {COMMON_CURRENCIES.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
           </div>
@@ -74,35 +81,32 @@ export default function CurrencyConverterDemo() {
 
           <div className="flex-1">
             <p className={`${labelClass} mb-1`}>To</p>
-            <select value={to} onChange={e => { setTo(e.target.value); setResult(null) }} className={selectClass}>
+            <select value={to} onChange={e => setTo(e.target.value)} className={selectClass}>
               {COMMON_CURRENCIES.filter(c => c !== from).map(c => <option key={c} value={c}>{c}</option>)}
             </select>
           </div>
         </div>
 
-        <button
-          onClick={convert}
-          disabled={status === 'loading'}
-          className="w-full font-mono text-[11px] tracking-widest uppercase border border-accent text-text-primary bg-accent/10 px-4 py-2 rounded-pill hover:bg-accent/20 disabled:opacity-50 transition-colors duration-150"
-        >
-          {status === 'loading' ? 'Fetching…' : 'Convert'}
-        </button>
+        <div className="pt-4 border-t border-bg-border min-h-[56px]">
+          {status === 'loading' && (
+            <p className="font-mono text-[11px] text-text-muted">Fetching…</p>
+          )}
+          {status === 'error' && (
+            <p className="font-mono text-[11px] text-red-400">Could not fetch rate. Please try again.</p>
+          )}
+          {status === 'idle' && result !== null && rate !== null && (
+            <>
+              <p className="font-display font-bold text-[clamp(1rem,5vw,1.8rem)] text-text-primary tabular-nums leading-none break-all">
+                {result.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                <span className="ml-2 font-mono text-[1rem] font-normal text-accent">{to}</span>
+              </p>
+              <p className="font-mono text-[11px] text-text-muted mt-2">
+                1 {from} = {rate.toFixed(4)} {to}
+              </p>
+            </>
+          )}
+        </div>
 
-        {result !== null && rate !== null && (
-          <div className="pt-4 border-t border-bg-border">
-            <p className="font-display font-bold text-[clamp(1rem,5vw,1.8rem)] text-text-primary tabular-nums leading-none break-all">
-              {result.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-              <span className="ml-2 font-mono text-[1rem] font-normal text-accent">{to}</span>
-            </p>
-            <p className="font-mono text-[11px] text-text-muted mt-2">
-              1 {from} = {rate.toFixed(4)} {to} · Frankfurter
-            </p>
-          </div>
-        )}
-
-        {status === 'error' && (
-          <p className="font-mono text-[11px] text-red-400">Could not fetch rate. Please try again.</p>
-        )}
       </div>
     </div>
   )

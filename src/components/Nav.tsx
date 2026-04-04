@@ -214,7 +214,7 @@ export default function Nav() {
               fixed inset-0 z-40
               bg-bg-base/95 backdrop-blur-lg
               flex flex-col justify-center
-              px-8
+              px-8 overflow-hidden
               md:hidden
             "
           >
@@ -268,9 +268,9 @@ export default function Nav() {
             </motion.ul>
 
             {/* Bottom status */}
-            <div className="absolute bottom-8 left-8 right-8 flex items-center justify-between">
-              <p className="font-mono text-[11px] text-text-muted tracking-wide">{meta.domain}</p>
-              <div className="flex items-center gap-2">
+            <div className="absolute bottom-8 left-8 right-8 flex items-center justify-between gap-4 overflow-hidden">
+              <p className="font-mono text-[11px] text-text-muted tracking-wide truncate">{meta.domain}</p>
+              <div className="flex items-center gap-2 flex-shrink-0">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
                 <span className="font-mono text-[11px] text-accent tracking-widest uppercase">open to roles</span>
               </div>

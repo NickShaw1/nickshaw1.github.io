@@ -105,6 +105,7 @@ export default function SynthDemo() {
   function noteOn(note: string) {
     if (activeNotes.current.has(note)) return
     const ctx = ensureCtx()
+    if (ctx.state === 'suspended') ctx.resume()
     const now = ctx.currentTime
     const osc = ctx.createOscillator(); osc.type = wave; osc.frequency.value = NOTE_FREQ[note]
     const lfoGain = ctx.createGain(); lfoGain.gain.value = lfoDepth
@@ -212,8 +213,8 @@ export default function SynthDemo() {
         </div>
 
         <div className="px-4 py-3 flex items-center gap-3" style={{ borderBottom: '1px solid #1f2427', background: '#0d0f11' }}>
-          <span className="font-mono text-[8px] tracking-widest uppercase" style={{ color: '#3d4a4f' }}>OSC</span>
-          <div className="flex rounded-md overflow-hidden" style={{ border: '1px solid #1f2427' }}>
+          <span className="font-mono text-[8px] tracking-widest uppercase flex-shrink-0" style={{ color: '#3d4a4f' }}>OSC</span>
+          <div className="flex rounded-md overflow-hidden flex-shrink-0" style={{ border: '1px solid #1f2427' }}>
             {WAVE_LABELS.map(([w, label]) => (
               <button key={w} onClick={() => setWave(w)}
                 className="font-mono text-[8px] tracking-wider uppercase px-3 py-1.5 transition-all duration-100"
@@ -226,12 +227,12 @@ export default function SynthDemo() {
               </button>
             ))}
           </div>
-          <div className="ml-auto flex items-center gap-2" style={{ minWidth: 120 }}>
+          <div className="ml-auto flex items-center gap-2 flex-shrink-0">
             <span className="font-mono text-[8px] uppercase" style={{ color: '#3d4a4f' }}>VOL</span>
             <input type="range" min={0} max={1} step={0.01} value={vol}
               onChange={e => setVol(parseFloat(e.target.value))}
-              className="flex-1 cursor-pointer" style={{ accentColor: '#0AFF9D' }} aria-label="Volume" />
-            <span className="font-mono text-[8px] tabular-nums w-7 text-right" style={{ color: '#0AFF9D' }}>{Math.round(vol * 100)}%</span>
+              className="w-16 sm:w-24 cursor-pointer" style={{ accentColor: '#0AFF9D' }} aria-label="Volume" />
+            <span className="hidden sm:inline font-mono text-[8px] tabular-nums w-7 text-right" style={{ color: '#0AFF9D' }}>{Math.round(vol * 100)}%</span>
           </div>
         </div>
 

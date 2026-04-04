@@ -30,15 +30,22 @@ export default function SimpleModalDemo() {
                 initial={{ scale: 0.92 }} animate={{ scale: 1 }} exit={{ scale: 0.95 }}
                 transition={{ duration: 0.15 }}
                 onClick={e => e.stopPropagation()}
-                className="bg-bg-elevated border border-bg-border rounded-card p-5 w-[80%] max-w-xs"
+                className="relative bg-bg-elevated border border-bg-border rounded-card p-5 w-[80%] max-w-xs"
               >
+                <button
+                  onClick={() => setOpen(false)}
+                  aria-label="Close modal"
+                  className="absolute top-3 right-3 text-text-muted hover:text-text-primary transition-colors duration-150 font-mono text-[14px] leading-none"
+                >
+                  ×
+                </button>
                 <p className="font-display font-semibold text-[15px] text-text-primary mb-2">{SIMPLE_MODAL_CONTENT.title}</p>
                 <p className="text-text-secondary text-[12px] leading-relaxed mb-4">{SIMPLE_MODAL_CONTENT.body}</p>
                 <button
                   onClick={() => setOpen(false)}
-                  className="font-mono text-[10px] tracking-widest uppercase text-accent hover:text-accent-dark transition-colors duration-150"
+                  className="font-mono text-[10px] tracking-widest uppercase text-accent hover:text-accent/70 transition-colors duration-150"
                 >
-                  Close ×
+                  Close
                 </button>
               </motion.div>
             </motion.div>
