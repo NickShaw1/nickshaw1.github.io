@@ -39,15 +39,27 @@ export function HomePageSkeleton() {
 
 export function BlogPageSkeleton() {
   return (
-    <div className="min-h-screen bg-bg-base px-6 pt-24 pb-16 max-w-5xl mx-auto" aria-busy="true" aria-label="Loading blog">
-      <SkeletonBlock className="h-10 w-40 mb-10" />
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {[0, 1, 2, 3, 4, 5].map((i) => (
-          <div key={i} className="space-y-3 p-5 border border-bg-border rounded-card">
-            <SkeletonBlock className="h-4 w-20" />
-            <SkeletonBlock className="h-6 w-4/5" />
+    <div className="min-h-screen bg-bg-base px-6 md:px-10 pt-16 pb-16 max-w-6xl mx-auto" aria-busy="true" aria-label="Loading blog">
+      {/* Header */}
+      <div className="mb-12 space-y-3">
+        <SkeletonBlock className="h-3 w-16" />
+        <SkeletonBlock className="h-10 w-32" />
+        <SkeletonBlock className="h-4 w-72" />
+      </div>
+      {/* Category filter pills */}
+      <div className="hidden sm:flex gap-2 mb-10">
+        {[28, 20, 24, 22, 26].map((w, i) => (
+          <SkeletonBlock key={i} className="h-6 rounded-pill" style={{ width: `${w * 4}px` }} />
+        ))}
+      </div>
+      {/* Post list */}
+      <div className="flex flex-col divide-y divide-bg-border">
+        {[0, 1, 2, 3, 4].map((i) => (
+          <div key={i} className="py-6 space-y-2">
+            <SkeletonBlock className="h-3 w-16" />
+            <SkeletonBlock className="h-5 w-3/4" />
             <SkeletonBlock className="h-4 w-full" />
-            <SkeletonBlock className="h-4 w-3/4" />
+            <SkeletonBlock className="h-4 w-2/3" />
           </div>
         ))}
       </div>
