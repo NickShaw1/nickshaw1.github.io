@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nick Shaw — Blog</title>
+    <link>https://www.nickshawqa.com/blog</link>
+    <description>Articles on software testing, QA engineering, web development, and AI-assisted development by Nick Shaw.</description>
+    <language>en-gb</language>
+    <lastBuildDate>Fri, 04 Apr 2026 00:00:00 GMT</lastBuildDate>
+    <atom:link href="https://www.nickshawqa.com/rss.xml" rel="self" type="application/rss+xml"/>
+
+    <item>
+      <title>Rebuilding the site with Claude Code</title>
+      <link>https://www.nickshawqa.com/blog/site-redesign-2026</link>
+      <description>A full redesign and rebuild of this portfolio using React, TypeScript, Tailwind and Claude Code as a genuine development partner — what we built, how we worked, and what it felt like.</description>
+      <pubDate>Fri, 04 Apr 2026 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://www.nickshawqa.com/blog/site-redesign-2026</guid>
+    </item>
+
+    <item>
+      <title>AI and Agent Skills</title>
+      <link>https://www.nickshawqa.com/blog/ai-and-agent-skills</link>
+      <description>Completing Anthropic&#x2019;s Claude 101, Claude Code in Action, and Introduction to Agent Skills courses &#x2014; plus applying AI-assisted development with Playwright MCP in real delivery work.</description>
+      <pubDate>Mon, 30 Mar 2026 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://www.nickshawqa.com/blog/ai-and-agent-skills</guid>
+    </item>
+
+    <item>
+      <title>CSPO: Product Owner</title>
+      <link>https://www.nickshawqa.com/blog/cspo-product-owner</link>
+      <description>Earning the Certified Scrum Product Owner (CSPO) qualification &#x2014; the course, key learnings, and how combining Product Owner and ScrumMaster perspectives improves delivery.</description>
+      <pubDate>Tue, 12 Aug 2025 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://www.nickshawqa.com/blog/cspo-product-owner</guid>
+    </item>
+
+    <item>
+      <title>Japan and a new PC</title>
+      <link>https://www.nickshawqa.com/blog/japan-and-a-new-pc</link>
+      <description>Back from an unforgettable trip to Japan &#x2014; Tokyo, Mt Fuji, Kyoto, Nara and Hiroshima &#x2014; plus setting up a new PC and looking ahead to the Amalfi Coast and Matera.</description>
+      <pubDate>Tue, 15 Jul 2025 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://www.nickshawqa.com/blog/japan-and-a-new-pc</guid>
+    </item>
+
+    <item>
+      <title>Site redesign</title>
+      <link>https://www.nickshawqa.com/blog/site-redesign</link>
+      <description>A total site rebuild in React &#x2014; exploring component architecture, CSS keyframe animations, and what it&#x2019;s like to dive into a React rabbit-hole during a widespread power outage.</description>
+      <pubDate>Thu, 30 Jan 2025 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://www.nickshawqa.com/blog/site-redesign</guid>
+    </item>
+
+    <item>
+      <title>Setting up Playwright in VS Code for automated testing</title>
+      <link>https://www.nickshawqa.com/blog/setting-up-playwright-in-vs-code</link>
+      <description>A step-by-step guide to setting up Playwright for automated testing in VS Code, covering installation of Node.js, Git, VS Code extensions, and running your first tests.</description>
+      <pubDate>Thu, 12 Dec 2024 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://www.nickshawqa.com/blog/setting-up-playwright-in-vs-code</guid>
+    </item>
+
+    <item>
+      <title>JavaScript (and TypeScript, a little...)</title>
+      <link>https://www.nickshawqa.com/blog/javascript-and-typescript</link>
+      <description>Progress with JavaScript fundamentals through FreeCodeCamp, building mini projects like a colour flipper and calculator, and an early look at TypeScript.</description>
+      <pubDate>Thu, 28 Nov 2024 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://www.nickshawqa.com/blog/javascript-and-typescript</guid>
+    </item>
+
+    <item>
+      <title>Getting started</title>
+      <link>https://www.nickshawqa.com/blog/getting-started</link>
+      <description>An introduction to the site, the plan to document a journey into test automation, and a list of the most useful YouTube channels found along the way.</description>
+      <pubDate>Thu, 28 Nov 2024 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://www.nickshawqa.com/blog/getting-started</guid>
+    </item>
+
+  </channel>
+</rss>

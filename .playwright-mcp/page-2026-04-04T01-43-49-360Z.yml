@@ -1,0 +1,31 @@
+- generic [ref=e3]:
+  - link "Skip to main content" [ref=e4] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=e5]:
+    - generic [ref=e6]:
+      - link "Nick Shaw, home" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - text: nick.shaw
+      - navigation "Primary navigation" [ref=e8]:
+        - list [ref=e9]:
+          - listitem [ref=e10]:
+            - link "Home" [ref=e11] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=e12]:
+            - link "About" [ref=e13] [cursor=pointer]:
+              - /url: /about
+          - listitem [ref=e14]:
+            - link "Blog" [ref=e15] [cursor=pointer]:
+              - /url: /blog
+          - listitem [ref=e16]:
+            - link "Projects" [ref=e17] [cursor=pointer]:
+              - /url: /projects
+        - link "contact" [ref=e18] [cursor=pointer]:
+          - /url: /#contact
+  - main [ref=e19]:
+    - generic "Loading page" [ref=e20]
+  - contentinfo [ref=e34]:
+    - generic [ref=e35]:
+      - paragraph [ref=e36]: nickshawqa.com · 2026
+      - 'generic "Employment status: open to roles — available now for remote or Belfast-based roles" [ref=e37]':
+        - generic [ref=e39]: open to roles
