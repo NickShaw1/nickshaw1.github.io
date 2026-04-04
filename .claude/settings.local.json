@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Read(//c/Users/conta/Documents/Coding/Site/my-react-app-1/src/pages//**)",
-      "Read(//c/Users/conta/Documents/Coding/Site/my-react-app-1/src/components/navbar//**)",
-      "Read(//c/Users/conta/Documents/Coding/Site/my-react-app-1/src/components/sidebar//**)"
-    ]
-  }
-}
