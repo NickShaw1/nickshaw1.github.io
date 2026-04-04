@@ -2,11 +2,11 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const CITIES = [
-  { name: 'Belfast',  lat: 54.60,  lon: -5.93,  tz: 'Europe/London',    tzLabel: 'GMT'  },
-  { name: 'London',   lat: 51.51,  lon: -0.13,  tz: 'Europe/London',    tzLabel: 'GMT'  },
-  { name: 'Paris',    lat: 48.85,  lon: 2.35,   tz: 'Europe/Paris',     tzLabel: 'CET'  },
-  { name: 'New York', lat: 40.71,  lon: -74.01, tz: 'America/New_York', tzLabel: 'ET'   },
-  { name: 'Tokyo',    lat: 35.68,  lon: 139.69, tz: 'Asia/Tokyo',       tzLabel: 'JST'  },
+  { name: 'Belfast',  abbr: 'BFS', lat: 54.60,  lon: -5.93,  tz: 'Europe/London',    tzLabel: 'GMT'  },
+  { name: 'London',   abbr: 'LDN', lat: 51.51,  lon: -0.13,  tz: 'Europe/London',    tzLabel: 'GMT'  },
+  { name: 'Paris',    abbr: 'PAR', lat: 48.85,  lon: 2.35,   tz: 'Europe/Paris',     tzLabel: 'CET'  },
+  { name: 'New York', abbr: 'NYC', lat: 40.71,  lon: -74.01, tz: 'America/New_York', tzLabel: 'ET'   },
+  { name: 'Tokyo',    abbr: 'TKY', lat: 35.68,  lon: 139.69, tz: 'Asia/Tokyo',       tzLabel: 'JST'  },
 ]
 
 function weatherLabel(code: number): string {
@@ -142,17 +142,18 @@ export default function WeatherDemo() {
     <div className="mb-5">
       <p className="font-mono text-[10px] tracking-widest uppercase text-text-muted mb-3">Live demo</p>
 
-      <div className="flex gap-1 flex-wrap mb-4">
+      <div className="flex gap-1 mb-4">
         {CITIES.map((c, i) => (
           <button
             key={c.name}
             onClick={() => setCityIdx(i)}
-            className={`font-mono text-[10px] tracking-widest uppercase px-3 py-1.5 rounded-pill border transition-colors duration-150
+            className={`font-mono text-[10px] tracking-widest uppercase px-3 py-1.5 rounded-pill border transition-colors duration-150 flex-1 sm:flex-none
               ${cityIdx === i
                 ? 'border-accent text-accent bg-accent/10'
                 : 'border-bg-border text-text-muted hover:text-text-secondary hover:border-text-muted/30'}`}
           >
-            {c.name}
+            <span className="sm:hidden">{c.abbr}</span>
+            <span className="hidden sm:inline">{c.name}</span>
           </button>
         ))}
       </div>
