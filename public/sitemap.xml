@@ -35,6 +35,12 @@
 
   <!-- Blog posts -->
   <url>
+    <loc>https://www.nickshawqa.com/blog/running-playwright-tests-in-ci-with-github-actions</loc>
+    <lastmod>2026-04-04</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.nickshawqa.com/blog/site-redesign-2026</loc>
     <lastmod>2026-04-04</lastmod>
     <changefreq>yearly</changefreq>
