@@ -7,7 +7,7 @@ import { useReducedMotion } from '../hooks/useReducedMotion'
 import { allPostMeta } from '../lib/blog'
 import { meta } from '../data/meta'
 
-const ALL_CATEGORIES = ['All', ...Array.from(new Set(allPostMeta.map((p) => p.category)))]
+const ALL_CATEGORIES = ['All', ...Array.from(new Set(allPostMeta.map((p) => p.category))).sort()]
 
 export default function Blog() {
   const reduced = useReducedMotion()

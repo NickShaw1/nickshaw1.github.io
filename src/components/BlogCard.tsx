@@ -41,8 +41,8 @@ export default function BlogCard({ post, delay = 0, reduced = false }: BlogCardP
       </div>
 
       {/* Title */}
-      <h2 className="font-display font-semibold text-[17px] sm:text-[19px] leading-snug mb-2 flex items-start gap-2">
-        <Icon size={16} className={`${colour} flex-shrink-0 mt-[3px]`} />
+      <h2 className="font-display font-semibold text-[17px] sm:text-[19px] leading-snug mb-2 flex items-center gap-2">
+        <Icon size={16} className={`${colour} flex-shrink-0`} />
         <Link
           to={`/blog/${post.slug}`}
           className="text-text-primary hover:text-link transition-colors duration-150 line-clamp-1 sm:line-clamp-none"
