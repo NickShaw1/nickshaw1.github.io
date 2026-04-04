@@ -21,6 +21,7 @@ export default function HolidayPlannerDemo() {
 
   const labelClass  = 'font-mono text-[10px] tracking-widest uppercase text-text-muted mb-1'
   const inputClass  = 'w-full bg-bg-base border border-bg-border rounded px-3 py-2 text-text-primary text-[13px] font-mono placeholder:text-text-muted/40 focus:outline-none focus:border-accent/40 transition-colors duration-150 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+  const dateClass   = 'w-full bg-bg-base border border-bg-border rounded px-3 py-2 text-text-primary text-[13px] font-mono text-left focus:outline-none focus:border-accent/40 transition-colors duration-150 cursor-pointer'
   const selectClass = 'demo-select w-full bg-bg-base border border-bg-border rounded px-3 py-2 text-text-primary text-[13px] font-mono focus:outline-none focus:border-accent/40 cursor-pointer transition-colors duration-150'
 
   const symbol = CURRENCIES.find(c => c.code === currency)?.symbol ?? '£'
@@ -112,7 +113,8 @@ export default function HolidayPlannerDemo() {
                 type="date"
                 value={startDate}
                 onChange={e => { setStartDate(e.target.value); if (endDate && endDate < e.target.value) setEndDate('') }}
-                className={inputClass}
+                onClick={e => (e.currentTarget as HTMLInputElement).showPicker?.()}
+                className={dateClass}
               />
             </div>
             <div>
@@ -126,7 +128,8 @@ export default function HolidayPlannerDemo() {
                   const val = e.target.value
                   if (!startDate || val >= startDate) setEndDate(val)
                 }}
-                className={inputClass}
+                onClick={e => (e.currentTarget as HTMLInputElement).showPicker?.()}
+                className={dateClass}
               />
             </div>
             <div>
