@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0a0a0a" />
     <title>404 — Page not found | Nick Shaw</title>
+    <script>
+      // GitHub Pages SPA redirect — preserve the path for React Router
+      const path = window.location.pathname
+      if (path !== '/') {
+        window.location.replace('/?p=' + encodeURIComponent(path))
+      }
+    </script>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Space+Mono&display=swap');
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
