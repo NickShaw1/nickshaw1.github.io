@@ -29,6 +29,7 @@ export default function SEOHead({
     "img-src 'self' data: https:",
     "font-src 'self'",
     `connect-src 'self' https://formspree.io https://api.frankfurter.dev https://api.open-meteo.com https://api.wheretheiss.at https://api.bigdatacloud.net https://corquaid.github.io`,
+    "frame-src https://www.youtube.com",
   ].join('; ')
 
   return (
