@@ -27,7 +27,7 @@ interface KBCard {
 
 // ── Icon colours per section type ─────────────────────────
 const THEORY_COLOUR  = 'text-[#60a5fa]'
-const GUIDES_COLOUR  = 'text-[#34d399]'
+const GUIDES_COLOUR  = 'text-[#E2574C]'
 const REF_COLOUR     = 'text-[#f59e0b]'
 
 const THEORY: KBCard[] = [
@@ -43,7 +43,7 @@ const THEORY: KBCard[] = [
 ]
 
 const GUIDES: KBCard[] = [
-  { title: 'Playwright',        icon: Play,          blurb: 'End-to-end browser automation with the modern Playwright framework.' },
+  { title: 'Playwright Guide',  icon: Play,          blurb: 'From zero to a production-ready test suite using the Playwright framework.', href: '/knowledge-base/playwright/introduction', readingMins: 137 },
 ]
 
 const REFERENCE: KBCard[] = [

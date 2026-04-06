@@ -19,7 +19,7 @@ const ICON_CLASSES: Record<BannerVariant, string> = {
 
 export default function KBBanner({ children, variant = 'info' }: { children: ReactNode; variant?: BannerVariant }) {
   return (
-    <div className={`border rounded-card px-5 py-4 my-6 md:flex md:items-center md:gap-5 ${VARIANT_CLASSES[variant]}`}>
+    <div role="note" className={`border rounded-card px-5 py-4 my-6 md:flex md:items-center md:gap-5 ${VARIANT_CLASSES[variant]}`}>
       <Info size={44} aria-hidden="true" className={`flex-shrink-0 hidden md:block ${ICON_CLASSES[variant]}`} />
       <p className="text-text-secondary text-[14px] leading-relaxed">{children}</p>
     </div>

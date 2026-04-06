@@ -1,5 +1,5 @@
 import type { ComponentType, FC } from 'react'
-import { BookOpen, Hand, ClipboardList, Bot, FlaskConical, Activity, Sparkles, Wrench, Lightbulb } from 'lucide-react'
+import { BookOpen, Hand, ClipboardList, Bot, FlaskConical, Activity, Sparkles, Wrench, Lightbulb, Play } from 'lucide-react'
 
 // Types — shared across all KB files
 export interface KBTocSection {
@@ -34,7 +34,7 @@ export interface KBSectionData {
 
 // Colour key:
 //   Theory    → #60a5fa  (blue)
-//   Guides    → #34d399  (green)
+//   Guides    → #E2574C  (Playwright brand red-orange)
 //   Reference → #f59e0b  (amber)
 const SECTION_LOADERS: Record<string, {
   title: string
@@ -95,6 +95,12 @@ const SECTION_LOADERS: Record<string, {
     colour: '#60a5fa',
     icon: Lightbulb,
     load: () => import('./concepts/index'),
+  },
+  playwright: {
+    title: 'Playwright',
+    colour: '#E2574C',
+    icon: Play,
+    load: () => import('./playwright/index'),
   },
 }
 

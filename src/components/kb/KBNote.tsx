@@ -21,7 +21,7 @@ export default function KBNote({ children, variant = 'green' }: { children: Reac
   const cls = NOTE_CLASSES[variant]
   const Icon = NOTE_ICONS[variant]
   return (
-    <div className={`
+    <div role="note" className={`
       ${cls.bg} ${cls.border} rounded-card px-5 py-4 my-6 md:flex md:items-center md:gap-5
       ${cls.full ? `border` : `border-l-2 rounded-l-none`}
     `}>

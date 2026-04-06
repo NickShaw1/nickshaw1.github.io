@@ -212,6 +212,18 @@
   <url><loc>https://www.nickshawqa.com/knowledge-base/tooling/accessibility-and-visual-tools</loc><lastmod>2026-04-06</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://www.nickshawqa.com/knowledge-base/tooling/bdd-tools</loc><lastmod>2026-04-06</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
 
+  <!-- KB: Playwright -->
+  <url><loc>https://www.nickshawqa.com/knowledge-base/playwright/introduction</loc><lastmod>2026-04-07</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.nickshawqa.com/knowledge-base/playwright/installation-and-setup</loc><lastmod>2026-04-07</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.nickshawqa.com/knowledge-base/playwright/writing-your-first-test</loc><lastmod>2026-04-07</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.nickshawqa.com/knowledge-base/playwright/locators-and-selectors</loc><lastmod>2026-04-07</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.nickshawqa.com/knowledge-base/playwright/assertions</loc><lastmod>2026-04-07</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.nickshawqa.com/knowledge-base/playwright/page-object-model</loc><lastmod>2026-04-07</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.nickshawqa.com/knowledge-base/playwright/debugging-reporting-and-results</loc><lastmod>2026-04-07</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.nickshawqa.com/knowledge-base/playwright/configuration</loc><lastmod>2026-04-07</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.nickshawqa.com/knowledge-base/playwright/ci-cd-integration</loc><lastmod>2026-04-07</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.nickshawqa.com/knowledge-base/playwright/advanced-patterns</loc><lastmod>2026-04-07</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
   <!-- KB: Concepts -->
   <url><loc>https://www.nickshawqa.com/knowledge-base/concepts/writing-good-tests</loc><lastmod>2026-04-06</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://www.nickshawqa.com/knowledge-base/concepts/introducing-testing-to-a-legacy-codebase</loc><lastmod>2026-04-06</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>

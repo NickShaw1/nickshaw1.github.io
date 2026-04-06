@@ -12,7 +12,7 @@ const STEPS_CLASSES: Record<StepsVariant, { border: string; text: string }> = {
 export default function KBSteps({ steps, variant = 'green' }: { steps: { title: string; body: ReactNode }[]; variant?: StepsVariant }) {
   const cls = STEPS_CLASSES[variant]
   return (
-    <ol className="my-6 space-y-4 list-none">
+    <ol role="list" className="my-6 space-y-4 list-none">
       {steps.map((step, i) => (
         <li key={step.title} className={`border-l-2 ${cls.border} pl-4 py-1`}>
           <span aria-hidden="true" className={`font-mono text-[10px] tracking-widest uppercase ${cls.text} mb-1 block`}>{i + 1}</span>

@@ -9,6 +9,7 @@ import KBLeftSidebar from '../components/KBLeftSidebar'
 import KBRightToc from '../components/KBRightToc'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { loadSection, getAdjacentArticles, readingTime } from '../data/kb'
+import KBArticleSkeleton from '../components/kb/KBArticleSkeleton'
 import type { KBSectionData } from '../data/kb'
 
 export default function KBArticlePage() {
@@ -130,7 +131,7 @@ export default function KBArticlePage() {
 
             {/* ── Article body ───────────────────── */}
             <article>
-              {Content ? <Content /> : null}
+              {Content ? <Content /> : <KBArticleSkeleton />}
             </article>
 
             {/* ── Prev / next navigation ─────────── */}
