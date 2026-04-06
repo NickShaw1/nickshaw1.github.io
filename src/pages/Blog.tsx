@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import SEOHead from '../components/SEOHead'
 import BlogCard from '../components/BlogCard'
 import SectionLabel from '../components/SectionLabel'
@@ -28,7 +28,7 @@ export default function Blog() {
       <div className="max-w-6xl mx-auto px-6 md:px-10 py-16">
 
         {/* ── Header ──────────────────────────────────────── */}
-        <motion.div
+        <m.div
           initial={reduced ? undefined : { opacity: 0, y: 20 }}
           animate={reduced ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: 'easeOut' }}
@@ -41,10 +41,10 @@ export default function Blog() {
           <p className="text-text-secondary text-[15px] leading-relaxed max-w-xl">
             Thoughts on QA, testing, delivery and the tools I use day-to-day.
           </p>
-        </motion.div>
+        </m.div>
 
         {/* ── Category filter ─────────────────────────────── */}
-        <motion.div
+        <m.div
           initial={reduced ? undefined : { opacity: 0, y: 12 }}
           animate={reduced ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.45, ease: 'easeOut', delay: 0.1 }}
@@ -69,7 +69,7 @@ export default function Blog() {
               {cat}
             </button>
           ))}
-        </motion.div>
+        </m.div>
 
         {/* ── Post list ───────────────────────────────────── */}
         {filtered.length === 0 ? (

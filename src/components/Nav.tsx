@@ -1,16 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { X, Menu } from 'lucide-react'
-import { motion, AnimatePresence, type Easing } from 'framer-motion'
+import { m, AnimatePresence, type Easing } from 'framer-motion'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { useGlitchText } from '../hooks/useGlitchText'
 import { meta } from '../data/meta'
 
 const NAV_LINKS = [
-  { to: '/',        label: 'Home'     },
-  { to: '/about',   label: 'About'    },
-  { to: '/blog',    label: 'Blog'     },
-  { to: '/projects',label: 'Projects' },
+  { to: '/',                label: 'Home'     },
+  { to: '/about',           label: 'About'    },
+  { to: '/blog',            label: 'Blog'     },
+  { to: '/projects',        label: 'Projects' },
+  { to: '/knowledge-base',  label: 'Knowledge' },
 ] as const
 
 export default function Nav() {
@@ -197,7 +198,7 @@ export default function Nav() {
       {/* ── Mobile overlay ── */}
       <AnimatePresence>
         {menuOpen && (
-          <motion.div
+          <m.div
             id="mobile-menu"
             ref={overlayRef}
             role="dialog"
@@ -218,7 +219,7 @@ export default function Nav() {
               md:hidden
             "
           >
-            <motion.ul
+            <m.ul
               role="list"
               className="list-none m-0 p-0 flex flex-col gap-1"
               {...(prefersReduced ? {} : linkListVariants)}
@@ -226,7 +227,7 @@ export default function Nav() {
               animate="animate"
             >
               {NAV_LINKS.map(({ to, label }) => (
-                <motion.li
+                <m.li
                   key={to}
                   {...(prefersReduced ? {} : linkItemVariants)}
                 >
@@ -236,8 +237,8 @@ export default function Nav() {
                     onClick={() => setMenuOpen(false)}
                     className={({ isActive }) =>
                       [
-                        'flex items-center gap-4 py-3 group',
-                        'font-display font-semibold text-[2.25rem] tracking-tight',
+                        'flex items-center gap-4 py-2 group',
+                        'font-display font-semibold text-[1.75rem] tracking-tight',
                         'transition-colors duration-150',
                         isActive
                           ? 'text-text-primary'
@@ -247,25 +248,25 @@ export default function Nav() {
                   >
                     {({ isActive }) => (
                       <>
-                        <span className={`w-0.5 h-7 rounded-full flex-shrink-0 transition-colors duration-150 ${isActive ? 'bg-accent' : 'bg-bg-border group-hover:bg-accent'}`} />
+                        <span className={`w-0.5 h-6 rounded-full flex-shrink-0 transition-colors duration-150 ${isActive ? 'bg-accent' : 'bg-bg-border group-hover:bg-accent'}`} />
                         {label}
                       </>
                     )}
                   </NavLink>
-                </motion.li>
+                </m.li>
               ))}
 
-              <motion.li {...(prefersReduced ? {} : linkItemVariants)}>
+              <m.li {...(prefersReduced ? {} : linkItemVariants)}>
                 <a
                   href="/#contact"
                   onClick={() => setMenuOpen(false)}
-                  className="flex items-center gap-4 py-3 group font-display font-semibold text-[2.25rem] tracking-tight text-text-secondary/50 hover:text-text-primary transition-colors duration-150"
+                  className="flex items-center gap-4 py-2 group font-display font-semibold text-[1.75rem] tracking-tight text-text-secondary/50 hover:text-text-primary transition-colors duration-150"
                 >
-                  <span className="w-0.5 h-7 rounded-full flex-shrink-0 bg-bg-border group-hover:bg-accent transition-colors duration-150" />
+                  <span className="w-0.5 h-6 rounded-full flex-shrink-0 bg-bg-border group-hover:bg-accent transition-colors duration-150" />
                   Contact
                 </a>
-              </motion.li>
-            </motion.ul>
+              </m.li>
+            </m.ul>
 
             {/* Bottom status */}
             <div className="absolute bottom-8 left-8 right-8 flex items-center justify-between gap-4 overflow-hidden">
@@ -275,7 +276,7 @@ export default function Nav() {
                 <span className="font-mono text-[11px] text-accent tracking-widest uppercase">open to roles</span>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { Download, MapPin, ArrowLeft } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
@@ -106,9 +106,11 @@ const QUALIFICATIONS = [
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex items-center gap-3 mb-5">
-      <h2 className="font-mono text-[10px] tracking-widest uppercase text-accent whitespace-nowrap">{children}</h2>
-      <div className="flex-1 h-px bg-bg-border" />
+    <div className="flex items-center gap-4 mb-6">
+      <h2 className="font-display font-bold text-[1.375rem] leading-none text-accent/70 whitespace-nowrap">
+        {children}
+      </h2>
+      <div className="flex-1 h-px bg-bg-border" aria-hidden="true" />
     </div>
   )
 }
@@ -126,7 +128,7 @@ export default function CV() {
       <div className="max-w-4xl mx-auto px-6 md:px-10 py-16">
 
         {/* ── Back link ──────────────────────────────────── */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: 'easeOut' }}
@@ -138,10 +140,10 @@ export default function CV() {
           >
             <ArrowLeft size={13} /> Back to about
           </Link>
-        </motion.div>
+        </m.div>
 
         {/* ── Header ─────────────────────────────────────── */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: 'easeOut' }}
@@ -167,10 +169,10 @@ export default function CV() {
             <Download size={12} />
             Download PDF
           </a>
-        </motion.div>
+        </m.div>
 
         {/* ── Professional Summary ────────────────────────── */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
@@ -183,10 +185,10 @@ export default function CV() {
           <p className="text-text-secondary text-[15px] leading-[1.85]">
             I bring cross-functional leadership experience across QA, delivery and product management, including Product Owner, Scrum Master and project oversight responsibilities. My focus is on strategic governance, risk-aware delivery, Agile transformation and embedding automation and AI-assisted testing to drive efficiency and consistent quality outcomes. I work closely with senior executives to optimise organisational performance and ensure delivery excellence across complex regulated programmes.
           </p>
-        </motion.div>
+        </m.div>
 
         {/* ── Core Competencies ──────────────────────────── */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: 'easeOut', delay: 0.15 }}
@@ -201,53 +203,56 @@ export default function CV() {
               </div>
             ))}
           </div>
-        </motion.div>
+        </m.div>
 
         {/* ── Professional Experience ────────────────────── */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: 'easeOut', delay: 0.2 }}
           className="mb-8 sm:mb-12"
         >
           <SectionHeading>Professional Experience</SectionHeading>
-          <div className="flex flex-col gap-8 sm:gap-10">
+          <div className="flex flex-col gap-10">
             {ROLES.map((role) => (
-              <div key={role.title + role.company} className="group">
-                <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-1">
-                  <div>
-                    <span className="font-display font-semibold text-[16px] text-text-primary">{role.title}</span>
-                    {role.note && (
-                      <span className="font-mono text-[10px] text-text-muted ml-2 tracking-wide">({role.note})</span>
-                    )}
+              <div key={role.title + role.company} className="group flex items-stretch gap-5">
+                <div className="w-0.5 flex-shrink-0 bg-accent/25 group-hover:bg-accent transition-colors duration-200 rounded-full" />
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-1">
+                    <div>
+                      <span className="font-display font-semibold text-[16px] text-text-primary">{role.title}</span>
+                      {role.note && (
+                        <span className="font-mono text-[10px] text-text-muted ml-2 tracking-wide">({role.note})</span>
+                      )}
+                    </div>
+                    <span className="font-mono text-[11px] text-text-muted flex-shrink-0">{role.period}</span>
                   </div>
-                  <span className="font-mono text-[11px] text-text-muted flex-shrink-0">{role.period}</span>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="font-mono text-[12px] text-accent">{role.company}</span>
+                    <span className="text-bg-border">·</span>
+                    <span className="font-mono text-[11px] text-text-muted">{role.location}</span>
+                  </div>
+                  <p className="text-text-secondary text-[14px] leading-relaxed mb-3 italic">{role.summary}</p>
+                  <ul className="space-y-2 mb-4">
+                    {role.achievements.map((a) => (
+                      <li key={a} className="flex items-start gap-2.5">
+                        <span className="text-accent flex-shrink-0 mt-[5px] text-[8px]">▸</span>
+                        <span className="text-text-secondary text-[13px] leading-relaxed">{a}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="font-mono text-[11px] text-text-secondary leading-relaxed break-words">
+                    <span className="uppercase tracking-widest text-accent/70 mr-2 text-[10px]">Tools</span>
+                    {role.tools}
+                  </p>
                 </div>
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="font-mono text-[12px] text-accent">{role.company}</span>
-                  <span className="text-bg-border">·</span>
-                  <span className="font-mono text-[11px] text-text-muted">{role.location}</span>
-                </div>
-                <p className="text-text-secondary text-[14px] leading-relaxed mb-3 italic">{role.summary}</p>
-                <ul className="space-y-2 mb-4">
-                  {role.achievements.map((a) => (
-                    <li key={a} className="flex items-start gap-2.5">
-                      <span className="text-accent flex-shrink-0 mt-[5px] text-[8px]">▸</span>
-                      <span className="text-text-secondary text-[13px] leading-relaxed">{a}</span>
-                    </li>
-                  ))}
-                </ul>
-                <p className="font-mono text-[11px] text-text-secondary leading-relaxed break-words">
-                  <span className="uppercase tracking-widest text-accent/70 mr-2 text-[10px]">Tools</span>
-                  {role.tools}
-                </p>
               </div>
             ))}
           </div>
-        </motion.div>
+        </m.div>
 
         {/* ── Earlier Career ──────────────────────────────── */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.1 }}
@@ -257,31 +262,34 @@ export default function CV() {
           <SectionHeading>Earlier Career</SectionHeading>
           <div className="flex flex-col gap-7">
             {EARLIER.map((role) => (
-              <div key={role.title + role.company}>
-                <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-1">
-                  <span className="font-display font-semibold text-[15px] text-text-primary">{role.title}</span>
-                  <span className="font-mono text-[11px] text-text-muted flex-shrink-0">{role.period}</span>
+              <div key={role.title + role.company} className="group flex items-stretch gap-5">
+                <div className="w-0.5 flex-shrink-0 bg-accent/25 group-hover:bg-accent transition-colors duration-200 rounded-full" />
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-1">
+                    <span className="font-display font-semibold text-[15px] text-text-primary">{role.title}</span>
+                    <span className="font-mono text-[11px] text-text-muted flex-shrink-0">{role.period}</span>
+                  </div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="font-mono text-[12px] text-accent">{role.company}</span>
+                    <span className="text-bg-border">·</span>
+                    <span className="font-mono text-[11px] text-text-muted">{role.location}</span>
+                  </div>
+                  <ul className="space-y-2">
+                    {role.points.map((p) => (
+                      <li key={p} className="flex items-start gap-2.5">
+                        <span className="text-accent flex-shrink-0 mt-[5px] text-[8px]">▸</span>
+                        <span className="text-text-secondary text-[13px] leading-relaxed">{p}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="font-mono text-[12px] text-accent">{role.company}</span>
-                  <span className="text-bg-border">·</span>
-                  <span className="font-mono text-[11px] text-text-muted">{role.location}</span>
-                </div>
-                <ul className="space-y-2">
-                  {role.points.map((p) => (
-                    <li key={p} className="flex items-start gap-2.5">
-                      <span className="text-accent flex-shrink-0 mt-[5px] text-[8px]">▸</span>
-                      <span className="text-text-secondary text-[13px] leading-relaxed">{p}</span>
-                    </li>
-                  ))}
-                </ul>
               </div>
             ))}
           </div>
-        </motion.div>
+        </m.div>
 
         {/* ── Qualifications ──────────────────────────────── */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.1 }}
@@ -303,10 +311,10 @@ export default function CV() {
               </div>
             ))}
           </div>
-        </motion.div>
+        </m.div>
 
         {/* ── Education ──────────────────────────────────── */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.1 }}
@@ -331,7 +339,7 @@ export default function CV() {
               </div>
             </div>
           ))}
-        </motion.div>
+        </m.div>
 
       </div>
     </>

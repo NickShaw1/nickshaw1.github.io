@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 
 const TABS_DATA = [
   { label: 'Overview',   content: 'Tabs keep related content in one place without navigating away. Only one panel is visible at a time, determined by the active tab.' },
@@ -33,7 +33,7 @@ export default function TabsDemo() {
         </div>
         <div className="p-4 min-h-[72px]">
           <AnimatePresence mode="wait" initial={false}>
-            <motion.p
+            <m.p
               key={active}
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
@@ -42,7 +42,7 @@ export default function TabsDemo() {
               className="text-[13px] text-text-secondary leading-relaxed"
             >
               {TABS_DATA[active].content}
-            </motion.p>
+            </m.p>
           </AnimatePresence>
         </div>
       </div>

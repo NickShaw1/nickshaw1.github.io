@@ -1,0 +1,135 @@
+import KBAside from '../../../components/kb/KBAside'
+import KBNote from '../../../components/kb/KBNote'
+import { KBH2, KBP } from '../../../components/kb/KBHeading'
+
+export default function WritingGoodTests() {
+  return (
+    <>
+      <KBP>
+        A test suite is only as valuable as the tests within it. Coverage percentage says nothing
+        about whether the tests are trustworthy, maintainable or genuinely useful when something
+        breaks. Writing good tests is a craft that requires as much deliberate thought as writing
+        good production code, and the principles that guide it are relatively stable regardless
+        of the language, framework or level of the pyramid you are working at.
+      </KBP>
+
+      <KBH2 id="what-makes-a-test-good">What makes a test good</KBH2>
+
+      <KBP>
+        A good test has four qualities. It is fast enough to run as part of a normal development
+        loop. It is deterministic: run it a hundred times and it passes or fails consistently for
+        the same reason. It is focused, testing one specific behaviour rather than several
+        unrelated concerns. And it is informative: when it fails, it tells you clearly what went
+        wrong and where.
+      </KBP>
+
+      <KBP>
+        Tests that lack these qualities accumulate into a liability. Slow tests get skipped or
+        moved out of the main pipeline. Non-deterministic tests get marked as known flaky and
+        ignored. Unfocused tests fail for multiple reasons simultaneously, making diagnosis harder.
+        Tests with poor failure messages require developers to read the implementation before they
+        can understand the failure.
+      </KBP>
+
+      <KBH2 id="naming-and-readability">Naming and readability</KBH2>
+
+      <KBP>
+        A test name should make the failure self-explanatory without requiring anyone to open the
+        test body. A name like <code>test_user_login</code> tells you almost nothing. A name like
+        <code>returns_401_when_credentials_are_invalid</code> tells you the scenario, the expected
+        outcome and what kind of test it is. When a CI pipeline shows a list of failed tests, the
+        names alone should make the problem obvious.
+      </KBP>
+
+      <KBP>
+        The Arrange/Act/Assert structure gives test bodies a consistent shape that any developer
+        can read at a glance. The arrange section sets up the preconditions, the act section
+        performs the operation under test and the assert section verifies the outcome. Each section
+        should be clearly separated, either by blank lines or by short comments if the test is
+        complex. A test that mixes these concerns throughout is harder to read than it needs to be.
+      </KBP>
+
+      <KBH2 id="test-isolation">Test isolation</KBH2>
+
+      <KBP>
+        Each test should be able to run independently, in any order, without relying on state
+        created by a preceding test. Shared mutable state between tests is one of the most common
+        sources of intermittent failures: a test that passes in isolation fails when run after a
+        different test that left the database, file system or in-memory store in an unexpected
+        state.
+      </KBP>
+
+      <KBP>
+        Isolation also means keeping dependencies to a minimum. A unit test that stands up a
+        database connection, makes a network call and reads from a configuration file is no longer
+        a unit test in any meaningful sense. It is a slow, brittle integration test with a
+        misleading name. Isolate the unit under test from its external dependencies using mocks,
+        stubs or fakes, and keep the full-stack interactions for the integration and end-to-end
+        layers where they belong.
+      </KBP>
+
+      <KBH2 id="assertions">Assertions</KBH2>
+
+      <KBP>
+        Each test should make a small number of focused assertions. A test that asserts on a dozen
+        different properties of the same object is usually doing too much. If the first assertion
+        fails, the rest are never evaluated, leaving the full failure picture obscured until the
+        first issue is fixed. More importantly, a test that covers too many concerns is testing a
+        scenario rather than a behaviour, which makes the test harder to name accurately and harder
+        to maintain as the code changes.
+      </KBP>
+
+      <KBP>
+        Prefer assertions on outcomes over assertions on implementation. Testing that a function
+        returns the correct result is an assertion on behaviour. Testing that it called a specific
+        internal method with a specific argument is an assertion on implementation. The latter
+        breaks whenever the implementation changes, even if the external behaviour is identical,
+        which produces failing tests that carry no useful signal.
+      </KBP>
+
+      <KBH2 id="what-not-to-test">What not to test</KBH2>
+
+      <KBP>
+        Not everything needs a test. Third-party libraries, framework internals and language
+        built-ins are already tested by their maintainers. Writing tests that verify a sorting
+        function sorts, or that a framework routes requests correctly, adds maintenance cost with
+        no corresponding quality benefit.
+      </KBP>
+
+      <KBP>
+        Similarly, tests that duplicate each other, covering the same code path with identical
+        or near-identical inputs, inflate coverage numbers without adding protection against real
+        failure modes. The question worth asking before writing any test is: if this breaks, what
+        would this test tell me that no existing test would? If the answer is nothing, the test
+        is probably unnecessary.
+      </KBP>
+
+      <KBAside label="Tests as documentation" variant="blue">
+        Well-written tests serve as executable documentation of how a system is supposed to behave.
+        A new developer reading the test suite for a module should be able to understand its
+        expected behaviour, its error handling and its edge cases without reading the implementation.
+        This is one of the most practical arguments for investing in test quality beyond coverage:
+        a readable test suite reduces onboarding time and makes the codebase more navigable as
+        it grows.
+      </KBAside>
+
+      <KBH2 id="maintenance">Maintenance</KBH2>
+
+      <KBP>
+        Tests are code and they require the same maintenance discipline as production code. Tests
+        that are never updated as the system changes become a source of confusion: they assert on
+        old behaviour, use outdated fixtures or reference removed APIs. When a test fails for a
+        reason unrelated to a defect, the standard response should be to fix or update the test,
+        not to skip or delete it.
+      </KBP>
+
+      <KBNote variant="warning">
+        Deleting failing tests is a debt that compounds silently. The first few deletions reduce
+        noise in the short term, but each one removes a safety net and normalises the idea that
+        a failing test is a problem to be eliminated rather than understood. Teams that develop
+        a habit of deleting inconvenient tests tend to find that their suites gradually drift
+        toward the areas that are easy to test rather than the areas that matter most.
+      </KBNote>
+    </>
+  )
+}

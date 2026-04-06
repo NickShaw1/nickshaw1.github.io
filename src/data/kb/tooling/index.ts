@@ -1,0 +1,115 @@
+import type { KBArticle } from '../index'
+
+export const articles: KBArticle[] = [
+  {
+    slug: 'browser-and-e2e-tools',
+    title: 'Browser & End-to-End Testing Tools',
+    shortTitle: 'Browser & E2E',
+    wordCount: 1800,
+    sections: [
+      { id: 'playwright',    title: 'Playwright' },
+      { id: 'selenium',      title: 'Selenium' },
+      { id: 'cypress',       title: 'Cypress' },
+      { id: 'webdriverio',   title: 'WebdriverIO' },
+      { id: 'choosing-a-tool', title: 'Choosing a tool' },
+    ],
+    load: () => import('./browser-and-e2e-tools'),
+  },
+  {
+    slug: 'unit-and-integration-tools',
+    title: 'Unit & Integration Testing Tools',
+    shortTitle: 'Unit & Integration',
+    wordCount: 1200,
+    sections: [
+      { id: 'jest',    title: 'Jest' },
+      { id: 'vitest',  title: 'Vitest' },
+      { id: 'pytest',  title: 'Pytest' },
+      { id: 'junit',   title: 'JUnit' },
+      { id: 'testng',  title: 'TestNG' },
+    ],
+    load: () => import('./unit-and-integration-tools'),
+  },
+  {
+    slug: 'api-testing-tools',
+    title: 'API Testing Tools',
+    shortTitle: 'API Testing',
+    wordCount: 900,
+    sections: [
+      { id: 'postman',       title: 'Postman' },
+      { id: 'rest-assured',  title: 'REST Assured' },
+      { id: 'msw',           title: 'Mock Service Worker' },
+    ],
+    load: () => import('./api-testing-tools'),
+  },
+  {
+    slug: 'contract-testing-tools',
+    title: 'Contract Testing Tools',
+    shortTitle: 'Contract Testing',
+    wordCount: 900,
+    sections: [
+      { id: 'how-pact-works',    title: 'How Pact works' },
+      { id: 'the-pact-workflow', title: 'The Pact workflow' },
+      { id: 'pact-broker',       title: 'Pact Broker and PactFlow' },
+    ],
+    load: () => import('./contract-testing-tools'),
+  },
+  {
+    slug: 'performance-and-load-tools',
+    title: 'Performance & Load Testing Tools',
+    shortTitle: 'Performance & Load',
+    wordCount: 1100,
+    sections: [
+      { id: 'jmeter',  title: 'Apache JMeter' },
+      { id: 'k6',      title: 'k6' },
+      { id: 'gatling', title: 'Gatling' },
+    ],
+    load: () => import('./performance-and-load-tools'),
+  },
+  {
+    slug: 'mobile-testing-tools',
+    title: 'Mobile Testing Tools',
+    shortTitle: 'Mobile Testing',
+    wordCount: 900,
+    sections: [
+      { id: 'appium', title: 'Appium' },
+      { id: 'detox',  title: 'Detox' },
+    ],
+    load: () => import('./mobile-testing-tools'),
+  },
+  {
+    slug: 'security-testing-tools',
+    title: 'Security Testing Tools',
+    shortTitle: 'Security Testing',
+    wordCount: 950,
+    sections: [
+      { id: 'owasp-zap',   title: 'OWASP ZAP' },
+      { id: 'burp-suite',  title: 'Burp Suite' },
+    ],
+    load: () => import('./security-testing-tools'),
+  },
+  {
+    slug: 'accessibility-and-visual-tools',
+    title: 'Accessibility & Visual Testing Tools',
+    shortTitle: 'Accessibility & Visual',
+    wordCount: 1000,
+    sections: [
+      { id: 'axe',       title: 'Axe' },
+      { id: 'percy',     title: 'Percy' },
+      { id: 'storybook', title: 'Storybook' },
+    ],
+    load: () => import('./accessibility-and-visual-tools'),
+  },
+  {
+    slug: 'bdd-tools',
+    title: 'BDD & Behaviour-Driven Tools',
+    shortTitle: 'BDD Tools',
+    wordCount: 900,
+    sections: [
+      { id: 'gherkin-and-feature-files', title: 'Gherkin and feature files' },
+      { id: 'step-definitions',          title: 'Step definitions' },
+      { id: 'tooling-across-languages',  title: 'Tooling across languages' },
+      { id: 'bdd-in-practice',           title: 'BDD in practice' },
+    ],
+    load: () => import('./bdd-tools'),
+  },
+]

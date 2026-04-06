@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 
 const SIMPLE_MODAL_CONTENT = {
   title: 'Modal title',
@@ -20,13 +20,13 @@ export default function SimpleModalDemo() {
         </button>
         <AnimatePresence>
           {open && (
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
               className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-card"
               onClick={() => setOpen(false)}
             >
-              <motion.div
+              <m.div
                 initial={{ scale: 0.92 }} animate={{ scale: 1 }} exit={{ scale: 0.95 }}
                 transition={{ duration: 0.15 }}
                 onClick={e => e.stopPropagation()}
@@ -47,8 +47,8 @@ export default function SimpleModalDemo() {
                 >
                   Close
                 </button>
-              </motion.div>
-            </motion.div>
+              </m.div>
+            </m.div>
           )}
         </AnimatePresence>
       </div>

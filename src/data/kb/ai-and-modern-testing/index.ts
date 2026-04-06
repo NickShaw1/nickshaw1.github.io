@@ -1,0 +1,95 @@
+import type { KBArticle } from '../index'
+
+export const articles: KBArticle[] = [
+  {
+    slug: 'software-testing-in-the-age-of-ai',
+    title: 'Software Testing in the Age of AI',
+    shortTitle: 'Age of AI',
+    wordCount: 1300,
+    sections: [
+      { id: 'what-has-changed',                   title: 'What has changed' },
+      { id: 'ai-as-a-force-multiplier',            title: 'AI as a force multiplier' },
+      { id: 'what-has-not-changed',                title: 'What has not changed' },
+      { id: 'implications-for-qa-professionals',   title: 'Implications for QA professionals' },
+    ],
+    load: () => import('./software-testing-in-the-age-of-ai'),
+  },
+  {
+    slug: 'using-ai-tools-in-your-testing-workflow',
+    title: 'Using AI Tools in Your Testing Workflow',
+    shortTitle: 'AI in Your Workflow',
+    wordCount: 1500,
+    sections: [
+      { id: 'test-case-generation',              title: 'Test case generation' },
+      { id: 'exploratory-testing-assistance',    title: 'Exploratory testing assistance' },
+      { id: 'defect-analysis-and-triage',        title: 'Defect analysis and triage' },
+      { id: 'synthetic-test-data-generation',    title: 'Synthetic test data generation' },
+      { id: 'knowing-the-limits',                title: 'Knowing the limits' },
+    ],
+    load: () => import('./using-ai-tools-in-your-testing-workflow'),
+  },
+  {
+    slug: 'ai-generated-tests',
+    title: 'AI-Generated Tests: Opportunities and Risks',
+    shortTitle: 'AI-Generated Tests',
+    wordCount: 1100,
+    sections: [
+      { id: 'what-ai-generated-tests-can-do-well',    title: 'What AI-generated tests can do well' },
+      { id: 'the-risks',                              title: 'The risks' },
+      { id: 'reviewing-and-owning-ai-generated-tests', title: 'Reviewing and owning AI-generated tests' },
+      { id: 'when-to-use-them',                       title: 'When to use them' },
+    ],
+    load: () => import('./ai-generated-tests'),
+  },
+  {
+    slug: 'testing-ai-ml-systems',
+    title: 'Testing AI/ML Systems',
+    wordCount: 1500,
+    sections: [
+      { id: 'why-ml-systems-are-different',      title: 'Why ML systems are different to test' },
+      { id: 'testing-the-data',                  title: 'Testing the data' },
+      { id: 'testing-model-behaviour',           title: 'Testing model behaviour' },
+      { id: 'testing-the-surrounding-system',    title: 'Testing the surrounding system' },
+      { id: 'regression-and-drift-monitoring',   title: 'Regression and drift monitoring' },
+    ],
+    load: () => import('./testing-ai-ml-systems'),
+  },
+  {
+    slug: 'bias-and-fairness-testing',
+    title: 'Bias & Fairness Testing',
+    shortTitle: 'Bias & Fairness',
+    wordCount: 1100,
+    sections: [
+      { id: 'what-bias-means-in-ml',  title: 'What bias means in ML systems' },
+      { id: 'sources-of-bias',        title: 'Sources of bias' },
+      { id: 'fairness-metrics',       title: 'Fairness metrics' },
+      { id: 'testing-approaches',     title: 'Testing approaches' },
+    ],
+    load: () => import('./bias-and-fairness-testing'),
+  },
+  {
+    slug: 'prompt-testing-and-llm-evaluation',
+    title: 'Prompt Testing & LLM Evaluation',
+    shortTitle: 'Prompt Testing & Evals',
+    wordCount: 1300,
+    sections: [
+      { id: 'the-evaluation-challenge',       title: 'The evaluation challenge' },
+      { id: 'prompt-testing-strategies',      title: 'Prompt testing strategies' },
+      { id: 'building-an-eval-suite',         title: 'Building an eval suite' },
+      { id: 'regression-testing-for-prompts', title: 'Regression testing for prompts' },
+    ],
+    load: () => import('./prompt-testing-and-llm-evaluation'),
+  },
+  {
+    slug: 'testing-ai-agents',
+    title: 'Testing AI Agents',
+    wordCount: 1000,
+    sections: [
+      { id: 'what-makes-agents-different',       title: 'What makes agents different' },
+      { id: 'testing-tool-use',                  title: 'Testing tool use and function calling' },
+      { id: 'non-determinism-and-reliability',   title: 'Non-determinism and reliability' },
+      { id: 'observability-for-agents',          title: 'Observability for agents' },
+    ],
+    load: () => import('./testing-ai-agents'),
+  },
+]

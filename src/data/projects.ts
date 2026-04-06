@@ -15,6 +15,7 @@ export interface ProjectItem {
   category: ProjectCategory
   githubUrl?: string
   liveUrl?: string
+  internalUrl?: string
   featured?: boolean
   modalSize?: ModalSize
   icon?: string
@@ -432,6 +433,15 @@ btns.forEach(btn => {
 
   // ── Sites ─────────────────────────────────────────────────
   {
+    id: 'testing-kb',
+    title: 'Software Testing Knowledge Base',
+    description: 'A wiki-style knowledge base covering software testing concepts, techniques and tooling. Currently in development.',
+    stack: ['Testing', 'Knowledge'],
+    category: 'Sites',
+    internalUrl: '/knowledge-base',
+    icon: 'Monitor',
+  },
+  {
     id: 'asaware',
     title: 'AS Aware',
     description: 'A website raising awareness of Ankylosing Spondylitis, built with React, TypeScript and Vite.',
@@ -439,7 +449,7 @@ btns.forEach(btn => {
     category: 'Sites',
     liveUrl: 'https://www.asaware.org',
     featured: true,
-    icon: 'Heart',
+    icon: 'Monitor',
   },
 
   // ── Testing ───────────────────────────────────────────────

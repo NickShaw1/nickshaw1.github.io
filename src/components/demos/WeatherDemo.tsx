@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 
 const CITIES = [
   { name: 'Belfast',  abbr: 'BFS', lat: 54.60,  lon: -5.93,  tz: 'Europe/London',    tzLabel: 'GMT'  },
@@ -173,7 +173,7 @@ export default function WeatherDemo() {
 
           {weather && status !== 'loading' && (
             <AnimatePresence mode="wait" initial={false}>
-              <motion.div
+              <m.div
                 key={cityIdx}
                 initial={{ opacity: 0, x: 16 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -214,7 +214,7 @@ export default function WeatherDemo() {
                     <span className="font-mono text-[11px] text-white/60">{weather.humidity}%</span>
                   </div>
                 </div>
-              </motion.div>
+              </m.div>
             </AnimatePresence>
           )}
         </div>

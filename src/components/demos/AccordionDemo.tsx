@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 
 const ACCORDION_ITEMS = [
   { title: 'What is test-driven development?',   body: 'TDD means writing a failing test before writing the code that makes it pass. Red → Green → Refactor.' },
@@ -25,7 +25,7 @@ export default function AccordionDemo() {
             </button>
             <AnimatePresence initial={false}>
               {open === i && (
-                <motion.div
+                <m.div
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
@@ -33,7 +33,7 @@ export default function AccordionDemo() {
                   className="overflow-hidden"
                 >
                   <p className="px-4 pb-4 text-[13px] text-text-secondary leading-relaxed">{item.body}</p>
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
           </div>

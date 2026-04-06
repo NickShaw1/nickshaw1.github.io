@@ -1,0 +1,168 @@
+import KBAside from '../../../components/kb/KBAside'
+import KBNote from '../../../components/kb/KBNote'
+import { KBH2, KBH3, KBP } from '../../../components/kb/KBHeading'
+
+export default function UsingAiToolsInYourTestingWorkflow() {
+  return (
+    <>
+      <KBP>
+        AI-assisted tools have moved from novelty to practical utility across several areas of
+        the testing workflow. Used well, they reduce the time required for repetitive tasks
+        and surface coverage gaps that would take longer to identify manually. Used carelessly,
+        they create a false sense of completeness or introduce tests that look credible but
+        verify nothing meaningful. The distinction lies not in which tool is used but in how
+        its output is treated. AI assistance is most valuable where it is treated as a starting
+        point that a knowledgeable tester then shapes, rather than as a finished product that
+        can be accepted without scrutiny.
+      </KBP>
+
+      <KBH2 id="test-case-generation">Test case generation</KBH2>
+
+      <KBP>
+        Generating a first-pass set of test cases from requirements, user stories or acceptance
+        criteria is one of the most widely used applications of AI in testing workflows. A
+        language model given a well-structured user story can produce a list of scenarios
+        covering the happy path, common negative cases and boundary conditions in a fraction
+        of the time it would take to draft them manually.
+      </KBP>
+
+      <KBP>
+        The output is a starting point, not a finished test plan. Every generated case needs
+        to be read by someone who understands the system being tested. The most common failure
+        mode is not that the AI produces cases that are obviously wrong; it is that it produces
+        cases that are plausible but miss the specific business rules that give the feature its
+        actual risk profile. A case that tests a standard date input does not automatically
+        cover the timezone handling quirk that causes the actual defects in production.
+      </KBP>
+
+      <KBP>
+        AI generation is particularly useful for negative testing, where testers may have a
+        natural bias towards success paths. Prompting a model explicitly for invalid inputs,
+        malformed payloads, missing required fields and out-of-range values tends to produce
+        a useful list of cases that might otherwise be generated only partially.
+      </KBP>
+
+      <KBH2 id="exploratory-testing-assistance">Exploratory testing assistance</KBH2>
+
+      <KBP>
+        Exploratory testing relies on a tester's knowledge, intuition and ability to follow
+        promising threads. AI tools can extend this by suggesting starting points, identifying
+        areas of the application that have changed recently, clustering related defect reports
+        to suggest where new issues might exist and generating session charters from feature
+        descriptions.
+      </KBP>
+
+      <KBP>
+        Some tools can analyse session notes or bug descriptions and suggest follow-on
+        investigation paths based on patterns in historical defect data. This is genuinely
+        useful in mature products where the defect history is rich enough to contain meaningful
+        signal about which areas of the system are prone to related issues.
+      </KBP>
+
+      <KBH3>What AI cannot replace in exploratory testing</KBH3>
+
+      <KBP>
+        AI suggestions are starting points, not conclusions. The tester's judgement about which
+        thread is worth following, when something unexpected in the system's behaviour warrants
+        deeper investigation and what the observed behaviour means for real users is not
+        something a tool can replicate. AI-assisted exploration increases breadth; depth still
+        requires a human who understands the product.
+      </KBP>
+
+      <KBH2 id="defect-analysis-and-triage">Defect analysis and triage</KBH2>
+
+      <KBP>
+        In high-volume regression environments, incoming defect reports create a triage backlog
+        that is itself a quality risk: delayed triage means delayed diagnosis, which means slower
+        fixes. AI tools can assist by classifying incoming defects by component or type,
+        identifying likely duplicates and clustering reports that describe the same underlying
+        issue from different angles.
+      </KBP>
+
+      <KBP>
+        Language models can also generate reproduction steps from vague defect descriptions,
+        reducing the back-and-forth between testers and developers that often slows resolution.
+        Given a defect title and environment details, a model can produce a draft reproduction
+        sequence that a developer can attempt immediately rather than waiting for clarification.
+      </KBP>
+
+      <KBP>
+        The risk here is confidence without accuracy. AI-generated triage classifications and
+        reproduction steps can be wrong in ways that are not immediately obvious, and an
+        incorrect duplicate classification means a real defect is not tracked separately. All
+        AI-generated triage output needs human validation before it influences decisions.
+      </KBP>
+
+      <KBH2 id="synthetic-test-data-generation">Synthetic test data generation</KBH2>
+
+      <KBP>
+        Generating realistic but synthetic test datasets is one of the strongest practical
+        applications of AI in testing workflows. The need arises frequently: real production
+        data often cannot be used in test environments due to privacy regulations, and
+        hand-crafted test data is time-consuming to produce at scale and tends to cluster
+        around a narrow set of values rather than representing the variety of real usage.
+      </KBP>
+
+      <KBP>
+        AI tools can produce structurally valid records across different user personas, edge
+        cases and locale variations quickly. Generating a set of customer records with varied
+        names, addresses and phone number formats, or producing a batch of transaction records
+        with different amounts, currencies and merchant categories, are tasks well suited to
+        AI generation.
+      </KBP>
+
+      <KBP>
+        More complex domains require more care. Financial instruments, medical records and
+        legal documents have structural and relational constraints that a general-purpose
+        language model may not reliably enforce. Generated data should be validated for the
+        specific properties the tests actually depend on, not assumed to be correct because
+        it looks plausible.
+      </KBP>
+
+      <KBP>
+        AI-generated data also does not automatically produce statistically representative
+        distributions. If a test requires that five percent of records represent a specific
+        edge case, that proportion needs to be specified in the prompt or verified in the
+        output. The model will produce what it is asked to produce, not what the test implicitly
+        needs.
+      </KBP>
+
+      <KBAside label="Review is non-negotiable" variant="gold">
+        The speed at which AI tools generate test cases, test data and triage classifications
+        does not reduce the need for review; it shifts where the effort goes. Every AI-generated
+        artefact that enters the test suite or influences a release decision needs to be read
+        and assessed by someone who can judge whether it is correct. Treating AI output as
+        authoritative without review introduces risk rather than reducing it.
+      </KBAside>
+
+      <KBH2 id="knowing-the-limits">Knowing the limits</KBH2>
+
+      <KBP>
+        The most important property to understand about current AI tools is that they produce
+        confident-sounding output regardless of whether that output is correct. A language model
+        generating test cases does not know whether it has missed a critical scenario; a model
+        generating reproduction steps does not know whether those steps are accurate for the
+        specific system configuration. The confidence of the output is not a reliable signal
+        of its quality.
+      </KBP>
+
+      <KBP>
+        Code coverage and test case counts both mean less when AI tools are involved in
+        generation. A suite that grew rapidly through AI assistance may have broad coverage
+        in some dimensions and significant gaps in others, particularly around the business
+        logic and domain-specific rules that require context the tool did not have.
+      </KBP>
+
+      <KBNote variant="warning">
+        Hallucination is a real and persistent failure mode across all AI-generated testing
+        output. A model generating test cases may produce scenarios that are structurally
+        plausible but wrong for the specific system. A model triaging defects may produce
+        classifications that sound confident but are based on superficial pattern matching
+        rather than genuine analysis. A model generating test code may produce assertions
+        that always pass rather than verifying meaningful behaviour. The confidence of AI
+        output is not a signal of its accuracy, and every artefact needs review by someone
+        who understands the system well enough to recognise when the output is incorrect.
+      </KBNote>
+    </>
+  )
+}

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Dog, Download, ExternalLink, User } from 'lucide-react'
 import pippinImg from '../assets/pippin.jpg'
 import nickImg from '../assets/nick-diner.jpg'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import SEOHead from '../components/SEOHead'
 import SectionLabel from '../components/SectionLabel'
 import { useReducedMotion } from '../hooks/useReducedMotion'
@@ -70,7 +70,7 @@ interface SectionBlockProps {
 
 function SectionBlock({ id, label, children, reduced }: SectionBlockProps) {
   return (
-    <motion.section
+    <m.section
       id={id}
       aria-labelledby={`${id}-heading`}
       initial={reduced ? undefined : { opacity: 0, y: 24 }}
@@ -82,7 +82,7 @@ function SectionBlock({ id, label, children, reduced }: SectionBlockProps) {
       <SectionLabel>{label}</SectionLabel>
       <div id={`${id}-heading`} className="sr-only">{label}</div>
       {children}
-    </motion.section>
+    </m.section>
   )
 }
 
@@ -187,6 +187,7 @@ export default function About() {
 
         {/* ── Main content ──────────────────────────────── */}
         <article className="flex-1 min-w-0">
+          <h1 className="sr-only">About Nick Shaw</h1>
 
           {/* ── I'm Nick ──────────────────────────────────── */}
           <SectionBlock id="im-nick" label="I'm Nick" reduced={reduced}>

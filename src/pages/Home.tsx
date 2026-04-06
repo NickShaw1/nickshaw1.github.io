@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useEffect, useState, lazy, Suspense } from 'react'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 import SEOHead from '../components/SEOHead'
 import TerminalStrip from '../components/TerminalStrip'
@@ -9,11 +9,13 @@ import SectionLabel from '../components/SectionLabel'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { featuredProjects } from '../data/projects'
 import type { ProjectItem } from '../data/projects'
+import { prefetchSection } from '../data/kb'
 import { meta } from '../data/meta'
 import nickShawImg from '../assets/nick-shaw.jpg'
 import { personSchema } from '../seo/structured-data'
 
 const ProjectModal = lazy(() => import('../components/ProjectModal'))
+
 const ContactForm  = lazy(() => import('../components/ContactForm'))
 
 // ── Reusable fade-up variant factory ─────────────────────
@@ -62,7 +64,7 @@ export default function Home() {
             <div className="flex-1 min-w-0">
 
               {/* Available badge */}
-              <motion.div {...anim(0)} className="mb-8">
+              <m.div {...anim(0)} className="mb-8">
                 <span
                   className="
                     inline-flex items-center gap-2
@@ -75,10 +77,10 @@ export default function Home() {
                   <span aria-hidden="true" className="pulse-dot w-2 h-2 rounded-full bg-accent flex-shrink-0" />
                   Available for work
                 </span>
-              </motion.div>
+              </m.div>
 
               {/* Headline */}
-              <motion.h1
+              <m.h1
                 {...anim(0.1)}
                 className="
                   font-display font-bold
@@ -90,10 +92,10 @@ export default function Home() {
               >
                 Senior <span className="text-accent">QA</span> &amp; Delivery<br />
                 Professional.
-              </motion.h1>
+              </m.h1>
 
               {/* Subheading with inline photo */}
-              <motion.div {...anim(0.2)} className="flex items-center gap-5 max-w-xl mb-10">
+              <m.div {...anim(0.2)} className="flex items-center gap-5 max-w-xl mb-10">
                 <img
                   src={nickShawImg}
                   alt="Nick Shaw"
@@ -109,10 +111,10 @@ export default function Home() {
                 <p className="text-text-secondary text-[15px] leading-relaxed">
                   Hi, I'm Nick. I've spent 12 years delivering quality software across commercial and public sector teams. I'm based in Belfast, Northern Ireland.
                 </p>
-              </motion.div>
+              </m.div>
 
               {/* CTAs */}
-              <motion.div {...anim(0.35)} className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8">
+              <m.div {...anim(0.35)} className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8">
                 <Link
                   to="/about"
                   className="
@@ -141,10 +143,10 @@ export default function Home() {
                 >
                   Latest projects
                 </Link>
-              </motion.div>
+              </m.div>
 
               {/* Stats row */}
-              <motion.div
+              <m.div
                 {...anim(0.5)}
                 className="
                   grid grid-cols-3
@@ -169,7 +171,7 @@ export default function Home() {
                     </span>
                   </div>
                 ))}
-              </motion.div>
+              </m.div>
             </div>
 
             {/* ── Right: certifications ── */}
@@ -194,7 +196,7 @@ export default function Home() {
                   issuer: 'Scrum Alliance',
                 },
               ].map(({ abbr, name, level, issuer }, i) => (
-                <motion.div
+                <m.div
                   key={abbr}
                   {...(reduced ? {} : { initial: { opacity: 0, x: 20 }, animate: { opacity: 1, x: 0 }, transition: { duration: 0.5, ease: 'easeOut', delay: 0.35 + i * 0.1 } })}
                   className="
@@ -218,7 +220,7 @@ export default function Home() {
                       {level} · {issuer}
                     </p>
                   </div>
-                </motion.div>
+                </m.div>
               ))}
             </div>
 
@@ -268,6 +270,80 @@ export default function Home() {
         </Link>
       </section>
 
+      {/* ── Knowledge Base ───────────────────────────────── */}
+      <section
+        className="px-6 md:px-10 pt-8 pb-8 max-w-6xl mx-auto"
+        aria-labelledby="wiki-heading"
+      >
+        {/* Compact header row */}
+        <m.div
+          initial={reduced ? undefined : { opacity: 0, y: 16 }}
+          whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className="mb-10"
+        >
+          <div>
+            <SectionLabel>Knowledge Base</SectionLabel>
+            <h2
+              id="wiki-heading"
+              className="font-display font-semibold text-[clamp(1.5rem,3vw,2rem)] text-text-primary"
+            >
+              A reference on software testing.
+            </h2>
+          </div>
+        </m.div>
+
+        {/* 3×3 section card grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+          {([
+            { label: 'Foundations',        slug: 'foundations',           article: 'what-is-software-testing',          count: 10, blurb: 'Theory, history and core principles of software testing.' },
+            { label: 'Manual Testing',     slug: 'manual-testing',        article: 'introduction-to-manual-testing',    count: 7,  blurb: 'Exploratory testing, bug reporting and defect management.' },
+            { label: 'Test Management',    slug: 'test-management',       article: 'test-planning-and-strategy',        count: 9,  blurb: 'Planning, risk prioritisation and stakeholder communication.' },
+            { label: 'Automation',         slug: 'automation',            article: 'introduction-to-test-automation',   count: 14, blurb: 'Automation concepts, patterns and practices.' },
+            { label: 'Specialist Testing', slug: 'specialist-testing',    article: 'api-testing',                       count: 14, blurb: 'API, performance, security, mobile and beyond.' },
+            { label: 'Observability',      slug: 'observability',         article: 'logs-metrics-and-traces',           count: 5,  blurb: 'Monitoring, alerting, feature flags and production signals.' },
+            { label: 'AI & Modern Testing',slug: 'ai-and-modern-testing', article: 'software-testing-in-the-age-of-ai', count: 7,  blurb: 'How AI changes testing and how to test AI systems.' },
+            { label: 'Tooling',            slug: 'tooling',               article: 'browser-and-e2e-tools',             count: 9,  blurb: 'Practical guides to the tools powering modern testing.' },
+            { label: 'Concepts',           slug: 'concepts',              article: 'writing-good-tests',                count: 4,  blurb: 'Strategy, good tests, legacy codebases and CI/CD.' },
+          ] as const).map(({ label, slug, article, count, blurb }, i) => (
+            <m.div
+              key={slug}
+              initial={reduced ? undefined : { opacity: 0, y: 16 }}
+              whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.4, ease: 'easeOut', delay: reduced ? 0 : i * 0.05 }}
+            >
+              <Link
+                to={`/knowledge-base/${slug}/${article}`}
+                onMouseEnter={() => prefetchSection(slug)}
+                className="group flex flex-col h-full border border-bg-border rounded-card p-4 hover:border-accent/30 transition-colors duration-150"
+              >
+                <div className="flex items-start justify-between gap-2 mb-2">
+                  <p className="font-display font-semibold text-[14px] text-text-primary group-hover:text-link transition-colors duration-150 leading-snug">
+                    {label}
+                  </p>
+                  <span className="font-mono text-[10px] text-text-muted flex-shrink-0 tabular-nums mt-0.5">
+                    {count} art.
+                  </span>
+                </div>
+                <p className="font-mono text-[11px] text-text-muted leading-relaxed">
+                  {blurb}
+                </p>
+              </Link>
+            </m.div>
+          ))}
+        </div>
+
+        <Link
+          to="/knowledge-base"
+          className="inline-flex items-center gap-2 font-mono text-[12px] tracking-wider text-link hover:text-link/80 transition-colors duration-150 group"
+        >
+          Explore the Knowledge Base
+          <ArrowRight size={14} className="transition-transform duration-150 group-hover:translate-x-0.5" />
+        </Link>
+      </section>
+
       {/* ── Experience ───────────────────────────────────── */}
       <section
         className="px-6 md:px-10 pt-8 pb-16 max-w-6xl mx-auto"
@@ -293,7 +369,7 @@ export default function Home() {
               { period: '2017 – 2019', role: 'QA Engineer',          company: 'Flowlens' },
               { period: '2013 – 2016', role: 'UK QA Lead',           company: 'Concentrix' },
             ].map(({ period, role, company }, i) => (
-              <motion.div
+              <m.div
                 key={company}
                 initial={reduced ? undefined : { opacity: 0, x: -12 }}
                 whileInView={reduced ? undefined : { opacity: 1, x: 0 }}
@@ -318,7 +394,7 @@ export default function Home() {
                 <span className="font-mono text-[12px] tracking-wide text-accent">
                   {company}
                 </span>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>

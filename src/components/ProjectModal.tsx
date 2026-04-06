@@ -1,5 +1,5 @@
 import { useEffect, useRef, lazy, Suspense } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import type { ProjectItem } from '../data/projects'
@@ -50,7 +50,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
     <AnimatePresence>
       {project && (
         /* Single element: backdrop + flex centering + click-to-close */
-        <motion.div
+        <m.div
           key="modal"
           initial={reduced ? undefined : { opacity: 0 }}
           animate={reduced ? undefined : { opacity: 1 }}
@@ -61,7 +61,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           aria-hidden="true"
         >
           {/* Panel */}
-          <motion.div
+          <m.div
             key="panel"
             role="dialog"
             aria-modal="true"
@@ -164,8 +164,8 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 )}
               </>
             )}
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       )}
     </AnimatePresence>
   )

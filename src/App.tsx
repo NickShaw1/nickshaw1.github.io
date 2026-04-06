@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence, LazyMotion, domAnimation } from 'framer-motion'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
 import {
@@ -9,6 +9,12 @@ import {
   BlogPostSkeleton,
   ProjectsPageSkeleton,
   AboutPageSkeleton,
+  CVPageSkeleton,
+  KBArticleSkeleton,
+  KBGlossarySkeleton,
+  KBChecklistSkeleton,
+  KBTestingResourcesSkeleton,
+  KnowledgeBaseSkeleton,
 } from './components/SkeletonScreen'
 
 const Home      = lazy(() => import('./pages/Home'))
@@ -16,8 +22,13 @@ const About     = lazy(() => import('./pages/About'))
 const Blog      = lazy(() => import('./pages/Blog'))
 const BlogPost  = lazy(() => import('./pages/BlogPost'))
 const Projects  = lazy(() => import('./pages/Projects'))
-const CV        = lazy(() => import('./pages/CV'))
-const NotFound  = lazy(() => import('./pages/NotFound'))
+const CV            = lazy(() => import('./pages/CV'))
+const KnowledgeBase  = lazy(() => import('./pages/KnowledgeBase'))
+const KBArticlePage  = lazy(() => import('./pages/KBArticlePage'))
+const KBGlossaryPage         = lazy(() => import('./pages/KBGlossaryPage'))
+const KBChecklistPage        = lazy(() => import('./pages/KBChecklistPage'))
+const KBTestingResourcesPage = lazy(() => import('./pages/KBTestingResourcesPage'))
+const NotFound      = lazy(() => import('./pages/NotFound'))
 
 export default function App() {
   const location = useLocation()
@@ -27,6 +38,7 @@ export default function App() {
   }, [location.pathname])
 
   return (
+    <LazyMotion features={domAnimation}>
     <div className="flex flex-col min-h-screen bg-bg-base text-text-primary">
       <Nav />
 
@@ -59,8 +71,33 @@ export default function App() {
               </Suspense>
             } />
             <Route path="/cv" element={
-              <Suspense fallback={null}>
+              <Suspense fallback={<CVPageSkeleton />}>
                 <CV />
+              </Suspense>
+            } />
+            <Route path="/knowledge-base" element={
+              <Suspense fallback={<KnowledgeBaseSkeleton />}>
+                <KnowledgeBase />
+              </Suspense>
+            } />
+            <Route path="/knowledge-base/testing-checklist" element={
+              <Suspense fallback={<KBChecklistSkeleton />}>
+                <KBChecklistPage />
+              </Suspense>
+            } />
+            <Route path="/knowledge-base/testing-resources" element={
+              <Suspense fallback={<KBTestingResourcesSkeleton />}>
+                <KBTestingResourcesPage />
+              </Suspense>
+            } />
+            <Route path="/knowledge-base/glossary" element={
+              <Suspense fallback={<KBGlossarySkeleton />}>
+                <KBGlossaryPage />
+              </Suspense>
+            } />
+            <Route path="/knowledge-base/:section/:slug" element={
+              <Suspense fallback={<KBArticleSkeleton />}>
+                <KBArticlePage />
               </Suspense>
             } />
             <Route path="*" element={
@@ -74,5 +111,6 @@ export default function App() {
 
       <Footer />
     </div>
+    </LazyMotion>
   )
 }

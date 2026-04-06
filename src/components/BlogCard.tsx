@@ -1,15 +1,16 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, FlaskConical, Code2, BookOpen, Sparkles } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { ArrowRight, FlaskConical, Code2, BookOpen, Sparkles, Wrench } from 'lucide-react'
+import { m } from 'framer-motion'
 import type { PostMeta } from '../lib/blog'
 import { formatDate } from '../lib/blog'
 
 const CATEGORY_META: Record<string, { icon: React.ComponentType<{ size?: number; className?: string }>; colour: string }> = {
-  Testing:     { icon: FlaskConical, colour: 'text-[#fb7185]' },
-  Development: { icon: Code2,        colour: 'text-[#60a5fa]' },
-  General:     { icon: BookOpen,     colour: 'text-[#e879f9]' },
-  AI:          { icon: Sparkles,    colour: 'text-[#fbbf24]' },
+  AI:           { icon: Sparkles,    colour: 'text-[#fbbf24]' },
+  Development:  { icon: Code2,       colour: 'text-[#60a5fa]' },
+  General:      { icon: BookOpen,    colour: 'text-[#e879f9]' },
+  Site:         { icon: Wrench,      colour: 'text-[#34d399]' },
+  Testing:      { icon: FlaskConical, colour: 'text-[#fb7185]' },
 }
 
 interface BlogCardProps {
@@ -22,7 +23,7 @@ export default function BlogCard({ post, delay = 0, reduced = false }: BlogCardP
   const { icon: Icon, colour } = CATEGORY_META[post.category] ?? CATEGORY_META['General']
 
   return (
-    <motion.article
+    <m.article
       initial={reduced ? undefined : { opacity: 0, y: 12 }}
       whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.1 }}
@@ -64,6 +65,6 @@ export default function BlogCard({ post, delay = 0, reduced = false }: BlogCardP
           Read <ArrowRight size={12} className="transition-transform duration-150 group-hover:translate-x-0.5" />
         </Link>
       </div>
-    </motion.article>
+    </m.article>
   )
 }

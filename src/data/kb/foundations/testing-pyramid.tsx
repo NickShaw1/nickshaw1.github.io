@@ -1,0 +1,133 @@
+import KBNote from '../../../components/kb/KBNote'
+import KBAside from '../../../components/kb/KBAside'
+import { KBH2, KBP } from '../../../components/kb/KBHeading'
+import testPyramidImg from '../../../assets/testpyramid.png'
+
+export default function TestingPyramid() {
+  return (
+    <>
+      <KBP>
+        These models do not tell you which tests to write. They tell you how many of each kind to
+        write relative to the others. That is a subtler question than it sounds. A codebase with
+        the wrong distribution of tests can have good coverage on paper and still be slow, brittle
+        and expensive to maintain. The pyramid, the trophy and the honeycomb are three different
+        answers to that distribution problem, each shaped by the context in which it was developed.
+      </KBP>
+
+      <KBH2 id="the-testing-pyramid">The testing pyramid</KBH2>
+
+      <KBP>
+        The testing pyramid was popularised by Mike Cohn and describes a three-layer model. At the
+        base sit unit tests: fast, isolated, cheap to run and cheap to fix when they fail. In the
+        middle sit service or integration tests, which verify that components work correctly
+        together. At the top sit end-to-end tests, which exercise the full system through a user
+        interface or API boundary. The pyramid shape is intentional: you should have far more unit
+        tests than integration tests and far more integration tests than end-to-end tests.
+      </KBP>
+
+      <div className="mt-7 mb-3 flex justify-center">
+        <figure className="rounded-card overflow-hidden w-fit">
+          <img src={testPyramidImg} alt="The testing pyramid" className="max-w-[320px] w-full block" />
+          <figcaption className="text-center font-mono text-[10px] tracking-widest uppercase text-[#0AFF9D]/60 py-2.5 bg-[#0a0a0a]">
+            The Testing Pyramid
+          </figcaption>
+        </figure>
+      </div>
+
+      <KBP>
+        The rationale is economic. Unit tests run in milliseconds and fail with precise,
+        actionable information. End-to-end tests run in seconds or minutes, fail for reasons that
+        can be difficult to diagnose and break frequently as the interface changes beneath them.
+        A suite dominated by end-to-end tests is slow, fragile and expensive. The pyramid pushes
+        teams toward the cheaper, faster, more reliable end of the spectrum.
+      </KBP>
+
+      <KBAside label="The ice cream cone" variant="gold">
+        The inverted pyramid is common enough to have its own name. An ice cream cone test suite
+        has almost no unit tests, some integration tests and a large number of slow end-to-end
+        tests at the top. It usually develops gradually, as teams add tests reactively in response
+        to bugs rather than building coverage deliberately from the bottom up. It is expensive to
+        run, painful to maintain and slow to give feedback.
+      </KBAside>
+
+      <KBH2 id="the-testing-trophy">The testing trophy</KBH2>
+
+      <KBP>
+        The testing trophy was proposed by Kent C. Dodds as an alternative model more suited to
+        modern application development. It has four layers. At the very base sits static analysis:
+        type checking, linting and similar tooling that catches errors without executing code at
+        all. Above that are unit tests, then a wide band of integration tests at the centre, then
+        a narrow layer of end-to-end tests at the top.
+      </KBP>
+
+      <KBP>
+        The trophy's defining claim is that integration tests offer the best return on investment.
+        Dodds argues that tests which verify real interactions between components, without mocking
+        away the behaviour you actually care about, give high confidence without the fragility of
+        full end-to-end tests. A unit test that mocks its dependencies proves only that the unit
+        behaves correctly in isolation. It says nothing about whether the integration works.
+      </KBP>
+
+      <KBP>
+        The trophy also elevates static analysis as a first-class testing layer. In a TypeScript
+        codebase, a type error caught at compile time is a defect that never reaches a test runner.
+        Teams that dismiss static analysis as "not really testing" are ignoring one of their
+        cheapest and most reliable defect-detection mechanisms.
+      </KBP>
+
+      <KBH2 id="the-testing-honeycomb">The testing honeycomb</KBH2>
+
+      <KBP>
+        The testing honeycomb was introduced by engineers at Spotify as a model for microservices
+        architectures, where the pyramid breaks down in a specific way. In a microservices system,
+        a unit test that runs a single service in isolation provides limited confidence, because
+        the interesting failures happen at the boundaries between services. Testing a service in
+        isolation tells you it works alone. It does not tell you it works with the six other
+        services it depends on in production.
+      </KBP>
+
+      <KBP>
+        The honeycomb does not invert the pyramid's direction. It still favours many small tests
+        over few large ones. What it shifts is the emphasis within that distribution. Unit tests
+        that verify internal implementation details are deprioritised. Integrated tests, which
+        exercise one service calling another in conditions close to production without requiring
+        the entire system to be running, sit at the centre of the model. End-to-end tests remain
+        present but minimal.
+      </KBP>
+
+      <KBP>
+        The honeycomb is not a general-purpose model. It was designed to solve a specific problem
+        that microservices create. Applied to a monolith or a single-page application, its
+        guidance would lead to a poorly covered codebase with too little unit testing and unclear
+        failure diagnostics.
+      </KBP>
+
+      <KBH2 id="the-debate">The debate</KBH2>
+
+      <KBP>
+        The disagreement between these models is not really about which is correct. It is about
+        which is correct for a given context. The pyramid was developed with service-oriented
+        applications in mind and works well for systems where units of logic are clearly separable
+        and independently testable. The trophy was developed in the context of frontend and
+        full-stack JavaScript development, where the line between unit and integration is blurry
+        and static analysis is powerful. The honeycomb was developed for distributed systems where
+        inter-service contracts are the primary failure surface.
+      </KBP>
+
+      <KBNote variant="blue">
+        No model applies universally. A team building a React application, a team building a
+        financial calculation engine and a team building a microservices platform all face
+        different distribution problems. The value of these models is not in selecting one and
+        following it, but in prompting the question: are we testing at the right levels in the
+        right proportions for the system we are actually building?
+      </KBNote>
+
+      <KBP>
+        What all three models agree on is that an unexamined test distribution is likely to be
+        wrong. Teams that write tests reactively, filling gaps as bugs surface, tend to accumulate
+        coverage at the wrong levels. The ice cream cone is the natural result of that approach.
+        Any of these models, applied thoughtfully, produces a better outcome than no model at all.
+      </KBP>
+    </>
+  )
+}

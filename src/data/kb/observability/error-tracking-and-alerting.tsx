@@ -1,0 +1,123 @@
+import KBAside from '../../../components/kb/KBAside'
+import KBNote from '../../../components/kb/KBNote'
+import { KBH2, KBH3, KBP } from '../../../components/kb/KBHeading'
+
+export default function ErrorTrackingAndAlerting() {
+  return (
+    <>
+      <KBP>
+        Error tracking captures exceptions and failures from a running application and surfaces
+        them in a way that makes them actionable: grouped by type, attributed to a specific
+        release, prioritised by frequency and associated with the context needed to reproduce
+        and fix them. Alerting routes signals from error tracking, metrics and logs to the right
+        people at the right time. Together they form the feedback mechanism that connects what
+        happens in production back to the team responsible for addressing it. For QA engineers,
+        understanding how this feedback loop works is important both for evaluating whether a
+        system has adequate coverage in production and for using production signals to inform
+        testing.
+      </KBP>
+
+      <KBH2 id="error-tracking">Error tracking</KBH2>
+
+      <KBP>
+        Error tracking tools (Sentry, Bugsnag, Rollbar and similar services) instrument an
+        application to capture unhandled exceptions and surfaced errors, enriching them with
+        stack traces, user context, release version and environmental information. Rather than
+        requiring someone to search log files for exception messages, an error tracking tool
+        presents a curated view of what is breaking, how often it is breaking and when it
+        started breaking.
+      </KBP>
+
+      <KBH3>Grouping and deduplication</KBH3>
+
+      <KBP>
+        A high-traffic application can produce thousands of exceptions per hour. Error tracking
+        tools group similar errors into issues so that a single recurring exception appears as
+        one item with a count rather than thousands of separate entries. This deduplication is
+        essential for making the output actionable. Without it, a triage session becomes an
+        attempt to identify patterns in a stream of individual entries rather than a review of
+        distinct problems.
+      </KBP>
+
+      <KBH3>Release tracking</KBH3>
+
+      <KBP>
+        Associating errors with the specific release that introduced them is one of the most
+        useful features of error tracking. When a new version is deployed, error tracking can
+        show which errors are new (first seen in this release), which have increased in frequency
+        and which have been resolved. This is a direct quality signal: a deployment that
+        introduces a high volume of new errors warrants investigation or rollback regardless
+        of whether the test suite passed.
+      </KBP>
+
+      <KBAside label="Error tracking is production test coverage" variant="gold">
+        A well-configured error tracking tool is in effect a continuously running assertion
+        against the production system. Every unhandled exception that surfaces is a case that
+        no test caught. Reviewing new errors after each deployment as part of a release
+        checklist, and feeding recurring error patterns back into the test suite, closes the
+        loop between production reality and the coverage the team believes it has.
+      </KBAside>
+
+      <KBH2 id="alerting">Alerting</KBH2>
+
+      <KBP>
+        Alerting routes notifications to the right people when something in the system exceeds
+        a threshold or enters an unexpected state. An alert might fire when the error rate
+        exceeds five percent, when response times at the 99th percentile breach two seconds
+        or when a specific exception type is seen for the first time. The goal of alerting is
+        to surface genuine problems quickly while producing as little noise as possible.
+      </KBP>
+
+      <KBH3>Alert fatigue</KBH3>
+
+      <KBP>
+        Alert fatigue occurs when a team receives too many alerts, too many of which are false
+        positives or low-priority notifications. The response is predictable: alerts begin to
+        be ignored. When alerts are ignored, a genuine production incident may go undetected
+        until a user reports it. Alert fatigue is one of the most damaging operational problems
+        a team can develop, and it is caused almost entirely by poorly calibrated alerting
+        rather than by genuine system instability.
+      </KBP>
+
+      <KBP>
+        The remedy is to treat alerts with the same discipline applied to tests. Every alert
+        that fires should represent a condition that requires a human response. Alerts that
+        fire repeatedly without requiring action should be tuned or removed. The alert
+        configuration should be reviewed periodically with the same critical eye applied to
+        any technical asset.
+      </KBP>
+
+      <KBH3>Actionable alerts</KBH3>
+
+      <KBP>
+        A well-designed alert has three properties: it fires for a condition that matters to
+        users, it includes enough context for the on-call engineer to begin investigating
+        without additional research and it links to a runbook describing how to respond. An
+        alert that says "high error rate" without indicating which service, which endpoint or
+        what the errors are provides a signal without the information needed to act on it.
+        The work of making alerts actionable is investment in operational effectiveness, not
+        cosmetic configuration.
+      </KBP>
+
+      <KBH2 id="using-production-signals-in-qa">Using production signals in QA</KBH2>
+
+      <KBP>
+        Production error data is one of the most underused inputs to a test strategy. An error
+        tracking tool that shows a specific exception occurring hundreds of times per day in
+        production is telling the team that either a test for that scenario does not exist or
+        that the scenario is not being triggered by the existing test suite. Reviewing error
+        tracking data when defining new test cases, and periodically reviewing production errors
+        against test coverage, keeps the test suite connected to actual production failure modes
+        rather than theoretical ones.
+      </KBP>
+
+      <KBNote variant="blue">
+        Set up error tracking to filter by environment. Errors in development and staging
+        environments are expected and informative during active development. Mixing them with
+        production errors creates noise that makes it harder to prioritise and harder to
+        identify genuine production regressions. A clean separation between environments
+        makes the production signal trustworthy.
+      </KBNote>
+    </>
+  )
+}

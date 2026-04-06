@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 
 const REVIEWS = [
   {
@@ -47,7 +47,7 @@ export default function ReviewsCarouselDemo() {
       <div className="bg-bg-surface border border-bg-border rounded-card p-5">
         <div className="h-48 overflow-y-auto overflow-x-hidden pr-3">
           <AnimatePresence mode="wait" initial={false}>
-            <motion.div
+            <m.div
               key={index}
               initial={{ opacity: 0, x: 16 }}
               animate={{ opacity: 1, x: 0 }}
@@ -61,7 +61,7 @@ export default function ReviewsCarouselDemo() {
               <p className="text-text-secondary text-[13px] leading-relaxed">
                 "{review.text}"
               </p>
-            </motion.div>
+            </m.div>
           </AnimatePresence>
         </div>
 

@@ -1,0 +1,186 @@
+import KBAside from '../../../components/kb/KBAside'
+import KBNote from '../../../components/kb/KBNote'
+import { KBH2, KBH3, KBP } from '../../../components/kb/KBHeading'
+
+export default function TestPlanningAndStrategy() {
+  return (
+    <>
+      <KBP>
+        Testing planning encompasses two related but frequently conflated artefacts: the test
+        strategy and the test plan. Understanding what each contains and how they relate to each
+        other is foundational to managing a testing effort with any rigour. A team that treats
+        them as the same document tends to produce either plans too vague to act on or strategies
+        rewritten from scratch for every release. Both problems are avoidable once the distinction
+        is clear.
+      </KBP>
+
+      <KBH2 id="test-strategy">Test strategy</KBH2>
+
+      <KBP>
+        A test strategy describes how an organisation or team approaches testing across a product
+        or programme. It captures standing decisions that apply across all testing cycles: the
+        types and levels of testing that will be employed, the tools and frameworks used, the
+        environments required, how defects will be categorised and tracked, the quality standards
+        the team works to and how results will be reported to stakeholders. It is a reference
+        document rather than an operational plan, and it belongs at the team or product level
+        rather than at the level of a specific release.
+      </KBP>
+
+      <KBP>
+        The strategy typically addresses the full testing pyramid. At the unit level, it describes
+        who is responsible for unit tests, what coverage expectations apply and what tools are
+        used. At the integration level, it describes how components and services are tested
+        together and what contract or API testing is in scope. At the system level, it describes
+        how end-to-end workflows are verified, which browser or platform configurations are
+        supported and what automation framework is used. It may also address non-functional
+        concerns: whether performance testing is conducted, at what cadence and by whom; whether
+        security testing is included or handled externally; what accessibility standards apply.
+      </KBP>
+
+      <KBP>
+        A strategy also addresses questions of principle that teams often leave implicit. What
+        proportion of regression coverage will be automated versus manual, and at which levels?
+        What constitutes acceptable risk at release? Who holds sign-off responsibility? What
+        metrics does the team track and how are they reported? These decisions apply consistently
+        across cycles and should not need to be re-derived each time a new release begins. When
+        they are implicit rather than documented, different team members operate from different
+        assumptions, which produces inconsistency in both approach and output.
+      </KBP>
+
+      <KBP>
+        The strategy changes when the team's overall approach changes, not when a sprint begins.
+        Triggers for updating a strategy include adopting a new test framework, expanding into a
+        new discipline such as performance or security testing, significant changes to the
+        product's architecture or a change in team structure that affects who owns which testing
+        activities.
+      </KBP>
+
+      <KBH2 id="test-plan">Test plan</KBH2>
+
+      <KBP>
+        A test plan applies the strategy to a specific testing effort. Where the strategy
+        describes how the team approaches testing in general, the plan describes what will be
+        tested in this cycle, by whom, on what schedule and under what conditions. It is
+        time-bound and specific to a release, sprint or feature. A plan is written, or at least
+        confirmed, at the start of each significant testing effort and treated as a living
+        document rather than a fixed commitment.
+      </KBP>
+
+      <KBAside label="Strategy vs plan" variant="gold">
+        The strategy answers how the team tests. The plan answers what is being tested, when and
+        by whom. A team with a clear strategy but no per-cycle plans knows how it tests but not
+        what it is testing in this cycle. A team with detailed plans but no strategy risks
+        reinventing its approach with every release and accumulating inconsistencies across
+        cycles.
+      </KBAside>
+
+      <KBH3>Scope</KBH3>
+
+      <KBP>
+        Scope is one of the most consequential decisions in a test plan and one of the most
+        frequently left implicit. A scope that is not documented is a scope that is assumed, and
+        assumptions about scope are a reliable source of gaps. Both sides of the scope decision
+        must be stated: what is in scope for this cycle and what is explicitly out of scope.
+      </KBP>
+
+      <KBP>
+        If regression of unchanged areas is out of scope, say so. If third-party integrations
+        will not be tested in this cycle, say so. If certain platforms or configurations are
+        excluded, document it. Making scope explicit forces the conversation about whether those
+        omissions are acceptable risks, and it gives the team a shared basis for defending the
+        scope if it is challenged.
+      </KBP>
+
+      <KBH3>Objectives</KBH3>
+
+      <KBP>
+        Objectives describe what the testing effort is intended to achieve. Vague objectives such
+        as "test the new feature" are not objectives; they are descriptions of an activity. A
+        useful objective is specific enough to assess at the end of the cycle: "verify that all
+        critical user journeys in the checkout flow complete without error across the supported
+        browser configurations" gives the team something to measure against. Objectives also
+        provide the basis for a meaningful test summary report rather than a count of cases
+        executed.
+      </KBP>
+
+      <KBH3>Resources, schedule and dependencies</KBH3>
+
+      <KBP>
+        Resources identify who is responsible for each testing activity and what environments,
+        tools and test data are required. Schedule describes when testing activities will occur
+        in relation to development milestones and release dates. These two elements are often
+        under-specified because they feel administrative, but they are the sections of the plan
+        that surface conflicts early: a testing cycle that assumes two testers but only has one
+        available, or that assumes a testing environment that is shared with another team, will
+        encounter those constraints whether or not they appear in the plan.
+      </KBP>
+
+      <KBP>
+        Risks and dependencies capture conditions that could affect the plan's assumptions.
+        A common and significant dependency is the stability and timing of the development build.
+        A plan that assumes testing begins on a specific date should also note what happens if the
+        build is delayed. Without that contingency, scope tends to shrink silently under time
+        pressure rather than through a deliberate decision.
+      </KBP>
+
+      <KBH2 id="entry-and-exit-criteria">Entry and exit criteria</KBH2>
+
+      <KBP>
+        Entry criteria define the minimum conditions that must be met before testing can begin.
+        A build that fails on first launch, that lacks the required test data or that is deployed
+        to an inaccessible environment wastes testing time. Defining entry criteria gives the team
+        a shared, objective basis for deciding whether to start testing or to wait, rather than a
+        debate about whether the current state is acceptable. Typical entry criteria include a
+        passing smoke test, test data seeded in the environment, all required access provisioned
+        and critical blockers from the previous cycle resolved.
+      </KBP>
+
+      <KBP>
+        Exit criteria define the conditions that must be met before testing can be considered
+        complete and a release decision can be made. Without agreed exit criteria, teams tend to
+        release on deadline rather than on quality, because there is no threshold to point to
+        when the pressure to ship increases. A simple exit condition might be zero open critical
+        defects, fewer than five open major defects and explicit sign-off from a nominated
+        stakeholder. The specific thresholds depend on the product and context. That they are
+        agreed in advance matters more than their precise values.
+      </KBP>
+
+      <KBNote variant="blue">
+        Exit criteria should be agreed before testing begins, not defined retrospectively to
+        justify a release decision that has already been made. Criteria written after the fact
+        are not criteria; they are rationalisations. The discipline of agreeing them in advance
+        is most of their value, because it separates the quality decision from the release
+        pressure that will exist when the decision is actually made.
+      </KBNote>
+
+      <KBH2 id="planning-in-agile-contexts">Planning in agile contexts</KBH2>
+
+      <KBP>
+        In teams working in short sprints, a traditional multi-page test plan per release is
+        rarely practical or useful. Planning still happens, but it is lighter and more
+        continuous. At the story level, testers define acceptance conditions, identify risks
+        introduced by the work and agree the scope of testing with the developer before work
+        begins. At the sprint level, the team confirms what will be tested within the sprint,
+        what the entry and exit conditions are and what, if anything, will carry over. Across
+        sprints, a standing test strategy captures the decisions that do not change cycle to cycle.
+      </KBP>
+
+      <KBP>
+        The risk in agile environments is that the absence of a formal plan document is
+        mistaken for the absence of planning altogether. Implicit planning, where everyone
+        assumes the team will test what is built without agreeing scope, objectives or exit
+        conditions, produces the same problems as no planning: gaps in coverage, disagreements
+        about what done means and release decisions made without a shared understanding of
+        what risk remains.
+      </KBP>
+
+      <KBP>
+        A lightweight but explicit approach resolves this. A shared document or ticket that
+        states scope, entry and exit conditions and any known risks for the sprint takes minutes
+        to produce and provides the alignment that prevents those problems. The goal is not to
+        produce documentation for its own sake but to ensure that the decisions a test plan
+        captures are made deliberately rather than assumed.
+      </KBP>
+    </>
+  )
+}

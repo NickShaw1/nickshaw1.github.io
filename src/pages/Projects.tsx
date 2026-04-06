@@ -1,6 +1,13 @@
 import { useState, useCallback, lazy, Suspense } from 'react'
-import { motion } from 'framer-motion'
-import { ArrowUpRight, Heart } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { m } from 'framer-motion'
+import { ArrowUpRight, Monitor, BookOpen } from 'lucide-react'
+import type { ComponentType } from 'react'
+
+const SITES_ICON_MAP: Record<string, { icon: ComponentType<{ size?: number; className?: string }>; colour: string }> = {
+  Monitor: { icon: Monitor, colour: 'text-[#fbbf24]' },
+  BookOpen: { icon: BookOpen, colour: 'text-[#a78bfa]' },
+}
 import SEOHead from '../components/SEOHead'
 import ProjectCard from '../components/ProjectCard'
 import SectionLabel from '../components/SectionLabel'
@@ -37,7 +44,7 @@ export default function Projects() {
       <div className="max-w-6xl mx-auto px-6 md:px-10 py-16">
 
         {/* ── Header ──────────────────────────────────────── */}
-        <motion.div
+        <m.div
           initial={reduced ? undefined : { opacity: 0, y: 20 }}
           animate={reduced ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: 'easeOut' }}
@@ -50,10 +57,10 @@ export default function Projects() {
           <p className="text-text-secondary text-[15px] leading-relaxed">
             A collection of exercises, tools and live sites built to develop and demonstrate my skills. Many of these were built in close collaboration with Claude Code, an honest reflection of how I work and what modern AI-assisted development looks like in practice.
           </p>
-        </motion.div>
+        </m.div>
 
         {/* ── Filter pills ── */}
-        <motion.div
+        <m.div
           initial={reduced ? undefined : { opacity: 0, y: 12 }}
           animate={reduced ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.45, ease: 'easeOut', delay: 0.1 }}
@@ -79,7 +86,7 @@ export default function Projects() {
               {cat}
             </button>
           ))}
-        </motion.div>
+        </m.div>
 
         {/* ── Category sections ───────────────────────────── */}
         {visibleCategories.map((cat, catIndex) => {
@@ -91,7 +98,7 @@ export default function Projects() {
               className="mb-16 last:mb-0"
               aria-labelledby={`cat-${cat.toLowerCase().replace(/\s+/g, '-')}`}
             >
-              <motion.div
+              <m.div
                 initial={reduced ? undefined : { opacity: 0, y: 16 }}
                 whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.1 }}
@@ -105,12 +112,12 @@ export default function Projects() {
                   {cat}
                   <span className="ml-2 text-accent">{projects.length}</span>
                 </h2>
-              </motion.div>
+              </m.div>
 
               {cat === 'Sites' ? (
                 <div className="flex flex-col gap-6">
                   {projects.map((project, i) => (
-                    <motion.article
+                    <m.article
                       key={project.id}
                       initial={reduced ? undefined : { opacity: 0, y: 16 }}
                       whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
@@ -118,22 +125,25 @@ export default function Projects() {
                       transition={{ duration: 0.45, ease: 'easeOut', delay: reduced ? 0 : i * 0.07 }}
                       className="group relative flex flex-col bg-bg-surface border border-bg-border rounded-card p-5 hover:border-accent/30 transition-colors duration-150"
                     >
-                      {/* Category badge */}
-                      <span className="absolute top-3 right-3 font-mono text-[10px] tracking-wider uppercase text-text-muted border border-bg-border rounded-tag px-1.5 py-0.5">
-                        {project.category}
-                      </span>
-
-                      <div className="flex-1 pr-16">
-                        <h3 className="font-display font-medium text-[17px] text-text-primary mb-2 leading-snug flex items-center gap-2">
-                          {project.icon === 'Heart' && <Heart size={15} className="text-[#a78bfa] flex-shrink-0" />}
+                      {/* Header row: title + category badge */}
+                      <div className="flex items-start justify-between gap-3 mb-3">
+                        <h3 className="font-display font-medium text-[17px] text-text-primary leading-snug flex items-center gap-2 min-w-0">
+                          {project.icon && SITES_ICON_MAP[project.icon] && (() => {
+                            const { icon: Icon, colour } = SITES_ICON_MAP[project.icon!]
+                            return <Icon size={15} className={`${colour} flex-shrink-0`} />
+                          })()}
                           <span className="truncate">{project.title}</span>
                         </h3>
-                        <p className="text-text-secondary text-sm leading-relaxed mb-4">
-                          {project.description}
-                        </p>
+                        <span className="flex-shrink-0 font-mono text-[10px] tracking-wider uppercase text-text-muted border border-bg-border rounded-tag px-1.5 py-0.5 mt-0.5">
+                          {project.category}
+                        </span>
                       </div>
 
-                      <div className="flex flex-wrap gap-1.5 mb-4">
+                      <p className="text-text-secondary text-sm leading-relaxed mb-4">
+                        {project.description}
+                      </p>
+
+                      <div className="flex flex-wrap gap-1.5">
                         {project.stack.map((tag) => (
                           <span key={tag} className="font-mono text-[11px] tracking-wide bg-accent/10 text-accent px-2 py-0.5 rounded-tag">
                             {tag}
@@ -141,20 +151,29 @@ export default function Projects() {
                         ))}
                       </div>
 
-                      <div className="flex items-center gap-3 mt-auto">
+                      <div className="border-t border-bg-border pt-3 mt-4 flex items-center gap-3">
                         {project.liveUrl && (
                           <a
                             href={project.liveUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label={`${project.title} live site (opens in new tab)`}
-                            className="ml-auto flex items-center gap-1 group-hover:gap-1.5 font-mono text-[11px] tracking-wide text-link hover:text-link/80 transition-all duration-150"
+                            aria-label={`${project.title} (opens in new tab)`}
+                            className="ml-auto flex items-center gap-1 group-hover:gap-1.5 font-mono text-[11px] tracking-wide text-link hover:text-link/80 transition-all duration-150 after:absolute after:inset-0"
                           >
-                            live site <ArrowUpRight size={12} className="transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                            view site <ArrowUpRight size={12} aria-hidden="true" className="transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                           </a>
                         )}
+                        {project.internalUrl && (
+                          <Link
+                            to={project.internalUrl}
+                            aria-label={project.title}
+                            className="ml-auto flex items-center gap-1 group-hover:gap-1.5 font-mono text-[11px] tracking-wide text-link hover:text-link/80 transition-all duration-150 after:absolute after:inset-0"
+                          >
+                            view site <ArrowUpRight size={12} aria-hidden="true" className="transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                          </Link>
+                        )}
                       </div>
-                    </motion.article>
+                    </m.article>
                   ))}
                 </div>
               ) : (

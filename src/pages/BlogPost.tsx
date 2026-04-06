@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeHighlight from 'rehype-highlight'
@@ -78,7 +78,7 @@ export default function BlogPost() {
       <div className="max-w-3xl mx-auto px-6 md:px-10 py-16">
 
         {/* ── Back link ──────────────────────────────────── */}
-        <motion.div
+        <m.div
           initial={reduced ? undefined : { opacity: 0, x: -12 }}
           animate={reduced ? undefined : { opacity: 1, x: 0 }}
           transition={{ duration: 0.4, ease: 'easeOut' }}
@@ -94,10 +94,10 @@ export default function BlogPost() {
           >
             <ArrowLeft size={13} /> Back to blog
           </Link>
-        </motion.div>
+        </m.div>
 
         {/* ── Post header ────────────────────────────────── */}
-        <motion.header
+        <m.header
           initial={reduced ? undefined : { opacity: 0, y: 20 }}
           animate={reduced ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: 'easeOut', delay: 0.05 }}
@@ -134,10 +134,10 @@ export default function BlogPost() {
           </time>
 
           <hr className="border-0 border-t border-bg-border mt-8" />
-        </motion.header>
+        </m.header>
 
         {/* ── Post body ──────────────────────────────────── */}
-        <motion.div
+        <m.div
           ref={articleRef}
           initial={reduced ? undefined : { opacity: 0, y: 16 }}
           animate={reduced ? undefined : { opacity: 1, y: 0 }}
@@ -150,7 +150,7 @@ export default function BlogPost() {
           >
             {post.body}
           </ReactMarkdown>
-        </motion.div>
+        </m.div>
 
         {/* ── Prev / Next navigation ─────────────────────── */}
         {(prev || next) && (

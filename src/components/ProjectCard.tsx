@@ -6,7 +6,7 @@ import {
   Layers, ChevronDown, Calculator, Square, Palette, Hash,
   Code2, Terminal, Heart, FlaskConical, Play,
 } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import type { ProjectItem, ProjectCategory } from '../data/projects'
 
 const ICON_MAP: Record<string, ComponentType<{ size?: number; className?: string }>> = {
@@ -48,12 +48,18 @@ function ProjectCard({ project, delay = 0, reduced = false, onDetailClick }: Pro
 
   const ProjectIcon = project.icon ? (ICON_MAP[project.icon] ?? null) : null
 
+  // Stretched-link pattern: primary action covers the whole card; secondary sits above it
+  const primaryAction = project.liveUrl ? 'live' : project.githubUrl ? 'github' : hasDetail ? 'detail' : null
+  const stretched = "after:absolute after:inset-0 after:content-['']"
+  const elevated  = 'relative z-10'
+
   return (
-    <motion.article
+    <m.article
       variants={reduced ? undefined : cardVariants}
       initial={reduced ? undefined : 'hidden'}
       whileInView={reduced ? undefined : 'visible'}
       viewport={{ once: true, amount: 0.1 }}
+
       className="
         group relative flex flex-col
         bg-bg-surface border border-bg-border rounded-card
@@ -62,53 +68,53 @@ function ProjectCard({ project, delay = 0, reduced = false, onDetailClick }: Pro
         transition-colors duration-150
       "
     >
-      <span className="
-        absolute top-3 right-3
-        font-mono text-[10px] tracking-wider uppercase
-        text-text-muted border border-bg-border rounded-tag px-1.5 py-0.5
-      ">
-        {project.category}
-      </span>
-
-      <div className="flex-1 pr-16">
-        <h3 className="font-display font-medium text-[17px] text-text-primary mb-2 leading-snug flex items-center gap-2">
+      {/* Header row: title + category badge */}
+      <div className="flex items-start justify-between gap-3 mb-3">
+        <h3 className="font-display font-medium text-[17px] text-text-primary leading-snug flex items-center gap-2 min-w-0">
           {ProjectIcon && <ProjectIcon size={15} className={`${iconColour} flex-shrink-0`} />}
           <span className="truncate">{project.title}</span>
         </h3>
+        <span className="flex-shrink-0 font-mono text-[10px] tracking-wider uppercase text-text-muted border border-bg-border rounded-tag px-1.5 py-0.5 mt-0.5">
+          {project.category}
+        </span>
+      </div>
+
+      <div className="flex-1">
         <div className="h-[72px] mb-4 overflow-hidden">
           <p className="text-text-secondary text-sm leading-relaxed line-clamp-3">
             {project.description}
           </p>
         </div>
+
+        {/* Stack tags */}
+        <div className="flex flex-wrap gap-1.5">
+          {project.stack.map((tag) => (
+            <span
+              key={tag}
+              className="font-mono text-[11px] tracking-wide bg-accent/10 text-accent px-2 py-0.5 rounded-tag"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
       </div>
 
-      {/* Stack tags */}
-      <div className="flex flex-wrap gap-1.5 mb-4">
-        {project.stack.map((tag) => (
-          <span
-            key={tag}
-            className="font-mono text-[11px] tracking-wide bg-accent/10 text-accent px-2 py-0.5 rounded-tag"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-
-      {/* Links row */}
-      <div className="flex items-center gap-3 mt-auto">
+      {/* Footer separator + links row */}
+      <div className="border-t border-bg-border pt-3 mt-4 flex items-center gap-3">
         {project.githubUrl && (
           <a
             href={project.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`${project.title} on GitHub (opens in new tab)`}
-            className="
+            className={`
               ml-auto flex items-center gap-1 group-hover:gap-1.5
               font-mono text-[11px] tracking-wide text-link
               hover:text-link/80 transition-all duration-150
-            "
+              ${primaryAction === 'github' ? stretched : elevated}
+            `}
           >
-            GitHub <ArrowUpRight size={12} className="transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            GitHub <ArrowUpRight size={12} aria-hidden="true" className="transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </a>
         )}
         {project.liveUrl && (
@@ -117,13 +123,14 @@ function ProjectCard({ project, delay = 0, reduced = false, onDetailClick }: Pro
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`${project.title} live site (opens in new tab)`}
-            className="
+            className={`
               ml-auto flex items-center gap-1 group-hover:gap-1.5
               font-mono text-[11px] tracking-wide text-link
               hover:text-link/80 transition-all duration-150
-            "
+              ${primaryAction === 'live' ? stretched : elevated}
+            `}
           >
-            live site <ArrowUpRight size={12} className="transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            live site <ArrowUpRight size={12} aria-hidden="true" className="transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </a>
         )}
         {!isExternal && !hasDetail && (
@@ -132,17 +139,19 @@ function ProjectCard({ project, delay = 0, reduced = false, onDetailClick }: Pro
         {hasDetail && onDetailClick && (
           <button
             onClick={() => onDetailClick(project)}
-            className="
+            aria-label={`View details for ${project.title}`}
+            className={`
               ml-auto flex items-center gap-1 group-hover:gap-1.5
               font-mono text-[11px] tracking-wide text-link
               hover:text-link/80 transition-all duration-150
-            "
+              ${primaryAction === 'detail' ? stretched : elevated}
+            `}
           >
-            view details <ArrowUpRight size={12} className="transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            view details <ArrowUpRight size={12} aria-hidden="true" className="transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </button>
         )}
       </div>
-    </motion.article>
+    </m.article>
   )
 }
 

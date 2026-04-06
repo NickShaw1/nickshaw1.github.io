@@ -3,7 +3,7 @@ title: "Site redesign"
 date: "2025-01-30"
 slug: "site-redesign"
 excerpt: "A total site rebuild in React, exploring component architecture, CSS keyframe animations and what it's like to dive into a React rabbit-hole during a widespread power outage."
-category: "Development"
+category: "Site"
 readingTime: "4 min read"
 ---
 
