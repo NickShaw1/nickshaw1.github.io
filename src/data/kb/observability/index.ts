@@ -5,6 +5,7 @@ export const articles: KBArticle[] = [
     slug: 'logs-metrics-and-traces',
     title: 'Logs, Metrics & Traces in QA',
     shortTitle: 'Logs, Metrics & Traces',
+    description: 'How logs, metrics and traces work in a QA context, and how to correlate the three signals to diagnose problems effectively.',
     wordCount: 1100,
     sections: [
       { id: 'logs',                        title: 'Logs' },
@@ -17,6 +18,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'error-tracking-and-alerting',
     title: 'Error Tracking & Alerting',
+    description: 'Error tracking and alerting in software quality: tools, alert design and using production signals to improve testing.',
     wordCount: 950,
     sections: [
       { id: 'error-tracking',                  title: 'Error tracking' },
@@ -28,6 +30,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'synthetic-monitoring',
     title: 'Synthetic Monitoring',
+    description: 'How synthetic monitoring works, what it catches that tests miss and its relationship to automated testing in CI.',
     wordCount: 900,
     sections: [
       { id: 'how-synthetic-monitoring-works',       title: 'How synthetic monitoring works' },
@@ -40,6 +43,7 @@ export const articles: KBArticle[] = [
     slug: 'feature-flags-and-canary-releases',
     title: 'Feature Flags & Canary Releases',
     shortTitle: 'Feature Flags & Canaries',
+    description: 'Feature flags and canary releases: how they work, quality considerations in progressive delivery and the tester\'s role.',
     wordCount: 1000,
     sections: [
       { id: 'feature-flags',                        title: 'Feature flags' },
@@ -51,6 +55,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'ab-testing-as-engineering',
     title: 'A/B Testing as Engineering',
+    description: 'A/B testing as an engineering discipline: the requirements, testing experiments, statistical validity and quality considerations.',
     wordCount: 900,
     sections: [
       { id: 'the-engineering-requirements', title: 'The engineering requirements' },

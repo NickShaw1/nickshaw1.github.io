@@ -3,6 +3,7 @@ import { m, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, Check, Download, RotateCcw } from 'lucide-react'
 import SEOHead from '../components/SEOHead'
+import { webPageSchema } from '../seo/structured-data'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 
 // ── Types ─────────────────────────────────────────────────────
@@ -279,6 +280,11 @@ export default function KBChecklistPage() {
         title="Pre-Release Testing Checklist | Nick Shaw"
         description="A practical, interactive pre-release testing checklist covering functional, accessibility, performance, security and more. Export your results to Excel."
         canonicalUrl="/knowledge-base/testing-checklist"
+        jsonLd={webPageSchema({
+          name: 'Pre-Release Testing Checklist',
+          description: 'A practical, interactive pre-release testing checklist covering functional, accessibility, performance, security and more. Export your results to Excel.',
+          url: '/knowledge-base/testing-checklist',
+        })}
       />
 
       <div className="max-w-6xl mx-auto px-6 md:px-10 py-12">

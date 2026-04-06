@@ -4,6 +4,7 @@ import { m } from 'framer-motion'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import type { FC } from 'react'
 import SEOHead from '../components/SEOHead'
+import { techArticleSchema } from '../seo/structured-data'
 import KBLeftSidebar from '../components/KBLeftSidebar'
 import KBRightToc from '../components/KBRightToc'
 import { useReducedMotion } from '../hooks/useReducedMotion'
@@ -52,9 +53,14 @@ export default function KBArticlePage() {
   return (
     <>
       <SEOHead
-        title={`${article.title} — ${sectionData.title} | Nick Shaw`}
-        description={`${article.title} — part of the ${sectionData.title} section of the Software Testing Knowledge Base.`}
+        title={`${article.title} | ${sectionData.title} | Nick Shaw`}
+        description={article.description ?? `${article.title}: part of the ${sectionData.title} section of the Software Testing Knowledge Base.`}
         canonicalUrl={`/knowledge-base/${sectionSlug}/${articleSlug}`}
+        jsonLd={techArticleSchema({
+          headline: article.title,
+          description: article.description ?? `${article.title}: part of the ${sectionData.title} section of the Software Testing Knowledge Base.`,
+          url: `/knowledge-base/${sectionSlug}/${articleSlug}`,
+        })}
       />
 
       <div className="max-w-6xl mx-auto px-6 md:px-10 py-8 md:py-16">

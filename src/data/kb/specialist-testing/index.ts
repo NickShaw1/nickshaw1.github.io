@@ -4,6 +4,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'api-testing',
     title: 'API Testing',
+    description: 'How to test APIs effectively, covering REST and GraphQL strategies, common challenges and tooling and CI integration.',
     wordCount: 1050,
     sections: [
       { id: 'what-api-testing-covers', title: 'What API testing covers' },
@@ -17,6 +18,7 @@ export const articles: KBArticle[] = [
     slug: 'performance-and-load-testing',
     title: 'Performance & Load Testing',
     shortTitle: 'Performance Testing',
+    description: 'Types of performance test, designing meaningful load scenarios, interpreting results and integrating performance testing in delivery.',
     wordCount: 1100,
     sections: [
       { id: 'types-of-performance-test',        title: 'Types of performance test' },
@@ -30,6 +32,7 @@ export const articles: KBArticle[] = [
     slug: 'security-testing',
     title: 'Security Testing (OWASP)',
     shortTitle: 'Security Testing',
+    description: 'Security testing based on OWASP: the Top Ten, testing approaches, specific areas to focus on and pipeline integration.',
     wordCount: 1050,
     sections: [
       { id: 'the-owasp-top-ten',                   title: 'The OWASP Top Ten' },
@@ -43,6 +46,7 @@ export const articles: KBArticle[] = [
     slug: 'accessibility-testing',
     title: 'Accessibility Testing (WCAG)',
     shortTitle: 'Accessibility Testing',
+    description: 'Accessibility testing covering WCAG and the four principles, automated and manual approaches and building accessibility in.',
     wordCount: 1000,
     sections: [
       { id: 'wcag-and-the-four-principles',  title: 'WCAG and the four principles' },
@@ -55,6 +59,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'mobile-testing',
     title: 'Mobile Testing',
+    description: 'Mobile testing: types of mobile application, device coverage strategy, mobile-specific considerations and automation tooling.',
     wordCount: 900,
     sections: [
       { id: 'types-of-mobile-application',     title: 'Types of mobile application' },
@@ -68,6 +73,7 @@ export const articles: KBArticle[] = [
     slug: 'cross-browser-testing',
     title: 'Cross-Browser & Cross-Device Testing',
     shortTitle: 'Cross-Browser Testing',
+    description: 'Why cross-browser testing still matters, defining a coverage matrix, testing strategies and cloud-based tooling options.',
     wordCount: 900,
     sections: [
       { id: 'why-browsers-still-differ',    title: 'Why browsers still differ' },
@@ -80,6 +86,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'database-testing',
     title: 'Database Testing',
+    description: 'Database testing covering schema and migration validation, data integrity, query performance and transactions and concurrency.',
     wordCount: 900,
     sections: [
       { id: 'schema-and-migration-testing',        title: 'Schema and migration testing' },
@@ -93,6 +100,7 @@ export const articles: KBArticle[] = [
     slug: 'chaos-engineering',
     title: 'Chaos Engineering & Resilience Testing',
     shortTitle: 'Chaos Engineering',
+    description: 'Chaos engineering and resilience testing: the core principle, designing experiments, running GameDays and available tooling.',
     wordCount: 950,
     sections: [
       { id: 'the-core-principle',         title: 'The core principle' },
@@ -105,6 +113,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'graphql-testing',
     title: 'GraphQL Testing',
+    description: 'Testing GraphQL APIs: what makes them different, testing queries and mutations, schema validation and security testing.',
     wordCount: 900,
     sections: [
       { id: 'what-makes-graphql-different',  title: 'What makes GraphQL different' },
@@ -118,6 +127,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'testing-microservices',
     title: 'Testing Microservices',
+    description: 'How to test microservices: isolation strategies, integration and end-to-end testing and using observability in production.',
     wordCount: 1000,
     sections: [
       { id: 'the-microservices-testing-challenge', title: 'The microservices testing challenge' },
@@ -131,6 +141,7 @@ export const articles: KBArticle[] = [
     slug: 'testing-event-driven-systems',
     title: 'Testing Event-Driven Systems',
     shortTitle: 'Event-Driven Systems',
+    description: 'Testing event-driven systems: the challenges, strategies, integration testing with real brokers and monitoring in production.',
     wordCount: 950,
     sections: [
       { id: 'the-testing-challenges',                  title: 'The testing challenges' },
@@ -144,6 +155,7 @@ export const articles: KBArticle[] = [
     slug: 'testing-serverless-functions',
     title: 'Testing Serverless Functions',
     shortTitle: 'Serverless Testing',
+    description: 'Testing serverless functions: the unique challenges, unit testing approaches, integration strategies and common pitfalls.',
     wordCount: 850,
     sections: [
       { id: 'the-serverless-testing-challenge',  title: 'The serverless testing challenge' },
@@ -157,6 +169,7 @@ export const articles: KBArticle[] = [
     slug: 'testing-data-pipelines',
     title: 'Testing Data Pipelines',
     shortTitle: 'Data Pipelines',
+    description: 'How to test data pipelines: what makes them hard to test, transformation logic, end-to-end testing and schema validation.',
     wordCount: 900,
     sections: [
       { id: 'what-makes-pipelines-hard-to-test',             title: 'What makes pipelines hard to test' },
@@ -170,6 +183,7 @@ export const articles: KBArticle[] = [
     slug: 'service-virtualisation',
     title: 'Service Virtualisation & Mocking',
     shortTitle: 'Service Virtualisation',
+    description: 'Service virtualisation and mocking: when to use each, available tools and the limitations to manage over time.',
     wordCount: 900,
     sections: [
       { id: 'service-virtualisation-vs-mocking',  title: 'Service virtualisation vs mocking' },

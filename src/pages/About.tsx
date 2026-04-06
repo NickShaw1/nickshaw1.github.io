@@ -5,6 +5,7 @@ import pippinImg from '../assets/pippin.jpg'
 import nickImg from '../assets/nick-diner.jpg'
 import { m } from 'framer-motion'
 import SEOHead from '../components/SEOHead'
+import { webPageSchema } from '../seo/structured-data'
 import SectionLabel from '../components/SectionLabel'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { meta } from '../data/meta'
@@ -157,6 +158,11 @@ export default function About() {
         title={meta.seo.about.title}
         description={meta.seo.about.description}
         canonicalUrl="/about"
+        jsonLd={webPageSchema({
+          name: 'About Nick Shaw',
+          description: meta.seo.about.description,
+          url: '/about',
+        })}
       />
 
       <div className="max-w-6xl mx-auto px-6 md:px-10 py-16 lg:flex lg:gap-16">

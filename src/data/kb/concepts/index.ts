@@ -5,6 +5,7 @@ export const articles: KBArticle[] = [
     slug: 'writing-good-tests',
     title: 'Writing Good Tests: General Principles',
     shortTitle: 'Writing Good Tests',
+    description: 'The general principles of writing good tests: naming, isolation, assertions, what not to test and keeping tests maintainable.',
     wordCount: 950,
     sections: [
       { id: 'what-makes-a-test-good', title: 'What makes a test good' },
@@ -20,6 +21,7 @@ export const articles: KBArticle[] = [
     slug: 'introducing-testing-to-a-legacy-codebase',
     title: 'Introducing Testing to a Legacy Codebase',
     shortTitle: 'Legacy Testing',
+    description: 'How to introduce testing to a legacy codebase: where to start, characterisation tests, making code testable and avoiding rewrites.',
     wordCount: 900,
     sections: [
       { id: 'the-challenge',          title: 'The challenge' },
@@ -34,6 +36,7 @@ export const articles: KBArticle[] = [
     slug: 'building-a-test-strategy',
     title: 'Building a Test Strategy from Scratch',
     shortTitle: 'Test Strategy',
+    description: 'How to build a test strategy from scratch: understanding risk, choosing coverage, tooling decisions and making the strategy stick.',
     wordCount: 950,
     sections: [
       { id: 'what-a-strategy-is-not',      title: 'What a strategy is not' },
@@ -48,6 +51,7 @@ export const articles: KBArticle[] = [
     slug: 'setting-up-testing-in-ci-cd',
     title: 'Setting Up Testing in CI/CD',
     shortTitle: 'Testing in CI/CD',
+    description: 'A practical guide to setting up testing in CI/CD: pipeline structure, parallelisation, flaky test handling and failure policies.',
     wordCount: 1400,
     sections: [
       { id: 'what-ci-cd-means-for-testing', title: 'What CI/CD means for testing' },

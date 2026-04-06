@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
+import { collectionPageSchema } from '../seo/structured-data'
 import SectionLabel from '../components/SectionLabel'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { prefetchSection } from '../data/kb'
@@ -132,6 +133,11 @@ export default function KnowledgeBase() {
         title="Software Testing Knowledge Base | Nick Shaw"
         description="A wiki-style knowledge base covering software testing theory, practical tool guides and quick-reference material, by Nick Shaw."
         canonicalUrl="/knowledge-base"
+        jsonLd={collectionPageSchema({
+          name: 'Software Testing Knowledge Base',
+          description: 'A wiki-style knowledge base covering software testing theory, practical tool guides and quick-reference material, by Nick Shaw.',
+          url: '/knowledge-base',
+        })}
       />
 
       <div className="max-w-6xl mx-auto px-6 md:px-10 py-16">

@@ -11,6 +11,7 @@ export interface KBArticle {
   slug: string
   title: string
   shortTitle?: string
+  description?: string
   wordCount: number
   sections: KBTocSection[]
   load: () => Promise<{ default: FC }>

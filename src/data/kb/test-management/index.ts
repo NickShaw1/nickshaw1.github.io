@@ -4,6 +4,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'test-planning-and-strategy',
     title: 'Test Planning & Strategy',
+    description: 'How to write a test plan and strategy, covering scope, entry and exit criteria, risk and planning in agile delivery contexts.',
     wordCount: 1250,
     sections: [
       { id: 'test-strategy',            title: 'Test strategy' },
@@ -17,6 +18,7 @@ export const articles: KBArticle[] = [
     slug: 'writing-and-managing-test-cases',
     title: 'Writing & Managing Test Cases',
     shortTitle: 'Test Cases',
+    description: 'How to write and manage test cases effectively, covering anatomy, maintenance and the case for conditions over scripts.',
     wordCount: 750,
     sections: [
       { id: 'anatomy-of-a-test-case',  title: 'Anatomy of a test case' },
@@ -29,6 +31,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'test-suite-management',
     title: 'Test Suite Management',
+    description: 'How to organise, maintain and improve test suites over time, including suite health, decay and regular review processes.',
     wordCount: 700,
     sections: [
       { id: 'organising-suites',      title: 'Organising suites' },
@@ -40,6 +43,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'estimating-testing-effort',
     title: 'Estimating Testing Effort',
+    description: 'Why testing effort is hard to estimate and how to do it anyway, covering techniques and communicating uncertainty to stakeholders.',
     wordCount: 750,
     sections: [
       { id: 'why-estimates-are-hard',  title: 'Why estimates are hard' },
@@ -52,6 +56,7 @@ export const articles: KBArticle[] = [
     slug: 'risk-based-test-prioritisation',
     title: 'Risk-Based Test Prioritisation',
     shortTitle: 'Risk-Based Prioritisation',
+    description: 'How to apply risk-based prioritisation to testing, covering risk identification, scoring and practical application in delivery.',
     wordCount: 750,
     sections: [
       { id: 'what-risk-based-testing-means', title: 'What risk-based testing means' },
@@ -64,6 +69,7 @@ export const articles: KBArticle[] = [
     slug: 'testing-in-regulated-industries',
     title: 'Testing in Regulated Industries',
     shortTitle: 'Regulated Industries',
+    description: 'Testing in regulated industries: what changes, common frameworks, documentation requirements and validation and qualification.',
     wordCount: 950,
     sections: [
       { id: 'what-regulation-changes',      title: 'What regulation changes' },
@@ -76,6 +82,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'compliance-and-audit-evidence',
     title: 'Compliance & Audit Evidence',
+    description: 'What auditors look for in software testing, how to maintain traceability and what good audit evidence looks like.',
     wordCount: 750,
     sections: [
       { id: 'what-auditors-look-for', title: 'What auditors look for' },
@@ -87,6 +94,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'outsourcing-qa-vs-in-house',
     title: 'Outsourcing QA vs In-House',
+    description: 'The trade-offs of outsourcing QA versus building in-house, covering when outsourcing works and hybrid model options.',
     wordCount: 750,
     sections: [
       { id: 'the-core-trade-off',     title: 'The core trade-off' },
@@ -98,6 +106,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'selling-testing-to-stakeholders',
     title: 'Selling Testing to Stakeholders',
+    description: 'How to make the case for testing to non-technical stakeholders, using language, framing and metrics that resonate.',
     wordCount: 750,
     sections: [
       { id: 'the-framing-problem',   title: 'The framing problem' },

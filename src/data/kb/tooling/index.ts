@@ -5,6 +5,7 @@ export const articles: KBArticle[] = [
     slug: 'browser-and-e2e-tools',
     title: 'Browser & End-to-End Testing Tools',
     shortTitle: 'Browser & E2E',
+    description: 'A comparison of browser and end-to-end testing tools: Playwright, Selenium, Cypress and WebdriverIO, with guidance on choosing.',
     wordCount: 1800,
     sections: [
       { id: 'playwright',    title: 'Playwright' },
@@ -19,6 +20,7 @@ export const articles: KBArticle[] = [
     slug: 'unit-and-integration-tools',
     title: 'Unit & Integration Testing Tools',
     shortTitle: 'Unit & Integration',
+    description: 'Unit and integration testing tools compared: Jest, Vitest, Pytest, JUnit and TestNG, with use cases and trade-offs.',
     wordCount: 1200,
     sections: [
       { id: 'jest',    title: 'Jest' },
@@ -33,6 +35,7 @@ export const articles: KBArticle[] = [
     slug: 'api-testing-tools',
     title: 'API Testing Tools',
     shortTitle: 'API Testing',
+    description: 'API testing tools overview: Postman, REST Assured and Mock Service Worker, covering use cases and how they integrate.',
     wordCount: 900,
     sections: [
       { id: 'postman',       title: 'Postman' },
@@ -45,6 +48,7 @@ export const articles: KBArticle[] = [
     slug: 'contract-testing-tools',
     title: 'Contract Testing Tools',
     shortTitle: 'Contract Testing',
+    description: 'Contract testing with Pact: how it works, the Pact workflow and Pact Broker for managing contracts across services.',
     wordCount: 900,
     sections: [
       { id: 'how-pact-works',    title: 'How Pact works' },
@@ -57,6 +61,7 @@ export const articles: KBArticle[] = [
     slug: 'performance-and-load-tools',
     title: 'Performance & Load Testing Tools',
     shortTitle: 'Performance & Load',
+    description: 'Performance and load testing tools compared: Apache JMeter, k6 and Gatling, with trade-offs and use cases.',
     wordCount: 1100,
     sections: [
       { id: 'jmeter',  title: 'Apache JMeter' },
@@ -69,6 +74,7 @@ export const articles: KBArticle[] = [
     slug: 'mobile-testing-tools',
     title: 'Mobile Testing Tools',
     shortTitle: 'Mobile Testing',
+    description: 'Mobile testing tools: Appium and Detox compared, covering capabilities, use cases and how they fit into a mobile strategy.',
     wordCount: 900,
     sections: [
       { id: 'appium', title: 'Appium' },
@@ -80,6 +86,7 @@ export const articles: KBArticle[] = [
     slug: 'security-testing-tools',
     title: 'Security Testing Tools',
     shortTitle: 'Security Testing',
+    description: 'Security testing tools: OWASP ZAP and Burp Suite, covering what each tests, how they work and where they fit in a pipeline.',
     wordCount: 950,
     sections: [
       { id: 'owasp-zap',   title: 'OWASP ZAP' },
@@ -91,6 +98,7 @@ export const articles: KBArticle[] = [
     slug: 'accessibility-and-visual-tools',
     title: 'Accessibility & Visual Testing Tools',
     shortTitle: 'Accessibility & Visual',
+    description: 'Accessibility and visual testing tools: Axe, Percy and Storybook, covering what each tests and integration options.',
     wordCount: 1000,
     sections: [
       { id: 'axe',       title: 'Axe' },
@@ -103,6 +111,7 @@ export const articles: KBArticle[] = [
     slug: 'bdd-tools',
     title: 'BDD & Behaviour-Driven Tools',
     shortTitle: 'BDD Tools',
+    description: 'BDD tools and Gherkin: feature file structure, step definitions, tooling across languages and BDD in real delivery contexts.',
     wordCount: 900,
     sections: [
       { id: 'gherkin-and-feature-files', title: 'Gherkin and feature files' },

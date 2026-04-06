@@ -5,6 +5,7 @@ export const articles: KBArticle[] = [
     slug: 'software-testing-in-the-age-of-ai',
     title: 'Software Testing in the Age of AI',
     shortTitle: 'Age of AI',
+    description: 'How AI is changing software testing, what has shifted for QA professionals and what fundamentals remain unchanged.',
     wordCount: 1300,
     sections: [
       { id: 'what-has-changed',                   title: 'What has changed' },
@@ -18,6 +19,7 @@ export const articles: KBArticle[] = [
     slug: 'using-ai-tools-in-your-testing-workflow',
     title: 'Using AI Tools in Your Testing Workflow',
     shortTitle: 'AI in Your Workflow',
+    description: 'How to use AI tools in a testing workflow: test case generation, exploratory assistance, defect triage and knowing the limits.',
     wordCount: 1500,
     sections: [
       { id: 'test-case-generation',              title: 'Test case generation' },
@@ -32,6 +34,7 @@ export const articles: KBArticle[] = [
     slug: 'ai-generated-tests',
     title: 'AI-Generated Tests: Opportunities and Risks',
     shortTitle: 'AI-Generated Tests',
+    description: 'The opportunities and risks of AI-generated tests: what they do well, the risks of over-reliance and how to review and own them.',
     wordCount: 1100,
     sections: [
       { id: 'what-ai-generated-tests-can-do-well',    title: 'What AI-generated tests can do well' },
@@ -44,6 +47,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'testing-ai-ml-systems',
     title: 'Testing AI/ML Systems',
+    description: 'How to test AI and ML systems: testing data, model behaviour, the surrounding system and monitoring for regression and drift.',
     wordCount: 1500,
     sections: [
       { id: 'why-ml-systems-are-different',      title: 'Why ML systems are different to test' },
@@ -58,6 +62,7 @@ export const articles: KBArticle[] = [
     slug: 'bias-and-fairness-testing',
     title: 'Bias & Fairness Testing',
     shortTitle: 'Bias & Fairness',
+    description: 'Bias and fairness testing for ML systems: sources of bias, fairness metrics and practical testing approaches.',
     wordCount: 1100,
     sections: [
       { id: 'what-bias-means-in-ml',  title: 'What bias means in ML systems' },
@@ -71,6 +76,7 @@ export const articles: KBArticle[] = [
     slug: 'prompt-testing-and-llm-evaluation',
     title: 'Prompt Testing & LLM Evaluation',
     shortTitle: 'Prompt Testing & Evals',
+    description: 'How to test prompts and evaluate LLMs: the evaluation challenge, testing strategies, building an eval suite and regression testing.',
     wordCount: 1300,
     sections: [
       { id: 'the-evaluation-challenge',       title: 'The evaluation challenge' },
@@ -83,6 +89,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'testing-ai-agents',
     title: 'Testing AI Agents',
+    description: 'What makes AI agents different to test, covering tool use, non-determinism, reliability and observability for agentic systems.',
     wordCount: 1000,
     sections: [
       { id: 'what-makes-agents-different',       title: 'What makes agents different' },

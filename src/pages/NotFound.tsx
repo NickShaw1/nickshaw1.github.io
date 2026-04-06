@@ -12,7 +12,7 @@ export default function NotFound() {
   return (
     <>
       <SEOHead
-        title="404 – Page not found | Nick Shaw"
+        title="404 | Page Not Found | Nick Shaw"
         description="This page doesn't exist. Head back to the homepage."
         canonicalUrl="/404"
       />

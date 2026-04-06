@@ -5,6 +5,7 @@ export const articles: KBArticle[] = [
     slug: 'introduction-to-test-automation',
     title: 'Introduction to Test Automation',
     shortTitle: 'Introduction',
+    description: 'An introduction to test automation: what it is and is not, why to automate, the real costs and how to start effectively.',
     wordCount: 1000,
     sections: [
       { id: 'what-automation-is-and-is-not', title: 'What automation is and is not' },
@@ -18,6 +19,7 @@ export const articles: KBArticle[] = [
     slug: 'what-to-automate',
     title: 'What to Automate (and What Not To)',
     shortTitle: 'What to Automate',
+    description: 'How to decide what to automate and what not to, covering good and poor candidates and how the boundary shifts over time.',
     wordCount: 950,
     sections: [
       { id: 'the-automation-decision',   title: 'The automation decision' },
@@ -30,6 +32,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'unit-testing',
     title: 'Unit Testing',
+    description: 'Unit testing fundamentals: what a unit test covers, qualities of good tests, test doubles and the limits of coverage.',
     wordCount: 900,
     sections: [
       { id: 'what-a-unit-test-covers',   title: 'What a unit test covers' },
@@ -42,6 +45,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'integration-testing',
     title: 'Integration Testing',
+    description: 'Integration testing explained: what it covers, types of integration test, scope decisions and how it differs from unit testing.',
     wordCount: 900,
     sections: [
       { id: 'what-integration-testing-covers', title: 'What integration testing covers' },
@@ -54,6 +58,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'end-to-end-testing',
     title: 'End-to-End Testing',
+    description: 'End-to-end testing: what it covers, design principles for stable suites and the trade-offs of testing at the system level.',
     wordCount: 950,
     sections: [
       { id: 'what-e2e-covers',       title: 'What end-to-end testing covers' },
@@ -66,6 +71,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'contract-testing',
     title: 'Contract Testing',
+    description: 'How contract testing works, what a contract test verifies, consumer-driven contracts and where contract testing fits in a pipeline.',
     wordCount: 850,
     sections: [
       { id: 'the-integration-problem',        title: 'The integration problem' },
@@ -79,6 +85,7 @@ export const articles: KBArticle[] = [
     slug: 'visual-regression-testing',
     title: 'Visual Regression Testing',
     shortTitle: 'Visual Regression',
+    description: 'How visual regression testing works, managing baselines, what it catches and the limitations to plan around.',
     wordCount: 800,
     sections: [
       { id: 'what-visual-regression-covers', title: 'What visual regression covers' },
@@ -91,6 +98,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'snapshot-testing',
     title: 'Snapshot Testing',
+    description: 'What snapshot testing is, when it helps, the staleness problem and how it compares to pixel-level visual regression testing.',
     wordCount: 750,
     sections: [
       { id: 'what-snapshot-testing-is', title: 'What snapshot testing is' },
@@ -104,6 +112,7 @@ export const articles: KBArticle[] = [
     slug: 'writing-maintainable-tests',
     title: 'Writing Maintainable Tests',
     shortTitle: 'Maintainable Tests',
+    description: 'How to write tests that are easy to maintain, covering naming, structure, isolation and choosing the right level of abstraction.',
     wordCount: 1000,
     sections: [
       { id: 'the-maintenance-problem', title: 'The maintenance problem' },
@@ -117,6 +126,7 @@ export const articles: KBArticle[] = [
     slug: 'flaky-tests',
     title: 'Avoiding & Fixing Flaky Tests',
     shortTitle: 'Flaky Tests',
+    description: 'What causes flaky tests, common patterns to watch for, strategies for fixing them and how to prevent flakiness from the start.',
     wordCount: 950,
     sections: [
       { id: 'what-makes-a-test-flaky', title: 'What makes a test flaky' },
@@ -130,6 +140,7 @@ export const articles: KBArticle[] = [
     slug: 'page-object-model',
     title: 'Page Object Model & Other Patterns',
     shortTitle: 'Page Object Model',
+    description: 'The page object model and alternative automation patterns, with guidance on when abstractions help rather than add complexity.',
     wordCount: 950,
     sections: [
       { id: 'what-the-pom-is',         title: 'What the page object model is' },
@@ -143,6 +154,7 @@ export const articles: KBArticle[] = [
     slug: 'ci-cd-pipeline-integration',
     title: 'CI/CD Pipeline Integration',
     shortTitle: 'CI/CD Integration',
+    description: 'How to integrate automated tests into CI/CD pipelines, covering stages, fail-fast strategies and reporting feedback loops.',
     wordCount: 950,
     sections: [
       { id: 'why-automation-belongs-in-ci', title: 'Why automation belongs in CI' },
@@ -156,6 +168,7 @@ export const articles: KBArticle[] = [
     slug: 'parallelism-and-sharding',
     title: 'Parallelism & Test Sharding',
     shortTitle: 'Parallelism & Sharding',
+    description: 'How parallel test execution and sharding work, why they matter for feedback speed and the trade-offs to manage.',
     wordCount: 850,
     sections: [
       { id: 'why-parallel-execution-matters', title: 'Why parallel execution matters' },
@@ -168,6 +181,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'test-data-management',
     title: 'Test Data Management',
+    description: 'Strategies for managing test data, covering isolation, seeding, teardown and the common problems that arise in test environments.',
     wordCount: 950,
     sections: [
       { id: 'the-test-data-problem',   title: 'The test data problem' },

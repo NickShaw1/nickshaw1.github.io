@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { m } from 'framer-motion'
 import SEOHead from '../components/SEOHead'
+import { webPageSchema } from '../seo/structured-data'
 import BlogCard from '../components/BlogCard'
 import SectionLabel from '../components/SectionLabel'
 import { useReducedMotion } from '../hooks/useReducedMotion'
@@ -23,6 +24,11 @@ export default function Blog() {
         title={meta.seo.blog.title}
         description={meta.seo.blog.description}
         canonicalUrl="/blog"
+        jsonLd={webPageSchema({
+          name: 'Blog',
+          description: meta.seo.blog.description,
+          url: '/blog',
+        })}
       />
 
       <div className="max-w-6xl mx-auto px-6 md:px-10 py-16">

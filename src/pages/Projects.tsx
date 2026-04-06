@@ -9,6 +9,7 @@ const SITES_ICON_MAP: Record<string, { icon: ComponentType<{ size?: number; clas
   BookOpen: { icon: BookOpen, colour: 'text-[#a78bfa]' },
 }
 import SEOHead from '../components/SEOHead'
+import { collectionPageSchema } from '../seo/structured-data'
 import ProjectCard from '../components/ProjectCard'
 import SectionLabel from '../components/SectionLabel'
 import { useReducedMotion } from '../hooks/useReducedMotion'
@@ -39,6 +40,11 @@ export default function Projects() {
         title={meta.seo.projects.title}
         description={meta.seo.projects.description}
         canonicalUrl="/projects"
+        jsonLd={collectionPageSchema({
+          name: 'Projects',
+          description: meta.seo.projects.description,
+          url: '/projects',
+        })}
       />
 
       <div className="max-w-6xl mx-auto px-6 md:px-10 py-16">

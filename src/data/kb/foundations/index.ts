@@ -4,6 +4,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'what-is-software-testing',
     title: 'What is Software Testing?',
+    description: 'An introduction to software testing: what it is, what testers actually do, and why it matters for every software project.',
     wordCount: 1000,
     sections: [
       { id: 'what-testing-is-not',           title: 'What testing is not' },
@@ -18,6 +19,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'history-of-software-testing',
     title: 'History of Software Testing',
+    description: 'A history of software testing from the debugging era to modern AI-assisted techniques, tracing how the discipline evolved.',
     wordCount: 1060,
     sections: [
       { id: 'the-debugging-era',                  title: 'The debugging era' },
@@ -33,6 +35,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'why-testing-matters',
     title: 'Why Testing Matters',
+    description: 'Why software testing matters: the cost of defects, what testing protects and the deferred cost argument for investing in quality.',
     wordCount: 580,
     sections: [
       { id: 'when-it-goes-wrong',            title: 'When it goes wrong' },
@@ -45,6 +48,7 @@ export const articles: KBArticle[] = [
     slug: 'testing-philosophies',
     title: 'Testing Philosophies: Shift-Left, Risk-Based, TDD, BDD, ATDD',
     shortTitle: 'Testing Philosophies',
+    description: 'An overview of testing philosophies including shift-left, risk-based testing, TDD, BDD and ATDD, with guidance on when to apply each.',
     wordCount: 1050,
     sections: [
       { id: 'shift-left',         title: 'Shift-left' },
@@ -57,6 +61,7 @@ export const articles: KBArticle[] = [
     slug: 'the-testing-pyramid-trophy-honeycomb',
     title: 'The Testing Pyramid, Trophy & Honeycomb: The Debate',
     shortTitle: 'The Testing Pyramid',
+    description: 'A comparison of the testing pyramid, trophy and honeycomb models, covering the trade-offs and which structure suits your context.',
     wordCount: 1050,
     sections: [
       { id: 'the-testing-pyramid',   title: 'The testing pyramid' },
@@ -69,6 +74,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'test-types-taxonomy',
     title: 'Test Types Taxonomy',
+    description: 'A taxonomy of software test types organised by scope, purpose, approach and non-functional category.',
     wordCount: 1100,
     sections: [
       { id: 'by-scope',       title: 'By scope' },
@@ -82,6 +88,7 @@ export const articles: KBArticle[] = [
     slug: 'roles-and-responsibilities',
     title: 'Roles & Responsibilities: QA, SDET, Developer',
     shortTitle: 'Roles & Responsibilities',
+    description: 'A breakdown of QA engineer, SDET and developer roles in testing, covering responsibilities and how they collaborate effectively.',
     wordCount: 850,
     sections: [
       { id: 'the-qa-engineer',        title: 'The QA engineer' },
@@ -94,6 +101,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'building-a-testing-culture',
     title: 'Building a Testing Culture',
+    description: 'How to build a genuine testing culture: psychological safety, visibility, metrics that help rather than harm and shifting existing teams.',
     wordCount: 1050,
     sections: [
       { id: 'what-a-testing-culture-is-not', title: 'What a testing culture is not' },
@@ -108,6 +116,7 @@ export const articles: KBArticle[] = [
     slug: 'testing-in-agile-scrum-kanban',
     title: 'Testing in Agile, Scrum & Kanban',
     shortTitle: 'Testing in Agile',
+    description: 'How software testing fits into Agile delivery, covering Scrum ceremonies, the definition of done, Kanban flow and common failure modes.',
     wordCount: 900,
     sections: [
       { id: 'testing-in-scrum',       title: 'Testing in Scrum' },
@@ -122,6 +131,7 @@ export const articles: KBArticle[] = [
     slug: 'testing-metrics',
     title: 'Testing Metrics: What to Measure',
     shortTitle: 'Testing Metrics',
+    description: 'Which testing metrics to measure and how to use them well, covering quality, process and coverage metrics without gaming the numbers.',
     wordCount: 1050,
     sections: [
       { id: 'quality-metrics',    title: 'Quality metrics' },

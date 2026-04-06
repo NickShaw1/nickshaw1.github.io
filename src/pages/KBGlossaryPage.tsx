@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { m } from 'framer-motion'
 import { ArrowLeft } from 'lucide-react'
 import SEOHead from '../components/SEOHead'
+import { webPageSchema } from '../seo/structured-data'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 
 interface GlossaryTerm {
@@ -232,6 +233,11 @@ export default function KBGlossaryPage() {
         title="Testing Glossary | Nick Shaw"
         description="Definitions for common software testing terms, acronyms and concepts."
         canonicalUrl="/knowledge-base/glossary"
+        jsonLd={webPageSchema({
+          name: 'Testing Glossary',
+          description: 'Definitions for common software testing terms, acronyms and concepts.',
+          url: '/knowledge-base/glossary',
+        })}
       />
 
       <div className="max-w-6xl mx-auto px-6 md:px-10 py-12">

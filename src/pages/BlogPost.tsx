@@ -62,7 +62,7 @@ export default function BlogPost() {
   return (
     <>
       <SEOHead
-        title={`${post.title} – ${meta.name}`}
+        title={`${post.title} | ${meta.name}`}
         description={post.excerpt}
         ogType="article"
         canonicalUrl={`/blog/${post.slug}`}

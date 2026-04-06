@@ -3,6 +3,7 @@ import { m } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
 import SEOHead from '../components/SEOHead'
+import { webPageSchema } from '../seo/structured-data'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 
 type Level = 'foundation' | 'intermediate' | 'advanced' | 'expert'
@@ -174,6 +175,11 @@ export default function KBTestingResourcesPage() {
         title="Software Testing Resources | Nick Shaw"
         description="Certifications, courses, tools, books and communities for software testing professionals."
         canonicalUrl="/knowledge-base/testing-resources"
+        jsonLd={webPageSchema({
+          name: 'Software Testing Resources',
+          description: 'Certifications, courses, tools, books and communities for software testing professionals.',
+          url: '/knowledge-base/testing-resources',
+        })}
       />
 
       <div className="max-w-6xl mx-auto px-6 md:px-10 py-12">

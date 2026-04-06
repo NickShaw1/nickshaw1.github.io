@@ -5,6 +5,7 @@ export const articles: KBArticle[] = [
     slug: 'introduction-to-manual-testing',
     title: 'Introduction to Manual Testing',
     shortTitle: 'Introduction',
+    description: 'What manual testing does well, where it is less suited and how it remains relevant alongside automation in modern delivery.',
     wordCount: 1000,
     sections: [
       { id: 'what-manual-testing-does-well', title: 'What manual testing does well' },
@@ -16,6 +17,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'exploratory-testing',
     title: 'Exploratory Testing',
+    description: 'How exploratory testing works in practice, covering charters, session-based testing, heuristics and when it delivers the most value.',
     wordCount: 1200,
     sections: [
       { id: 'charters-and-session-based-testing', title: 'Charters and session-based testing' },
@@ -27,6 +29,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'writing-good-bug-reports',
     title: 'Writing Good Bug Reports',
+    description: 'How to write effective bug reports: structure, reproducibility, severity and priority and the evidence that makes reports actionable.',
     wordCount: 1400,
     sections: [
       { id: 'why-report-quality-matters', title: 'Why report quality matters' },
@@ -41,6 +44,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'defect-lifecycle-management',
     title: 'Defect Lifecycle Management',
+    description: 'The standard defect lifecycle from discovery to closure, covering triage, verification, regression and non-standard outcomes.',
     wordCount: 1000,
     sections: [
       { id: 'the-standard-lifecycle',       title: 'The standard lifecycle' },
@@ -54,6 +58,7 @@ export const articles: KBArticle[] = [
     slug: 'bug-bashes-and-structured-sessions',
     title: 'Bug Bashes & Structured Sessions',
     shortTitle: 'Bug Bashes',
+    description: 'When and how to run bug bashes and structured testing sessions, and the common reasons they fail to deliver useful results.',
     wordCount: 800,
     sections: [
       { id: 'when-to-run-one',        title: 'When to run one' },
@@ -65,6 +70,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'pair-testing',
     title: 'Pair Testing',
+    description: 'An introduction to pair testing, covering pairing models and the scenarios where collaborative testing adds the most value.',
     wordCount: 800,
     sections: [
       { id: 'pairing-models',     title: 'Pairing models' },
@@ -75,6 +81,7 @@ export const articles: KBArticle[] = [
   {
     slug: 'usability-testing',
     title: 'Usability Testing',
+    description: 'How usability testing works, covering moderated and unmoderated approaches, heuristic evaluation and the tester\'s role.',
     wordCount: 1200,
     sections: [
       { id: 'what-usability-testing-examines', title: 'What usability testing examines' },
