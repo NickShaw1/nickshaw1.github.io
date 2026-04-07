@@ -125,7 +125,17 @@ export default function ArtemisTrackerDemo() {
   const isDragging     = useRef(false)
   const userDragged    = useRef(false)
   const lastMouse      = useRef({ x: 0, y: 0 })
-  const spherical      = useRef({ theta: 0.4, phi: Math.PI * 0.45 })
+  const spherical      = useRef((() => {
+    // Initialise camera facing the sun-lit side of Earth
+    const D   = Date.now() / 86400000 + 2440587.5 - 2451545.0
+    const g   = (357.528 + 0.9856003 * D) * Math.PI / 180
+    const L   = (280.460 + 0.9856474 * D) * Math.PI / 180
+    const lam = L + (1.915 * Math.sin(g) + 0.020 * Math.sin(2 * g)) * Math.PI / 180
+    const eps = (23.439 - 0.0000004 * D) * Math.PI / 180
+    const sx  = Math.cos(lam), sy = Math.cos(eps) * Math.sin(lam)
+    // Three.js sun X = -sx, Z = sy → theta = atan2(Z, X)
+    return { theta: Math.atan2(sy, -sx), phi: Math.PI * 0.45 }
+  })())
   const lookTargetRef  = useRef(new THREE.Vector3(0, 0, 0))
 
   const [artemisPts,    setArtemisPts]    = useState<HorizonsPoint[]>([])
