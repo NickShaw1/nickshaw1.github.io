@@ -53,6 +53,9 @@ jobs:
         env:
           VITE_FORMSPREE_ID: ${{ secrets.VITE_FORMSPREE_ID }}
 
+      - name: Copy index.html to 404.html for SPA routing
+        run: cp dist/index.html dist/404.html
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
