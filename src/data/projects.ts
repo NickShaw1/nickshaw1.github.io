@@ -25,6 +25,55 @@ export interface ProjectItem {
 export const projects: ProjectItem[] = [
   // ── Exercises ────────────────────────────────────────────
   {
+    id: 'artemis-tracker',
+    title: 'Artemis II Tracker',
+    description: 'Live 3D tracker for the Artemis II mission.',
+    stack: ['TypeScript', 'Three.js', 'NASA API'],
+    category: 'Exercises',
+    featured: true,
+    modalSize: 'expanded',
+    icon: 'Rocket',
+    detail: {
+      body: 'A live 3D tracker for the Artemis II mission powered by NASA\'s JPL Horizons API. Spacecraft and Moon positions are fetched as Earth-centred ICRF vectors, parsed with independent regexes for robustness, and interpolated client-side between ephemeris steps for smooth per-second updates. The Three.js scene shows a textured Earth, the Moon at its true scaled position and the Orion capsule marker.',
+      highlights: [
+        'Querying JPL Horizons (target -1024) via a CORS proxy to retrieve spacecraft position and velocity vectors',
+        'Parsing the Horizons text response with separate regexes for dates, XYZ positions and velocity components, zipped by index for resilience against format variations',
+        'Running Artemis and Moon fetches independently so a failure on either does not block the other',
+        'Mapping Earth-centred ICRF coordinates to Three.js: negating X and swapping Y and Z axes to correct coordinate handedness and place the north celestial pole as scene Y-up',
+        'Linearly interpolating between 30-minute ephemeris steps every second to produce smooth real-time motion',
+        'Atmospheric glow rendered via a custom GLSL fresnel shader on a second transparent sphere layered over Earth',
+      ],
+      codeSnippet: `// Parse Horizons text: independent regexes for each data type,
+// zipped by index — robust against whitespace or format differences
+function parseHorizons(text: string): HorizonsPoint[] {
+  const block = text.slice(
+    text.indexOf('$$SOE') + 5,
+    text.indexOf('$$EOE')
+  )
+  const dates: Date[]                  = []
+  const pos:   [number,number,number][] = []
+  const vel:   [number,number,number][] = []
+
+  const dateRe = /A\\.D\\.\\s+([\\d]{4}-\\w{3}-\\d{2}\\s+[\\d:.]+)\\s+TDB/g
+  const xyzRe  = /\\bX\\s*=\\s*([\\d.E+-]+)\\s+Y\\s*=\\s*([\\d.E+-]+)\\s+Z\\s*=\\s*([\\d.E+-]+)/g
+  const vRe    = /VX\\s*=\\s*([\\d.E+-]+)\\s+VY\\s*=\\s*([\\d.E+-]+)\\s+VZ\\s*=\\s*([\\d.E+-]+)/g
+
+  let m: RegExpExecArray | null
+  while ((m = dateRe.exec(block)) !== null) dates.push(parseHorizonsDate(m[1]))
+  while ((m = xyzRe.exec(block))  !== null) pos.push([+m[1], +m[2], +m[3]])
+  while ((m = vRe.exec(block))    !== null) vel.push([+m[1], +m[2], +m[3]])
+
+  return pos.map((p, i) => ({
+    t: dates[i] ?? new Date(),
+    x: p[0], y: p[1], z: p[2],
+    vx: vel[i]?.[0] ?? 0,
+    vy: vel[i]?.[1] ?? 0,
+    vz: vel[i]?.[2] ?? 0,
+  }))
+}`,
+    },
+  },
+  {
     id: 'iss-tracker',
     title: 'ISS Tracker',
     description: 'Live ISS tracker on a 3D Earth with real-time telemetry.',
@@ -38,14 +87,14 @@ export const projects: ProjectItem[] = [
       highlights: [
         'Atmospheric glow via a custom GLSL fresnel shader on a second transparent sphere',
         'Mapping live lat/lng coordinates to a 3D point on the sphere surface using spherical-to-Cartesian conversion',
-        'Smooth camera tracking via lerp interpolation, keeping the ISS centred as position updates',
+        'Smooth camera tracking via lerp interpolation, keeping the ISS centred as position updates, with drag-to-explore and auto-recentre after five seconds',
         'Pulsing ring marker using RingGeometry, scaled and oriented toward the camera each frame for a radar-pulse effect',
         'Current crew fetched from a live API and grouped by spacecraft',
       ],
       codeSnippet: `// Convert lat/lng to a 3D point on the globe surface
-function latLngToVec3(lat: number, lng: number, r = 1) {
+function issLatLonToVec3(lat: number, lon: number, r: number) {
   const phi   = (90 - lat) * (Math.PI / 180)
-  const theta = (lng + 180) * (Math.PI / 180)
+  const theta = (lon + 180) * (Math.PI / 180)
   return new THREE.Vector3(
     -r * Math.sin(phi) * Math.cos(theta),
      r * Math.cos(phi),
@@ -55,7 +104,7 @@ function latLngToVec3(lat: number, lng: number, r = 1) {
 
 // Smooth camera tracking with lerp each frame
 camera.position.lerp(
-  issPos.clone().multiplyScalar(2.5), 0.05
+  issPos.clone().multiplyScalar(3.4), 0.03
 )`,
     },
   },

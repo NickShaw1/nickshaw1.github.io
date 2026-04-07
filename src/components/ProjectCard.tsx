@@ -2,17 +2,17 @@ import { memo } from 'react'
 import type { ComponentType } from 'react'
 import {
   ArrowUpRight,
-  Satellite, Music, Cloud, Plane, DollarSign, MessageSquare,
+  Rocket, Satellite, Music, Cloud, Plane, DollarSign, MessageSquare,
   Layers, ChevronDown, Calculator, Square, Palette, Hash,
-  Code2, Terminal, Heart, FlaskConical, Play,
+  Code2, Terminal, Heart, FlaskConical, Play, Monitor,
 } from 'lucide-react'
 import { m } from 'framer-motion'
 import type { ProjectItem, ProjectCategory } from '../data/projects'
 
 const ICON_MAP: Record<string, ComponentType<{ size?: number; className?: string }>> = {
-  Satellite, Music, Cloud, Plane, DollarSign, MessageSquare,
+  Rocket, Satellite, Music, Cloud, Plane, DollarSign, MessageSquare,
   Layers, ChevronDown, Calculator, Square, Palette, Hash,
-  Code2, Terminal, Heart, FlaskConical, Play,
+  Code2, Terminal, Heart, FlaskConical, Play, Monitor,
 }
 
 interface ProjectCardProps {

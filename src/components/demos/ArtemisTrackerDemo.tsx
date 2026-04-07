@@ -1,0 +1,747 @@
+import React, { useState, useEffect, useRef } from 'react'
+import { Rocket, Tv, Orbit, Timer, Clock } from 'lucide-react'
+import * as THREE from 'three'
+
+// Positional scale: 1 unit = Earth's radius (6,371 km)
+// Visual radii are exaggerated so bodies are legible at the full Earth-Moon distance (~60 units)
+const KM_PER_UNIT  = 6371
+const EARTH_VR     = 5      // visual radius (true = 1)
+const MOON_VR      = 2      // visual radius (true = 0.27)
+
+interface HorizonsPoint {
+  t:  Date
+  x:  number   // km, Earth-centred ICRF
+  y:  number
+  z:  number
+  vx: number   // km/s
+  vy: number
+  vz: number
+}
+
+// ICRF → Three.js: swap Y↔Z (puts north pole as Y-up)
+function icrf(x: number, y: number, z: number, scale = 1): THREE.Vector3 {
+  return new THREE.Vector3(-x * scale, z * scale, y * scale)
+}
+
+const MONTHS: Record<string, string> = {
+  Jan:'01',Feb:'02',Mar:'03',Apr:'04',May:'05',Jun:'06',
+  Jul:'07',Aug:'08',Sep:'09',Oct:'10',Nov:'11',Dec:'12',
+}
+function parseHorizonsDate(s: string): Date {
+  const parts = s.trim().split(/\s+/)
+  const [y, mon, d] = parts[0].split('-')
+  const tp = (parts[1] ?? '00:00:00').replace(/\.\d+$/, '')
+  return new Date(`${y}-${MONTHS[mon]}-${d}T${tp}Z`)
+}
+
+// Extract each data type independently — robust against any inter-line whitespace or extra columns
+function parseHorizons(text: string): HorizonsPoint[] {
+  const soe = text.indexOf('$$SOE')
+  const eoe = text.indexOf('$$EOE')
+  if (soe === -1 || eoe === -1) return []
+
+  const block = text.slice(soe + 5, eoe)
+
+  const dates:  Date[]                        = []
+  const pos:    [number,number,number][]       = []
+  const vel:    [number,number,number][]       = []
+
+  const dateRe = /A\.D\.\s+([\d]{4}-\w{3}-\d{2}\s+[\d:.]+)\s+TDB/g
+  const xyzRe  = /\bX\s*=\s*([-\d.E+]+)\s+Y\s*=\s*([-\d.E+]+)\s+Z\s*=\s*([-\d.E+]+)/g
+  const vRe    = /VX\s*=\s*([-\d.E+]+)\s+VY\s*=\s*([-\d.E+]+)\s+VZ\s*=\s*([-\d.E+]+)/g
+
+  let m: RegExpExecArray | null
+  while ((m = dateRe.exec(block)) !== null) dates.push(parseHorizonsDate(m[1]))
+  while ((m = xyzRe.exec(block))  !== null) pos.push([parseFloat(m[1]), parseFloat(m[2]), parseFloat(m[3])])
+  while ((m = vRe.exec(block))    !== null) vel.push([parseFloat(m[1]), parseFloat(m[2]), parseFloat(m[3])])
+
+  return pos.map((p, i) => ({
+    t:  dates[i] ?? new Date(),
+    x:  p[0], y: p[1], z: p[2],
+    vx: vel[i]?.[0] ?? 0, vy: vel[i]?.[1] ?? 0, vz: vel[i]?.[2] ?? 0,
+  }))
+}
+
+function interpolate(pts: HorizonsPoint[], now: Date): HorizonsPoint | null {
+  if (!pts.length) return null
+  const t = now.getTime()
+  // Clamp to range
+  if (t <= pts[0].t.getTime()) return pts[0]
+  if (t >= pts[pts.length - 1].t.getTime()) return pts[pts.length - 1]
+  for (let i = 0; i < pts.length - 1; i++) {
+    const t0 = pts[i].t.getTime(), t1 = pts[i + 1].t.getTime()
+    if (t >= t0 && t < t1) {
+      const f = (t - t0) / (t1 - t0)
+      const lerp = (a: number, b: number) => a + f * (b - a)
+      return {
+        t: now,
+        x: lerp(pts[i].x, pts[i + 1].x), y: lerp(pts[i].y, pts[i + 1].y),
+        z: lerp(pts[i].z, pts[i + 1].z), vx: lerp(pts[i].vx, pts[i + 1].vx),
+        vy: lerp(pts[i].vy, pts[i + 1].vy), vz: lerp(pts[i].vz, pts[i + 1].vz),
+      }
+    }
+  }
+  return pts[pts.length - 1]
+}
+
+
+function horizonsUrl(target: string, start: string, stop: string, step: string) {
+  const p = new URLSearchParams({
+    format:     'json',
+    COMMAND:    target,
+    OBJ_DATA:   'NO',
+    MAKE_EPHEM: 'YES',
+    EPHEM_TYPE: 'VECTORS',
+    CENTER:     '500@399',
+    START_TIME: start,
+    STOP_TIME:  stop,
+    STEP_SIZE:  step,
+    VEC_TABLE:  '2',
+    OUT_UNITS:  'KM-S',
+  })
+  const horizons = `https://ssd.jpl.nasa.gov/api/horizons.api?${p}`
+  return `https://corsproxy.io/?url=${encodeURIComponent(horizons)}`
+}
+
+function isoHorizons(d: Date): string {
+  return d.toISOString().slice(0, 16)   // keep T — Horizons accepts ISO format
+}
+
+export default function ArtemisTrackerDemo() {
+  const mountRef       = useRef<HTMLDivElement>(null)
+  const frameRef       = useRef<number>(0)
+  const clockRef       = useRef(performance.now())
+  const markerRef      = useRef<THREE.Mesh | null>(null)
+  const ringRef        = useRef<THREE.Mesh | null>(null)
+  const ringMatRef     = useRef<THREE.MeshBasicMaterial | null>(null)
+  const moonMeshRef    = useRef<THREE.Mesh | null>(null)
+  const moonGlowRef    = useRef<THREE.Mesh | null>(null)
+  const pathRef        = useRef<THREE.Mesh | null>(null)
+  const fullPathRef    = useRef<THREE.Mesh | null>(null)
+  const sceneRef       = useRef<THREE.Scene | null>(null)
+  const cameraRef      = useRef<THREE.PerspectiveCamera | null>(null)
+  const isDragging     = useRef(false)
+  const userDragged    = useRef(false)
+  const lastMouse      = useRef({ x: 0, y: 0 })
+  const spherical      = useRef({ theta: 0.4, phi: Math.PI * 0.45 })
+  const lookTargetRef  = useRef(new THREE.Vector3(0, 0, 0))
+
+  const [artemisPts,    setArtemisPts]    = useState<HorizonsPoint[]>([])
+  const [fullTrajPts,   setFullTrajPts]   = useState<HorizonsPoint[]>([])
+  const [moonPts,       setMoonPts]       = useState<HorizonsPoint[]>([])
+  const [current,       setCurrent]       = useState<HorizonsPoint | null>(null)
+  const [moonCurrent,   setMoonCurrent]   = useState<HorizonsPoint | null>(null)
+  const [posSpeed,      setPosSpeed]      = useState<number | null>(null)
+  const [met,           setMet]           = useState('')
+  const [loading,       setLoading]       = useState(true)
+
+  const FALLBACK_CREW = [
+    { role: 'Commander',          name: 'Reid Wiseman' },
+    { role: 'Pilot',              name: 'Victor Glover' },
+    { role: 'Mission Specialist', name: 'Christina Koch' },
+    { role: 'Mission Specialist', name: 'Jeremy Hansen' },
+  ]
+  const crew = FALLBACK_CREW
+
+  // Fetch Horizons data on mount — fetches are independent so Moon failure doesn't kill Artemis
+  useEffect(() => {
+    const now   = new Date()
+    const back  = new Date(now.getTime() - 8 * 3600_000)
+    const fwd   = new Date(now.getTime() + 4 * 3600_000)
+
+    const fetchTarget = (target: string, start: string, stop: string, step: string) =>
+      fetch(horizonsUrl(target, start, stop, step))
+        .then(r => r.json())
+        .then(d => parseHorizons(d.result as string))
+        .catch(() => [] as HorizonsPoint[])
+
+    // Live window — fine resolution for accurate current position
+    fetchTarget('-1024', isoHorizons(back), isoHorizons(fwd), '30m').then(pts => {
+      setArtemisPts(pts)
+
+      setLoading(false)
+    })
+
+    // Full mission arc — coarse resolution just for the trajectory shape
+    fetchTarget('-1024', '2026-04-01T00:00', '2026-04-13T00:00', '6h').then(pts => {
+      setFullTrajPts(pts)
+    })
+
+    fetchTarget('301', isoHorizons(back), isoHorizons(fwd), '1h').then(pts => {
+      setMoonPts(pts)
+    })
+  }, [])
+
+  // Mission Elapsed Time — T+ since launch
+  const LAUNCH_TIME      = new Date('2026-04-01T22:35:12Z')
+  const SPLASHDOWN_TIME  = new Date('2026-04-11T00:07:00Z')
+  const MISSION_DURATION = SPLASHDOWN_TIME.getTime() - LAUNCH_TIME.getTime()
+  useEffect(() => {
+    const tick = () => {
+      const elapsed = Date.now() - LAUNCH_TIME.getTime()
+      const s = Math.floor(elapsed / 1000)
+      const d = Math.floor(s / 86400)
+      const h = Math.floor((s % 86400) / 3600)
+      const m = Math.floor((s % 3600) / 60)
+      const sec = s % 60
+      setMet(`T+ ${String(d).padStart(2,'0')}:${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`)
+    }
+    tick()
+    const id = setInterval(tick, 1000)
+    return () => clearInterval(id)
+  }, [])
+
+  // Update interpolated positions every second
+  useEffect(() => {
+    if (!artemisPts.length) return
+    const tick = () => {
+      const now  = new Date()
+      const prev = new Date(now.getTime() - 60_000)  // 60s back for stable delta
+      const p1   = interpolate(artemisPts, prev)
+      const p2   = interpolate(artemisPts, now)
+      if (p1 && p2) {
+        const dx = p2.x - p1.x, dy = p2.y - p1.y, dz = p2.z - p1.z
+        const distKm = Math.sqrt(dx*dx + dy*dy + dz*dz)
+        setPosSpeed(distKm / 60)  // km/s
+      }
+      setCurrent(p2)
+      setMoonCurrent(interpolate(moonPts, now))
+    }
+    tick()
+    const id = setInterval(tick, 1000)
+    return () => clearInterval(id)
+  }, [artemisPts, moonPts])
+
+  // Build Three.js scene once
+  useEffect(() => {
+    const mount = mountRef.current
+    if (!mount) return
+    const W = mount.clientWidth, H = mount.clientHeight
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true })
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.setSize(W, H)
+    renderer.shadowMap.enabled = false
+    mount.appendChild(renderer.domElement)
+
+    const scene  = new THREE.Scene()
+    scene.background = new THREE.Color(0x010209)
+    const camera = new THREE.PerspectiveCamera(55, W / H, 0.1, 2000)
+    camera.position.set(0, 25, 85)
+    camera.lookAt(0, 0, 0)
+    cameraRef.current = camera
+    sceneRef.current  = scene
+
+    // Stars — three layers for depth
+    function makeStars(count: number, rMin: number, rMax: number, size: number, opacity: number) {
+      const pos = new Float32Array(count * 3)
+      for (let i = 0; i < count; i++) {
+        const th = Math.random() * Math.PI * 2
+        const ph = Math.acos(2 * Math.random() - 1)
+        const r  = rMin + Math.random() * (rMax - rMin)
+        pos[i*3]   = r * Math.sin(ph) * Math.cos(th)
+        pos[i*3+1] = r * Math.sin(ph) * Math.sin(th)
+        pos[i*3+2] = r * Math.cos(ph)
+      }
+      const geo = new THREE.BufferGeometry()
+      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3))
+      return new THREE.Points(geo, new THREE.PointsMaterial({
+        color: 0xffffff, size, sizeAttenuation: true, transparent: true, opacity,
+      }))
+    }
+    scene.add(makeStars(7000, 500, 750, 0.28, 0.55))  // faint background haze
+    scene.add(makeStars(1800, 400, 650, 0.55, 0.80))  // mid-range stars
+    scene.add(makeStars(220,  350, 600, 1.1,  0.95))  // bright foreground stars
+
+    // Milky Way band — sparse stars concentrated along an angled disc plane
+    {
+      const count = 2200
+      const pos = new Float32Array(count * 3)
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2
+        const spread = (Math.random() - 0.5) * 0.22   // thin band in xz plane
+        const r = 550 + Math.random() * 150
+        const x = r * Math.cos(angle)
+        const z = r * Math.sin(angle)
+        const y = r * (spread + Math.sin(angle) * 0.05)
+        pos[i*3] = x; pos[i*3+1] = y; pos[i*3+2] = z
+      }
+      const geo = new THREE.BufferGeometry()
+      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3))
+      const mw = new THREE.Points(geo, new THREE.PointsMaterial({
+        color: 0xaac8ff, size: 0.32, sizeAttenuation: true, transparent: true, opacity: 0.35,
+      }))
+      mw.rotation.z = Math.PI * 0.18   // tilt band
+      scene.add(mw)
+    }
+
+    // Earth
+    const loader   = new THREE.TextureLoader()
+    const earthMat = new THREE.MeshPhongMaterial({ specular: new THREE.Color(0x1a3a5c), shininess: 12 })
+    const earth    = new THREE.Mesh(new THREE.SphereGeometry(EARTH_VR, 64, 64), earthMat)
+    scene.add(earth)
+    loader.load('/textures/earth.jpg', (tex) => {
+      tex.colorSpace = THREE.SRGBColorSpace
+      earthMat.map = tex
+      earthMat.needsUpdate = true
+    })
+
+    // Earth atmosphere glow
+    scene.add(new THREE.Mesh(
+      new THREE.SphereGeometry(EARTH_VR * 1.08, 64, 64),
+      new THREE.ShaderMaterial({
+        uniforms: { c: { value: 0.38 }, p: { value: 5.0 }, glowColor: { value: new THREE.Color(0x1a66ff) } },
+        vertexShader:   `varying vec3 vNormal; void main(){vNormal=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+        fragmentShader: `uniform float c,p;uniform vec3 glowColor;varying vec3 vNormal;void main(){float i=pow(c-dot(vNormal,vec3(0,0,1)),p);gl_FragColor=vec4(glowColor,i);}`,
+        side: THREE.FrontSide, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false,
+      }),
+    ))
+
+    // Moon — procedural grey sphere with subtle darker patches
+    const moonMat  = new THREE.MeshPhongMaterial({ specular: 0x111111, shininess: 4 })
+    loader.load('/textures/2k_moon.jpg', (tex) => {
+      tex.colorSpace = THREE.SRGBColorSpace
+      moonMat.map = tex
+      moonMat.needsUpdate = true
+    })
+    const moonMesh = new THREE.Mesh(new THREE.SphereGeometry(MOON_VR, 32, 32), moonMat)
+    moonMesh.position.set(0, 0, -60)   // default; updated each frame from data
+    scene.add(moonMesh)
+    moonMeshRef.current = moonMesh
+
+    // Moon glow (very faint) — stored in ref so it follows the moon
+    const moonGlow = new THREE.Mesh(
+      new THREE.SphereGeometry(MOON_VR * 1.06, 32, 32),
+      new THREE.ShaderMaterial({
+        uniforms: { c: { value: 0.25 }, p: { value: 4.0 }, glowColor: { value: new THREE.Color(0x556677) } },
+        vertexShader:   `varying vec3 vNormal; void main(){vNormal=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+        fragmentShader: `uniform float c,p;uniform vec3 glowColor;varying vec3 vNormal;void main(){float i=pow(c-dot(vNormal,vec3(0,0,1)),p);gl_FragColor=vec4(glowColor,i*0.5);}`,
+        side: THREE.FrontSide, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false,
+      }),
+    )
+    moonGlow.position.set(0, 0, -60)
+    scene.add(moonGlow)
+    moonGlowRef.current = moonGlow
+
+    // Trajectory path line (updated when data arrives)
+
+    // Artemis marker
+    const marker = new THREE.Mesh(
+      new THREE.SphereGeometry(0.55, 10, 10),
+      new THREE.MeshBasicMaterial({ color: 0x0AFF9D }),
+    )
+    scene.add(marker)
+    markerRef.current = marker
+
+    // Pulsing ring
+    const ringMat = new THREE.MeshBasicMaterial({ color: 0x0AFF9D, side: THREE.DoubleSide, transparent: true, opacity: 1, depthWrite: false })
+    const ring    = new THREE.Mesh(new THREE.RingGeometry(0.8, 1.1, 32), ringMat)
+    scene.add(ring)
+    ringRef.current    = ring
+    ringMatRef.current = ringMat
+
+    // Lighting: sun from one side
+    const sun = new THREE.DirectionalLight(0xfff8e7, 1.8)
+    sun.position.set(200, 40, 80)
+    scene.add(sun)
+    scene.add(new THREE.AmbientLight(0x2a3f5f, 1.4))
+    // Soft fill from opposite side so dark hemispheres are still visible
+    const fill = new THREE.DirectionalLight(0x1a2a44, 0.6)
+    fill.position.set(-200, -40, -80)
+    scene.add(fill)
+
+    function animate() {
+      frameRef.current = requestAnimationFrame(animate)
+      const t = (performance.now() - clockRef.current) / 1000
+
+      // Rotate Earth slowly
+      earth.rotation.y = t * 0.02
+
+      // Pulse ring
+      const ring    = ringRef.current!
+      const ringMat = ringMatRef.current!
+      const pulse   = (t % 2.2) / 2.2
+      ring.scale.setScalar(1 + pulse * 1.6)
+      ringMat.opacity = Math.max(0, 1 - pulse * 1.3)
+      ring.position.copy(marker.position)
+      ring.lookAt(camera.position)
+
+      // Auto-orbit until user has dragged
+      if (!isDragging.current && !userDragged.current) spherical.current.theta += 0.0015
+
+      // Camera: orbit around the Earth-Moon midpoint, at a distance that always fits both
+      const moon = moonMeshRef.current
+      const mid  = moon ? moon.position.clone().multiplyScalar(0.5) : new THREE.Vector3()
+
+      // Smoothly track midpoint
+      lookTargetRef.current.lerp(mid, 0.04)
+
+      const halfFov  = (55 / 2) * (Math.PI / 180)
+      const dToEarth = lookTargetRef.current.length() + EARTH_VR + 10
+      const dToMoon  = moon
+        ? lookTargetRef.current.distanceTo(moon.position) + MOON_VR + 10
+        : 0
+      // On portrait screens use horizontal FOV so bodies fill width not just height
+      const effectiveFov = camera.aspect < 1
+        ? Math.atan(Math.tan(halfFov) * camera.aspect)
+        : halfFov
+      const zoomFactor = camera.aspect < 1 ? 0.78 : 1
+      const r = (Math.max(dToEarth, dToMoon) / Math.tan(effectiveFov)) * zoomFactor
+
+      const { theta, phi } = spherical.current
+      camera.position.set(
+        r * Math.sin(phi) * Math.cos(theta),
+        r * Math.cos(phi),
+        r * Math.sin(phi) * Math.sin(theta),
+      ).add(lookTargetRef.current)
+
+      camera.lookAt(lookTargetRef.current)
+
+      renderer.render(scene, camera)
+    }
+    animate()
+
+    const ro = new ResizeObserver(() => {
+      const w = mount.clientWidth, h = mount.clientHeight
+      renderer.setSize(w, h)
+      camera.aspect = w / h
+      camera.updateProjectionMatrix()
+    })
+    ro.observe(mount)
+
+    return () => {
+      cancelAnimationFrame(frameRef.current)
+      ro.disconnect()
+      renderer.dispose()
+      if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement)
+    }
+  }, [])
+
+  // Build trajectory dots when points arrive
+  function buildDots(
+    scene: THREE.Scene,
+    pts: HorizonsPoint[],
+    dotR: number,
+    color: number,
+    opacity: number,
+  ): THREE.Mesh {
+    const geo = new THREE.BufferGeometry()
+    const positions = new Float32Array(pts.length * 3)
+    pts.forEach((p, i) => {
+      const v = icrf(p.x, p.y, p.z, 1 / KM_PER_UNIT)
+      positions[i * 3] = v.x; positions[i * 3 + 1] = v.y; positions[i * 3 + 2] = v.z
+    })
+    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+    const mat = new THREE.PointsMaterial({ color, size: dotR, sizeAttenuation: true, transparent: true, opacity })
+    const points = new THREE.Points(geo, mat)
+    scene.add(points)
+    return points as unknown as THREE.Mesh
+  }
+
+  useEffect(() => {
+    const scene = sceneRef.current
+    if (!scene || !artemisPts.length) return
+    if (pathRef.current) { scene.remove(pathRef.current); pathRef.current = null }
+    pathRef.current = buildDots(scene, artemisPts, 0.5, 0x0AFF9D, 0.8)
+  }, [artemisPts])
+
+  useEffect(() => {
+    const scene = sceneRef.current
+    if (!scene || !fullTrajPts.length) return
+    if (fullPathRef.current) { scene.remove(fullPathRef.current); fullPathRef.current = null }
+    fullPathRef.current = buildDots(scene, fullTrajPts, 0.3, 0x0AFF9D, 0.25)
+  }, [fullTrajPts])
+
+  // Once both datasets load, orient camera to Artemis-side of Moon so it's never occluded
+  const autoOriented = useRef(false)
+  useEffect(() => {
+    if (autoOriented.current || userDragged.current || !artemisPts.length || !moonPts.length) return
+    const now = new Date()
+    const ap = interpolate(artemisPts, now)
+    const mp = interpolate(moonPts, now)
+    if (!ap || !mp) return
+    // Vector from Moon to Artemis — camera should be on this side
+    const dx = ap.x - mp.x
+    const dz = ap.y - mp.y   // ICRF y → scene z after transform
+    const theta = Math.atan2(dz, -dx)  // negated X matches icrf() transform
+    spherical.current.theta = theta
+    spherical.current.phi   = Math.PI * 0.45
+    autoOriented.current = true
+  }, [artemisPts, moonPts])
+
+  // Sync marker + moon mesh positions from interpolated state
+  useEffect(() => {
+    if (current && markerRef.current) {
+      markerRef.current.position.copy(icrf(current.x, current.y, current.z, 1 / KM_PER_UNIT))
+    }
+  }, [current])
+
+  useEffect(() => {
+    if (moonCurrent) {
+      const pos = icrf(moonCurrent.x, moonCurrent.y, moonCurrent.z, 1 / KM_PER_UNIT)
+      moonMeshRef.current?.position.copy(pos)
+      moonGlowRef.current?.position.copy(pos)
+    }
+  }, [moonCurrent])
+
+  // Drag handlers
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    isDragging.current  = true
+    userDragged.current = true
+    lastMouse.current  = { x: e.clientX, y: e.clientY }
+    e.currentTarget.setPointerCapture(e.pointerId)
+  }
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDragging.current) return
+    const dx = e.clientX - lastMouse.current.x
+    const dy = e.clientY - lastMouse.current.y
+    lastMouse.current = { x: e.clientX, y: e.clientY }
+    spherical.current.theta += dx * 0.005
+    spherical.current.phi    = Math.max(0.05, Math.min(Math.PI - 0.05, spherical.current.phi - dy * 0.005))
+  }
+  const handlePointerUp = () => { isDragging.current = false }
+
+  // Derived telemetry
+  const distEarth = current
+    ? Math.sqrt(current.x ** 2 + current.y ** 2 + current.z ** 2)
+    : null
+  const distMoon = (current && moonCurrent)
+    ? Math.sqrt(
+        (current.x - moonCurrent.x) ** 2 +
+        (current.y - moonCurrent.y) ** 2 +
+        (current.z - moonCurrent.z) ** 2
+      )
+    : null
+  const altMoon = distMoon
+
+
+  // Closest approach — scan all trajectory points (past and future)
+  const closestApproach = (() => {
+    if (!artemisPts.length || !moonPts.length) return null
+    const now = Date.now()
+    let best: { dist: number; t: Date } | null = null
+    for (const ap of artemisPts) {
+      const mp = interpolate(moonPts, ap.t)
+      if (!mp) continue
+      const d = Math.sqrt((ap.x-mp.x)**2 + (ap.y-mp.y)**2 + (ap.z-mp.z)**2)
+      if (!best || d < best.dist) best = { dist: d, t: ap.t }
+    }
+    if (!best) return null
+    return { ...best, passed: best.t.getTime() < now }
+  })()
+
+
+  const KM_TO_MI = 0.621371
+  const mi    = (km: number) => Math.round(km * KM_TO_MI).toLocaleString()
+  const mph   = (kms: number) => Math.round(kms * 3600 * KM_TO_MI).toLocaleString()
+
+  const dim: React.CSSProperties = { fontSize: 9, color: '#3d5060' }
+
+
+  return (
+    <div className="mb-5 flex flex-col">
+      <div className="order-2 sm:order-1 mb-2 rounded-lg overflow-hidden" style={{ background: '#070c11', border: '1px solid rgba(10,255,157,0.1)' }}>
+        {/* Title row */}
+        <div className="px-4 py-3" style={{ borderBottom: '1px solid rgba(10,255,157,0.07)' }}>
+          {/* Mobile: title only */}
+          <div className="sm:hidden flex items-center gap-2">
+            <Orbit size={15} className="text-text-primary flex-shrink-0" />
+            <span className="font-mono text-[13px] tracking-wide text-text-primary">Artemis II: Lunar Flyby Mission</span>
+          </div>
+          {/* Desktop: icon + title + Live pill inline */}
+          <div className="hidden sm:flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <Orbit size={18} className="text-text-primary flex-shrink-0" />
+              <span className="font-mono text-[15px] tracking-wide truncate text-text-primary">Artemis II: Lunar Flyby Mission</span>
+            </div>
+            <div className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full flex-shrink-0" style={{ background: 'rgba(10,255,157,0.06)', border: '1px solid rgba(10,255,157,0.15)' }}>
+              <span className="pulse-dot w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#0AFF9D', boxShadow: '0 0 6px #0AFF9D' }} />
+              <span className="font-mono text-[10px] tracking-widest uppercase" style={{ color: '#0AFF9D' }}>Live</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Progress bar */}
+        {(() => {
+          const progress = Math.min(1, Math.max(0, (Date.now() - LAUNCH_TIME.getTime()) / MISSION_DURATION))
+          const flybyPct = closestApproach
+            ? Math.min(1, Math.max(0, (closestApproach.t.getTime() - LAUNCH_TIME.getTime()) / MISSION_DURATION))
+            : null
+          return (
+            <div className="px-4 py-4" style={{ borderBottom: '1px solid rgba(10,255,157,0.07)' }}>
+              <div className="flex items-center justify-between mb-2.5">
+                <div className="flex items-center gap-2">
+                  <Timer size={13} style={{ color: '#f59e0b', flexShrink: 0 }} />
+                  <span className="font-mono text-[11px] tracking-wide" style={{ color: '#0AFF9D' }}>Mission progress</span>
+                </div>
+                <span
+                  className="font-mono sm:font-bold text-[11px] tracking-widest"
+                  style={{
+                    color: '#38bdf8',
+                    background: 'rgba(56,189,248,0.1)',
+                    border: '1px solid rgba(56,189,248,0.2)',
+                    borderRadius: '4px',
+                    padding: '2px 7px',
+                    letterSpacing: '0.08em',
+                  }}
+                >
+                  {(progress * 100).toFixed(1)}%
+                </span>
+              </div>
+              <div className="relative w-full flex items-center gap-1.5">
+                <div className="w-1 h-3 rounded-sm flex-shrink-0" style={{ background: 'rgba(56,189,248,0.4)' }} />
+                <div className="relative flex-1 rounded-full overflow-hidden" style={{ height: 5, background: 'rgba(56,189,248,0.12)', border: '1px solid rgba(56,189,248,0.15)' }}>
+                  <div className="absolute inset-y-0 left-0 rounded-full" style={{ width: `${progress * 100}%`, background: 'linear-gradient(90deg, #1d4ed8, #38bdf8)' }} />
+                  {flybyPct !== null && (
+                    <div className="absolute top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white" style={{ left: `calc(${flybyPct * 100}% - 3px)` }} />
+                  )}
+                </div>
+                <div className="w-1 h-3 rounded-sm flex-shrink-0" style={{ background: 'rgba(56,189,248,0.4)' }} />
+              </div>
+              <div className="flex items-center justify-between mt-2">
+                <span className="font-mono text-[10px] text-text-muted">Launch</span>
+                {flybyPct !== null && (
+                  <span className="font-mono text-[10px] text-text-muted" style={{ position: 'absolute', left: `calc(${flybyPct * 100}%)`, transform: 'translateX(-50%)', marginTop: '0.25rem' }}>Flyby</span>
+                )}
+                <span className="font-mono text-[10px] text-text-muted">Splashdown</span>
+              </div>
+            </div>
+          )
+        })()}
+
+        {/* Desktop: mission time + NASA broadcast row */}
+        <div className="hidden sm:flex items-center justify-between px-4 py-4" style={{ borderBottom: '1px solid rgba(10,255,157,0.07)' }}>
+          <div>
+            <div className="flex items-center gap-2 mb-2.5">
+              <Clock size={13} style={{ color: '#f59e0b', flexShrink: 0 }} />
+              <span className="font-mono text-[11px] tracking-wide" style={{ color: '#0AFF9D' }}>Mission time</span>
+            </div>
+            <span className="font-mono text-[18px] font-bold text-text-primary" style={{ fontVariantNumeric: 'tabular-nums' }}>{met || '—'}</span>
+          </div>
+          <a
+            href="https://www.youtube.com/watch?v=m3kR2KK8TEs"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 font-mono text-[10px] tracking-widest uppercase text-link hover:text-link/80 transition-colors duration-150"
+          >
+            NASA Broadcast
+            <Tv size={11} />
+          </a>
+        </div>
+
+        {/* Body: crew + right column */}
+        <div className="grid grid-cols-1 sm:grid-cols-2" style={{ borderBottom: '1px solid rgba(10,255,157,0.07)' }}>
+
+          {/* Crew */}
+          <div className="px-4 py-4" style={{ borderRight: '1px solid rgba(10,255,157,0.07)' }}>
+            <div className="flex items-center gap-2 mb-2.5">
+              <Rocket size={13} style={{ color: '#f59e0b', flexShrink: 0 }} />
+              <span className="font-mono text-[11px] tracking-wide" style={{ color: '#0AFF9D' }}>Crew</span>
+            </div>
+            <div className="flex flex-col gap-2.5">
+              {crew.map((m) => (
+                <div key={m.name} className="flex items-center gap-2">
+                  <span className="font-mono text-[12px] text-text-muted shrink-0">{m.role}</span>
+                  <span className="font-mono text-[12px] text-text-muted">·</span>
+                  <span className="font-mono text-[12px] font-semibold text-text-primary">{m.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right: mission time on mobile, stats on desktop */}
+          <div>
+            {/* Mobile: mission time */}
+            <div className="sm:hidden px-4 py-4">
+              <div className="flex items-center gap-2 mb-2">
+                <Clock size={13} style={{ color: '#f59e0b', flexShrink: 0 }} />
+                <span className="font-mono text-[11px] tracking-wide" style={{ color: '#0AFF9D' }}>Mission time</span>
+              </div>
+              <span className="font-mono text-[18px] sm:font-bold text-text-primary" style={{ fontVariantNumeric: 'tabular-nums' }}>{met || '—'}</span>
+            </div>
+
+            {/* Desktop: 2x2 stats */}
+            {(loading || !current) ? (
+              <span className="hidden sm:block px-4 py-4 font-mono text-[10px] text-text-muted">Fetching telemetry…</span>
+            ) : (
+              <div className="hidden sm:grid grid-cols-2 h-full">
+                {[
+                  { label: 'Distance from Earth', value: distEarth ? mi(distEarth) + ' mi' : '—' },
+                  { label: 'Distance from Moon',  value: altMoon != null ? mi(altMoon) + ' mi' : '—' },
+                  { label: 'Speed',               value: posSpeed ? mph(posSpeed) + ' mph' : '—' },
+                  { label: 'Closest flyby',        value: closestApproach ? mi(closestApproach.dist) + ' mi' : '—' },
+                ].map(({ label, value }, i) => (
+                  <div key={label} className="px-4 py-4" style={{ borderLeft: i % 2 === 1 ? '1px solid rgba(10,255,157,0.07)' : undefined, borderTop: i >= 2 ? '1px solid rgba(10,255,157,0.07)' : undefined }}>
+                    <span className="font-mono text-[11px] tracking-wide block mb-2.5" style={{ color: '#0AFF9D' }}>{label}</span>
+                    <span className="font-mono text-[14px] font-bold text-text-primary" style={{ fontVariantNumeric: 'tabular-nums' }}>{value}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+        </div>
+
+        {/* Mobile stats */}
+        <div className="sm:hidden grid grid-cols-2" style={{ borderBottom: '1px solid rgba(10,255,157,0.07)' }}>
+          {(loading || !current) ? (
+            <span className="font-mono text-[10px] text-text-muted px-4 py-4 col-span-2">Fetching telemetry…</span>
+          ) : (
+            [
+              { label: 'Distance from Earth', value: distEarth ? mi(distEarth) + ' mi' : '—' },
+              { label: 'Distance from Moon',  value: altMoon != null ? mi(altMoon) + ' mi' : '—' },
+              { label: 'Speed',               value: posSpeed ? mph(posSpeed) + ' mph' : '—' },
+              { label: 'Closest flyby',        value: closestApproach ? mi(closestApproach.dist) + ' mi' : '—' },
+            ].map(({ label, value }, i) => (
+              <div key={label} className="px-4 py-4" style={{ borderLeft: i % 2 === 1 ? '1px solid rgba(10,255,157,0.07)' : undefined, borderTop: i >= 2 ? '1px solid rgba(10,255,157,0.07)' : undefined }}>
+                <span className="font-mono text-[11px] tracking-wide block mb-2.5" style={{ color: '#0AFF9D' }}>{label}</span>
+                <span className="font-mono text-[14px] text-text-primary" style={{ fontVariantNumeric: 'tabular-nums' }}>{value}</span>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Mobile bottom bar */}
+        <div className="flex sm:hidden items-center justify-between px-4 py-3" style={{ borderTop: '1px solid rgba(10,255,157,0.07)' }}>
+          <a
+            href="https://www.youtube.com/watch?v=m3kR2KK8TEs"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 font-mono text-[10px] tracking-widest uppercase text-link hover:text-link/80 transition-colors duration-150"
+          >
+            NASA Broadcast
+            <Tv size={11} />
+          </a>
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full" style={{ background: 'rgba(10,255,157,0.06)', border: '1px solid rgba(10,255,157,0.15)' }}>
+            <span className="pulse-dot w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#0AFF9D', boxShadow: '0 0 6px #0AFF9D' }} />
+            <span className="font-mono text-[9px] tracking-widest uppercase" style={{ color: '#0AFF9D' }}>Live</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div className="order-1 sm:order-2 mb-2 sm:mb-0 rounded-xl overflow-hidden" style={{ border: '1px solid rgba(10,255,157,0.12)', background: '#080d12' }}>
+
+        <div className="relative w-full" style={{ height: 'clamp(260px, 56vw, 520px)' }}>
+          <div
+            ref={mountRef}
+            className="absolute inset-0"
+            style={{ background: '#000306', cursor: isDragging.current ? 'grabbing' : 'grab', touchAction: 'none' }}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onPointerLeave={handlePointerUp}
+          />
+
+          <div className="absolute bottom-0 left-0 right-0 hidden sm:flex items-center justify-between px-3 py-1.5"
+            style={{ background: 'rgba(8,13,18,0.7)', borderTop: '1px solid rgba(10,255,157,0.08)' }}>
+            <span style={{ ...dim, fontSize: 7 }}>Trajectory: <span style={{ color: '#3d6070' }}>NASA/JPL Horizons (−1024)</span></span>
+            <span style={{ ...dim, fontSize: 7 }}>Earth texture: <span style={{ color: '#3d6070' }}>Solar System Scope (CC BY 4.0)</span></span>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  )
+}

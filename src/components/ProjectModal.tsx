@@ -9,7 +9,7 @@ interface ProjectModalProps {
   onClose: () => void
 }
 
-const DEMO_COMPONENTS: Partial<Record<string, React.LazyExoticComponent<() => JSX.Element>>> = {
+const DEMO_COMPONENTS: Partial<Record<string, React.LazyExoticComponent<() => React.ReactElement>>> = {
   'counter':            lazy(() => import('./demos/CounterDemo')),
   'colour-flipper':     lazy(() => import('./demos/ColourFlipperDemo')),
   'simple-modal':       lazy(() => import('./demos/SimpleModalDemo')),
@@ -20,6 +20,7 @@ const DEMO_COMPONENTS: Partial<Record<string, React.LazyExoticComponent<() => JS
   'currency-converter': lazy(() => import('./demos/CurrencyConverterDemo')),
   'weather-app':        lazy(() => import('./demos/WeatherDemo')),
   'piano':              lazy(() => import('./demos/SynthDemo')),
+  'artemis-tracker':    lazy(() => import('./demos/ArtemisTrackerDemo')),
   'iss-tracker':        lazy(() => import('./demos/ISSTrackerDemo')),
   'holiday-planner':    lazy(() => import('./demos/HolidayPlannerDemo')),
 }
@@ -58,7 +59,6 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           transition={{ duration: 0.3, ease: 'easeOut' }}
           className="fixed inset-0 z-50 flex items-start sm:items-center justify-center sm:p-4 bg-black/75 backdrop-blur-md"
           onClick={onClose}
-          aria-hidden="true"
         >
           {/* Panel */}
           <m.div

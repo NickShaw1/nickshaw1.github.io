@@ -12,25 +12,33 @@ interface CrewMember { name: string; craft: string }
 export default function ISSTrackerDemo() {
   const mountRef        = useRef<HTMLDivElement>(null)
   const frameRef        = useRef<number>(0)
-  const clockRef        = useRef(new THREE.Clock())
+  const clockRef        = useRef(performance.now())
   const markerRef       = useRef<THREE.Mesh | null>(null)
   const ringRef         = useRef<THREE.Mesh | null>(null)
   const ringMatRef      = useRef<THREE.MeshBasicMaterial | null>(null)
   const cameraRef       = useRef<THREE.PerspectiveCamera | null>(null)
-  // Drag / free-look state (desktop only)
   const userControlled  = useRef(false)
   const isDragging      = useRef(false)
   const lastMouse       = useRef({ x: 0, y: 0 })
   const spherical       = useRef({ theta: 0, phi: Math.PI / 2 })
+  const retractTimer    = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const lastPointerType = useRef<string>('')
   const [following, setFollowing] = useState(true)
 
   const [issData,  setIssData]  = useState<ISSData | null>(null)
-  const [overText, setOverText] = useState<string>('')
   const [crew,     setCrew]     = useState<CrewMember[]>([])
 
   const centreOnISS = useCallback(() => {
     userControlled.current = false
     setFollowing(true)
+  }, [])
+
+  const scheduleRetract = useCallback(() => {
+    if (retractTimer.current) clearTimeout(retractTimer.current)
+    retractTimer.current = setTimeout(() => {
+      userControlled.current = false
+      setFollowing(true)
+    }, 5000)
   }, [])
 
   useEffect(() => {
@@ -45,18 +53,52 @@ export default function ISSTrackerDemo() {
     mount.appendChild(renderer.domElement)
 
     const scene  = new THREE.Scene()
+    scene.background = new THREE.Color(0x010209)
     const camera = new THREE.PerspectiveCamera(45, W/H, 0.1, 1000)
     camera.position.set(0, 0, 3.4)
     cameraRef.current = camera
 
-    const starPos = new Float32Array(6000*3)
-    for (let i = 0; i < 6000; i++) {
-      const th = Math.random()*Math.PI*2, ph = Math.acos(2*Math.random()-1), r = 80+Math.random()*20
-      starPos[i*3]=r*Math.sin(ph)*Math.cos(th); starPos[i*3+1]=r*Math.sin(ph)*Math.sin(th); starPos[i*3+2]=r*Math.cos(ph)
+    function makeStars(count: number, rMin: number, rMax: number, size: number, opacity: number) {
+      const pos = new Float32Array(count * 3)
+      for (let i = 0; i < count; i++) {
+        const th = Math.random() * Math.PI * 2
+        const ph = Math.acos(2 * Math.random() - 1)
+        const r  = rMin + Math.random() * (rMax - rMin)
+        pos[i*3]   = r * Math.sin(ph) * Math.cos(th)
+        pos[i*3+1] = r * Math.sin(ph) * Math.sin(th)
+        pos[i*3+2] = r * Math.cos(ph)
+      }
+      const geo = new THREE.BufferGeometry()
+      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3))
+      return new THREE.Points(geo, new THREE.PointsMaterial({
+        color: 0xffffff, size, sizeAttenuation: true, transparent: true, opacity,
+      }))
     }
-    const starGeo = new THREE.BufferGeometry()
-    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3))
-    scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.1, sizeAttenuation: true })))
+    scene.add(makeStars(7000, 50, 90, 0.04, 0.55))
+    scene.add(makeStars(1800, 40, 80, 0.07, 0.80))
+    scene.add(makeStars(220,  35, 75, 0.14, 0.95))
+
+    // Milky Way band
+    {
+      const count = 2200
+      const pos = new Float32Array(count * 3)
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2
+        const spread = (Math.random() - 0.5) * 0.22
+        const r = 65 + Math.random() * 20
+        const x = r * Math.cos(angle)
+        const z = r * Math.sin(angle)
+        const y = r * (spread + Math.sin(angle) * 0.05)
+        pos[i*3] = x; pos[i*3+1] = y; pos[i*3+2] = z
+      }
+      const geo = new THREE.BufferGeometry()
+      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3))
+      const mw = new THREE.Points(geo, new THREE.PointsMaterial({
+        color: 0xaac8ff, size: 0.04, sizeAttenuation: true, transparent: true, opacity: 0.35,
+      }))
+      mw.rotation.z = Math.PI * 0.18
+      scene.add(mw)
+    }
 
     const loader = new THREE.TextureLoader()
     const earthMat = new THREE.MeshPhongMaterial({ specular: new THREE.Color(0x1a3a5c), shininess: 12 })
@@ -86,7 +128,10 @@ export default function ISSTrackerDemo() {
     sun.position.set(5, 2, 3)
     sun.castShadow = false
     scene.add(sun)
-    scene.add(new THREE.AmbientLight(0x0d1a2e, 0.6))
+    scene.add(new THREE.AmbientLight(0x2a3f5f, 1.4))
+    const fill = new THREE.DirectionalLight(0x1a2a44, 0.6)
+    fill.position.set(-5, -2, -3)
+    scene.add(fill)
 
     const marker = new THREE.Mesh(
       new THREE.SphereGeometry(0.014, 12, 12),
@@ -103,7 +148,7 @@ export default function ISSTrackerDemo() {
 
     function animate() {
       frameRef.current = requestAnimationFrame(animate)
-      const t = clockRef.current.getElapsedTime()
+      const t = (performance.now() - clockRef.current) / 1000
 
 
 
@@ -114,7 +159,6 @@ export default function ISSTrackerDemo() {
       ring.lookAt(camera.position)
 
       if (userControlled.current) {
-        // Free-look: position camera from stored spherical coords
         const { theta, phi } = spherical.current
         const r = 3.4
         camera.position.set(
@@ -124,11 +168,9 @@ export default function ISSTrackerDemo() {
         )
         camera.lookAt(0, 0, 0)
       } else if (marker.position.lengthSq() > 0) {
-        // Follow ISS
         const target = marker.position.clone().normalize().multiplyScalar(3.4)
         camera.position.lerp(target, 0.03)
         camera.lookAt(0, 0, 0)
-        // Keep spherical in sync so free-look starts from current position
         const r = camera.position.length()
         spherical.current.phi   = Math.acos(Math.max(-1, Math.min(1, camera.position.y / r)))
         spherical.current.theta = Math.atan2(camera.position.z, camera.position.x)
@@ -160,12 +202,6 @@ export default function ISSTrackerDemo() {
       setIssData(data)
       const pos = issLatLonToVec3(d.latitude, d.longitude, 1.065)
       if (markerRef.current) markerRef.current.position.copy(pos)
-      try {
-        const gr = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${d.latitude}&longitude=${d.longitude}&localityLanguage=en`)
-        const gd = await gr.json()
-        const country = gd.countryName || gd.locality || ''
-        setOverText(country || (Math.abs(d.latitude) > 60 ? 'Antarctica' : 'Over Ocean'))
-      } catch { setOverText('') }
     } catch { /* silent */ }
   }, [])
 
@@ -208,7 +244,6 @@ export default function ISSTrackerDemo() {
           <div style={{ fontSize:13, color:'#dde6ee', fontFamily:'monospace', lineHeight:1.5 }}>
             {Math.abs(issData.latitude).toFixed(3)}° {issData.latitude>=0?'N':'S'}&nbsp;&nbsp;{Math.abs(issData.longitude).toFixed(3)}° {issData.longitude>=0?'E':'W'}
           </div>
-          {overText && <div style={{ fontSize:10, color:'#5a8a9a', marginTop:2 }}>{overText}</div>}
           <div style={{ marginTop:8, display:'flex', flexDirection:'column', gap:3 }}>
             <div style={{ fontSize:12, color:'#8bb8cc', fontFamily:'monospace' }}>Alt &nbsp;<span style={{ color:'#dde6ee' }}>{issData.altitude.toFixed(1)} km</span></div>
             <div style={{ fontSize:12, color:'#8bb8cc', fontFamily:'monospace' }}>Speed <span style={{ color:'#dde6ee' }}>{(issData.velocity/3.6).toFixed(0)} m/s</span></div>
@@ -233,12 +268,12 @@ export default function ISSTrackerDemo() {
     </div>
   )
 
-  // Pointer handlers — desktop (mouse) only
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (e.pointerType !== 'mouse') return
     isDragging.current = true
     userControlled.current = true
+    lastPointerType.current = e.pointerType
     setFollowing(false)
+    if (retractTimer.current) clearTimeout(retractTimer.current)
     lastMouse.current = { x: e.clientX, y: e.clientY }
     e.currentTarget.setPointerCapture(e.pointerId)
   }
@@ -247,10 +282,13 @@ export default function ISSTrackerDemo() {
     const dx = e.clientX - lastMouse.current.x
     const dy = e.clientY - lastMouse.current.y
     lastMouse.current = { x: e.clientX, y: e.clientY }
-    spherical.current.theta -= dx * 0.005
-    spherical.current.phi = Math.max(0.1, Math.min(Math.PI - 0.1, spherical.current.phi + dy * 0.005))
+    spherical.current.theta += dx * 0.005
+    spherical.current.phi = Math.max(0.1, Math.min(Math.PI - 0.1, spherical.current.phi - dy * 0.005))
   }
-  const handlePointerUp = () => { isDragging.current = false }
+  const handlePointerUp = () => {
+    isDragging.current = false
+    if (userControlled.current && lastPointerType.current !== 'mouse') scheduleRetract()
+  }
 
   return (
     <div className="mb-5">
@@ -262,11 +300,10 @@ export default function ISSTrackerDemo() {
           <div
             ref={mountRef}
             className="absolute inset-0"
-            style={{ background: '#000306', cursor: isDragging.current ? 'grabbing' : 'grab' }}
+            style={{ background: '#000306', cursor: isDragging.current ? 'grabbing' : 'grab', touchAction: 'none' }}
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
-            onPointerLeave={handlePointerUp}
           />
 
           <div className="absolute top-3 left-3 hidden sm:block" style={{ minWidth: 195 }}>{posPanel}</div>
@@ -314,7 +351,6 @@ export default function ISSTrackerDemo() {
                 <span style={{ fontSize:12, color:'#dde6ee', fontFamily:'monospace' }}>
                   {Math.abs(issData.latitude).toFixed(2)}° {issData.latitude>=0?'N':'S'}&nbsp;&nbsp;{Math.abs(issData.longitude).toFixed(2)}° {issData.longitude>=0?'E':'W'}
                 </span>
-                {overText && <span style={{ fontSize:10, color:'#5a8a9a' }}>{overText}</span>}
                 <span style={{ fontSize:11, color:'#8bb8cc', fontFamily:'monospace' }}>Alt <span style={{ color:'#dde6ee' }}>{issData.altitude.toFixed(1)} km</span></span>
                 <span style={{ fontSize:11, color:'#8bb8cc', fontFamily:'monospace' }}>Speed <span style={{ color:'#dde6ee' }}>{(issData.velocity/3.6).toFixed(0)} m/s</span></span>
               </div>
