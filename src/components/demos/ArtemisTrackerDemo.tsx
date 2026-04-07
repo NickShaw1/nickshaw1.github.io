@@ -489,7 +489,7 @@ export default function ArtemisTrackerDemo() {
     isDragging.current  = true
     userDragged.current = true
     lastMouse.current  = { x: e.clientX, y: e.clientY }
-    e.currentTarget.setPointerCapture(e.pointerId)
+    if (e.pointerType !== 'touch') e.currentTarget.setPointerCapture(e.pointerId)
   }
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!isDragging.current) return
@@ -497,7 +497,7 @@ export default function ArtemisTrackerDemo() {
     const dy = e.clientY - lastMouse.current.y
     lastMouse.current = { x: e.clientX, y: e.clientY }
     spherical.current.theta += dx * 0.005
-    spherical.current.phi    = Math.max(0.05, Math.min(Math.PI - 0.05, spherical.current.phi - dy * 0.005))
+    if (e.pointerType !== 'touch') spherical.current.phi = Math.max(0.05, Math.min(Math.PI - 0.05, spherical.current.phi - dy * 0.005))
   }
   const handlePointerUp = () => { isDragging.current = false }
 
