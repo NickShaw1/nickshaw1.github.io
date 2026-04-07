@@ -121,7 +121,7 @@ await expect(response).toContainText(/password/i)
 
 // Date formatting should be consistent even if the content varies
 const date = page.getByTestId('ai-generated-date')
-await expect(date).toContainText(/\d{1,2} \w+ \d{4}/)`}</KBCode>
+await expect(date).toContainText(/\\d{1,2} \\w+ \\d{4}/)`}</KBCode>
 
       <KBH3>Length bounds</KBH3>
 

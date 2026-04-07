@@ -1,4 +1,3 @@
-import KBAside from '../../../components/kb/KBAside'
 import KBNote from '../../../components/kb/KBNote'
 import { KBH2, KBP } from '../../../components/kb/KBHeading'
 

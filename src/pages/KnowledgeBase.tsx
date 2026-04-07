@@ -4,9 +4,7 @@ import { m } from 'framer-motion'
 import {
   BookOpen, Hand, ClipboardList, Bot, FlaskConical, Activity,
   Sparkles, Wrench, Lightbulb,
-  Play, Globe, TreePine, Layers, TestTube2, Zap, Terminal,
-  Gauge, Flame, BarChart2, Send, ShieldCheck, Link2, Smartphone, Blocks,
-  Accessibility,
+  Play, Globe,
   BookMarked, CheckSquare, HelpCircle,
   Construction, ArrowUpRight, Clock, Cpu,
 } from 'lucide-react'

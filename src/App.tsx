@@ -35,6 +35,7 @@ export default function App() {
 
   useEffect(() => {
     if (!location.hash) window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname])
 
   return (

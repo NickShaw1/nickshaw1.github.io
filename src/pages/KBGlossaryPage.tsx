@@ -321,7 +321,7 @@ export default function KBGlossaryPage() {
 
         {/* ── Glossary sections ────────────────────── */}
         <div className="space-y-10">
-          {GLOSSARY.map((section, si) => (
+          {GLOSSARY.map((section, _si) => (
             <m.section
               key={section.letter}
               id={`letter-${section.letter}`}

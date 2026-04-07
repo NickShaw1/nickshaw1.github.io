@@ -96,7 +96,7 @@ await expect(page).toHaveTitle(/Dashboard/);`}</KBCode>
       </KBP>
 
       <KBCode language="typescript">{`await expect(page).toHaveURL('https://example.com/dashboard');
-await expect(page).toHaveURL(/\/dashboard$/);`}</KBCode>
+await expect(page).toHaveURL(/\\/dashboard$/);`}</KBCode>
 
       <KBH2 id="element-assertions">Element assertions</KBH2>
 
@@ -192,7 +192,7 @@ await expect(page.getByRole('img', { name: 'Profile photo' })).toHaveAttribute('
 await expect(page.getByRole('link', { name: 'Home' })).toHaveAttribute('href', '/');
 
 // Assert the attribute value matches a regular expression
-await expect(page.getByRole('img')).toHaveAttribute('src', /\/images\//);`}</KBCode>
+await expect(page.getByRole('img')).toHaveAttribute('src', /\\/images\\//);`}</KBCode>
 
       <KBH3 id="to-have-class">toHaveClass()</KBH3>
 

@@ -1,4 +1,4 @@
-import { KBH2, KBH3, KBP } from '../../../components/kb/KBHeading'
+import { KBH2, KBP } from '../../../components/kb/KBHeading'
 import KBNote from '../../../components/kb/KBNote'
 import KBBanner from '../../../components/kb/KBBanner'
 import KBCode from '../../../components/kb/KBCode'

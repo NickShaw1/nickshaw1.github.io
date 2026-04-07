@@ -136,6 +136,7 @@ export default function SynthDemo() {
     const up   = (e: KeyboardEvent) => { const n = KB_MAP[e.key.toLowerCase()]; if (n) noteOff(n) }
     window.addEventListener('keydown', down); window.addEventListener('keyup', up)
     return () => { window.removeEventListener('keydown', down); window.removeEventListener('keyup', up) }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wave, attack, decay, sustain, release, lfoRate, lfoDepth])
 
   useEffect(() => { if (masterRef.current) masterRef.current.gain.value = vol }, [vol])
