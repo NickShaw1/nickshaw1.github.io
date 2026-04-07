@@ -245,17 +245,26 @@ export default function KBChecklistPage() {
   const handleExport = useCallback(async () => {
     setExporting(true)
     try {
-      const XLSX = await import('xlsx')
-      const rows: string[][] = [
-        ['Project:', ''],
-        ['Tester Name:', ''],
-        ['Release ID:', ''],
-        [],
-        ['Category', 'Item', 'Status', 'Notes'],
+      const ExcelJS = (await import('exceljs')).default
+      const wb = new ExcelJS.Workbook()
+      const ws = wb.addWorksheet('Pre-Release Checklist')
+
+      ws.columns = [
+        { width: 22 },
+        { width: 68 },
+        { width: 14 },
+        { width: 35 },
       ]
+
+      ws.addRow(['Project:', ''])
+      ws.addRow(['Tester Name:', ''])
+      ws.addRow(['Release ID:', ''])
+      ws.addRow([])
+      ws.addRow(['Category', 'Item', 'Status', 'Notes'])
+
       for (const cat of CATEGORIES) {
         for (const item of cat.items) {
-          rows.push([
+          ws.addRow([
             cat.title,
             item.text,
             checked.has(item.id) ? 'Checked' : 'Not checked',
@@ -263,11 +272,15 @@ export default function KBChecklistPage() {
           ])
         }
       }
-      const ws = XLSX.utils.aoa_to_sheet(rows)
-      ws['!cols'] = [{ wch: 22 }, { wch: 68 }, { wch: 14 }, { wch: 35 }]
-      const wb = XLSX.utils.book_new()
-      XLSX.utils.book_append_sheet(wb, ws, 'Pre-Release Checklist')
-      XLSX.writeFile(wb, 'pre-release-checklist.xlsx')
+
+      const buffer = await wb.xlsx.writeBuffer()
+      const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'pre-release-checklist.xlsx'
+      a.click()
+      URL.revokeObjectURL(url)
     } finally {
       setExporting(false)
     }
