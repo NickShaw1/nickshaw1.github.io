@@ -135,6 +135,7 @@ export default function ArtemisTrackerDemo() {
   const [met,           setMet]           = useState('')
   const [loading,       setLoading]       = useState(true)
   const [sceneReady,    setSceneReady]    = useState(false)
+  const [fetchFailed,   setFetchFailed]   = useState(false)
 
   const FALLBACK_CREW = [
     { role: 'Commander',          name: 'Reid Wiseman' },
@@ -452,10 +453,22 @@ export default function ArtemisTrackerDemo() {
     pathRef.current = buildLine(scene, artemisPts, 0x0AFF9D, 1.0) as unknown as THREE.Mesh
   }, [artemisPts])
 
-  // Mark scene ready once all three datasets have arrived
+  // Mark scene ready once the two live datasets have arrived (full trajectory is cosmetic, not blocking)
   useEffect(() => {
-    if (artemisPts.length && moonPts.length && fullTrajPts.length) setSceneReady(true)
-  }, [artemisPts, moonPts, fullTrajPts])
+    if (artemisPts.length && moonPts.length) setSceneReady(true)
+  }, [artemisPts, moonPts])
+
+  // Hard timeout — if data hasn't arrived after 8s, show an error and clear the skeleton
+  const sceneReadyRef = useRef(false)
+  useEffect(() => {
+    if (sceneReady) sceneReadyRef.current = true
+  }, [sceneReady])
+  useEffect(() => {
+    const id = setTimeout(() => {
+      if (!sceneReadyRef.current) setFetchFailed(true)
+    }, 8000)
+    return () => clearTimeout(id)
+  }, [])
 
   // Once both datasets load, orient camera to Artemis-side of Moon so it's never occluded
   const autoOriented = useRef(false)
@@ -744,35 +757,41 @@ export default function ArtemisTrackerDemo() {
             style={{
               background: '#000306',
               transition: 'opacity 0.8s ease',
-              opacity: sceneReady ? 0 : 1,
+              opacity: sceneReady && !fetchFailed ? 0 : 1,
             }}
             aria-hidden={sceneReady}
           >
-            {/* Animated radar ring */}
-            <div className="relative flex items-center justify-center" style={{ width: 72, height: 72 }}>
-              <div style={{
-                position: 'absolute', inset: 0, borderRadius: '50%',
-                border: '1px solid rgba(10,255,157,0.15)',
-              }} />
-              <div style={{
-                position: 'absolute', inset: 6, borderRadius: '50%',
-                border: '1px solid rgba(10,255,157,0.1)',
-              }} />
-              <div className="animate-spin" style={{
-                position: 'absolute', inset: 0, borderRadius: '50%',
-                border: '2px solid transparent',
-                borderTopColor: '#0AFF9D',
-              }} />
-              <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#0AFF9D', boxShadow: '0 0 8px #0AFF9D' }} />
-            </div>
-            <div className="flex flex-col items-center gap-1.5">
-              <span className="font-mono text-[11px] tracking-widest uppercase" style={{ color: '#0AFF9D' }}>
-                Acquiring telemetry
-              </span>
-              <span className="font-mono text-[9px] tracking-wider" style={{ color: 'rgba(10,255,157,0.4)' }}>
-                NASA / JPL Horizons
-              </span>
-            </div>
+            {fetchFailed ? (
+              <div className="flex flex-col items-center gap-2">
+                <span className="font-mono text-[11px] tracking-widest uppercase" style={{ color: '#ff4d4d' }}>
+                  Telemetry unavailable
+                </span>
+                <span className="font-mono text-[9px] tracking-wider text-center" style={{ color: 'rgba(255,77,77,0.5)' }}>
+                  Could not reach NASA / JPL Horizons
+                </span>
+              </div>
+            ) : (
+              <>
+                {/* Animated radar ring */}
+                <div className="relative flex items-center justify-center" style={{ width: 72, height: 72 }}>
+                  <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', border: '1px solid rgba(10,255,157,0.15)' }} />
+                  <div style={{ position: 'absolute', inset: 6, borderRadius: '50%', border: '1px solid rgba(10,255,157,0.1)' }} />
+                  <div className="animate-spin" style={{
+                    position: 'absolute', inset: 0, borderRadius: '50%',
+                    border: '2px solid transparent', borderTopColor: '#0AFF9D',
+                  }} />
+                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#0AFF9D', boxShadow: '0 0 8px #0AFF9D' }} />
+                </div>
+                <div className="flex flex-col items-center gap-1.5">
+                  <span className="font-mono text-[11px] tracking-widest uppercase" style={{ color: '#0AFF9D' }}>
+                    Acquiring telemetry
+                  </span>
+                  <span className="font-mono text-[9px] tracking-wider" style={{ color: 'rgba(10,255,157,0.4)' }}>
+                    NASA / JPL Horizons
+                  </span>
+                </div>
+              </>
+            )}
           </div>
 
           <div className="absolute bottom-0 left-0 right-0 hidden sm:flex items-center justify-between px-3 py-1.5"
