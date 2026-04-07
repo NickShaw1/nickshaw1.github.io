@@ -34,14 +34,15 @@ export const projects: ProjectItem[] = [
     modalSize: 'expanded',
     icon: 'Rocket',
     detail: {
-      body: 'A live 3D tracker for the Artemis II mission powered by NASA\'s JPL Horizons API. Spacecraft and Moon positions are fetched as Earth-centred ICRF vectors, parsed with independent regexes for robustness, and interpolated client-side between ephemeris steps for smooth per-second updates. The Three.js scene shows a textured Earth, the Moon at its true scaled position and the Orion capsule marker.',
+      body: 'A live 3D tracker for the Artemis II mission powered by NASA\'s JPL Horizons API. Spacecraft and Moon positions are fetched as Earth-centred ICRF vectors, parsed with independent regexes for robustness, and interpolated client-side between ephemeris steps for smooth per-second updates. The Three.js scene shows a textured Earth and Moon at their true scaled positions, the Orion capsule marker and two trajectory lines: a full mission arc and a high-resolution live window around the current position.',
       highlights: [
-        'Querying JPL Horizons (target -1024) via a CORS proxy to retrieve spacecraft position and velocity vectors',
+        'Querying JPL Horizons (target -1024) via a CORS proxy across two independent fetches: a coarse full-mission arc and a fine live window, so a failure on one does not block the other',
         'Parsing the Horizons text response with separate regexes for dates, XYZ positions and velocity components, zipped by index for resilience against format variations',
-        'Running Artemis and Moon fetches independently so a failure on either does not block the other',
-        'Mapping Earth-centred ICRF coordinates to Three.js: negating X and swapping Y and Z axes to correct coordinate handedness and place the north celestial pole as scene Y-up',
+        'Mapping Earth-centred ICRF coordinates to Three.js by negating X and swapping Y and Z axes to correct coordinate handedness and place the north celestial pole as scene Y-up',
         'Linearly interpolating between 30-minute ephemeris steps every second to produce smooth real-time motion',
-        'Atmospheric glow rendered via a custom GLSL fresnel shader on a second transparent sphere layered over Earth',
+'Atmospheric and lunar glow via custom GLSL fresnel shaders on transparent spheres layered over each body',
+        'Camera auto-orbits the Earth-Moon midpoint, fits both bodies in view at any aspect ratio and orients initially to the Artemis-facing side of the Moon',
+        'Skeleton loading overlay with a timeout-based fetch-failure state, clearing only once both live datasets have arrived',
       ],
       codeSnippet: `// Parse Horizons text: independent regexes for each data type,
 // zipped by index — robust against whitespace or format differences
