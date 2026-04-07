@@ -151,11 +151,19 @@ export default function ArtemisTrackerDemo() {
     const back  = new Date(now.getTime() - 8 * 3600_000)
     const fwd   = new Date(now.getTime() + 4 * 3600_000)
 
-    const fetchTarget = (target: string, start: string, stop: string, step: string) =>
-      fetch(horizonsUrl(target, start, stop, step))
-        .then(r => r.json())
-        .then(d => parseHorizons(d.result as string))
-        .catch(() => [] as HorizonsPoint[])
+    const fetchTarget = async (target: string, start: string, stop: string, step: string): Promise<HorizonsPoint[]> => {
+      const attempt = () =>
+        fetch(horizonsUrl(target, start, stop, step))
+          .then(r => r.json())
+          .then(d => parseHorizons(d.result as string))
+      try {
+        const pts = await attempt()
+        if (pts.length) return pts
+        return await attempt()
+      } catch {
+        try { return await attempt() } catch { return [] }
+      }
+    }
 
     // Live window — fine resolution for accurate current position
     fetchTarget('-1024', isoHorizons(back), isoHorizons(fwd), '30m').then(pts => {
