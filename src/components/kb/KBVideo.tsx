@@ -14,6 +14,7 @@ export default function KBVideo({ videoId, title, caption }: KBVideoProps) {
           title={title}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
+          loading="lazy"
         />
       </div>
       <figcaption className="mt-3 text-center font-mono text-[11px] text-text-muted leading-relaxed">

@@ -1,30 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import * as THREE from 'three'
 
-function noise2D(x: number, y: number): number {
-  const X = Math.floor(x), Y = Math.floor(y)
-  const fx = x - X, fy = y - Y
-  const u = fx * fx * (3 - 2 * fx), v = fy * fy * (3 - 2 * fy)
-  const h = (nx: number, ny: number) => { const n = Math.sin(nx * 127.1 + ny * 311.7) * 43758.5453; return n - Math.floor(n) }
-  return h(X,Y)*(1-u)*(1-v) + h(X+1,Y)*u*(1-v) + h(X,Y+1)*(1-u)*v + h(X+1,Y+1)*u*v
-}
-function fbm(x: number, y: number, octaves = 5): number {
-  let val = 0, amp = 0.5, freq = 1, max = 0
-  for (let i = 0; i < octaves; i++) { val += noise2D(x*freq,y*freq)*amp; max+=amp; amp*=0.5; freq*=2 }
-  return val / max
-}
-function generateCloudTexture(): THREE.CanvasTexture {
-  const W = 1024, H = 512, canvas = document.createElement('canvas')
-  canvas.width = W; canvas.height = H
-  const ctx = canvas.getContext('2d')!, img = ctx.createImageData(W, H)
-  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
-    const n = fbm(x/W*5+2, y/H*5+8)
-    const a = Math.round(Math.max(0, (n-0.52)/0.48) * 210)
-    const i = (y*W+x)*4; img.data[i]=255; img.data[i+1]=255; img.data[i+2]=255; img.data[i+3]=a
-  }
-  ctx.putImageData(img, 0, 0)
-  return new THREE.CanvasTexture(canvas)
-}
 function issLatLonToVec3(lat: number, lon: number, r: number): THREE.Vector3 {
   const phi = (90-lat)*(Math.PI/180), theta = (lon+180)*(Math.PI/180)
   return new THREE.Vector3(-r*Math.sin(phi)*Math.cos(theta), r*Math.cos(phi), r*Math.sin(phi)*Math.sin(theta))
@@ -94,11 +70,7 @@ export default function ISSTrackerDemo() {
       earthMat.needsUpdate = true
     })
 
-    const cloudMesh = new THREE.Mesh(
-      new THREE.SphereGeometry(1.012, 64, 64),
-      new THREE.MeshPhongMaterial({ map: generateCloudTexture(), transparent: true, opacity: 0.5, depthWrite: false }),
-    )
-    scene.add(cloudMesh)
+
 
     scene.add(new THREE.Mesh(
       new THREE.SphereGeometry(1.08, 64, 64),
@@ -133,7 +105,7 @@ export default function ISSTrackerDemo() {
       frameRef.current = requestAnimationFrame(animate)
       const t = clockRef.current.getElapsedTime()
 
-      cloudMesh.rotation.y += 0.00015
+
 
       const pulse = (t % 1.8) / 1.8
       ring.scale.setScalar(1 + pulse * 1.8)
@@ -207,13 +179,12 @@ export default function ISSTrackerDemo() {
     fetch('https://corquaid.github.io/international-space-station-APIs/JSON/people-in-space.json')
       .then(r => r.json())
       .then(d => {
-        console.log('[ISS Tracker] Crew fetch success:', d.number, 'people', d.people)
         if (d.people) setCrew(d.people.map((m: { name: string; craft?: string; spacecraft?: string }) => ({
           name: m.name,
           craft: m.craft || m.spacecraft || 'ISS',
         })))
       })
-      .catch(e => console.warn('[ISS Tracker] Crew fetch failed:', e))
+      .catch(() => {})
   }, [])
 
   const craftGroups = crew.reduce<Record<string,string[]>>((acc,m) => { const k = m.craft||'ISS'; ;(acc[k]??=[]).push(m.name); return acc }, {})

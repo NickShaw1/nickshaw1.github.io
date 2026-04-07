@@ -283,7 +283,7 @@ test.skip('this feature is not yet implemented', async ({ page }) => {});
 test.skip(process.env.CI === 'true', 'Not supported in CI');
 
 // Mark a test as expected to fail — it passes if it fails, fails if it passes
-test.fail('known bug — see ticket #123', async ({ page }) => {});
+test.fail('known bug - see ticket #123', async ({ page }) => {});
 
 // Mark a test as broken without skipping it entirely
 test.fixme('needs attention', async ({ page }) => {});`}</KBCode>

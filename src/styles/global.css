@@ -161,33 +161,33 @@ body {
 }
 
 /* ─── Code block copy button ─────────────────────────────── */
-.code-block-wrapper {
-  position: relative;
-}
-
+/* Used by BlogPost.tsx (injected via JS into prose-blog pre blocks) */
 .code-copy-btn {
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  padding: 0.25rem 0.5rem;
-  background: rgba(255,255,255,0.07);
+  top: 0.55rem;
+  right: 0.6rem;
+  display: flex;
+  align-items: center;
+  padding: 0.15rem 0.4rem;
+  background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 4px;
-  color: #9e9e9e;
+  color: #666;
   font-family: 'Space Mono', monospace;
-  font-size: 0.6875rem;
+  font-size: 0.625rem;
   cursor: pointer;
-  transition: color 0.15s ease, background 0.15s ease;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
 }
 
 .code-copy-btn:hover {
   color: #0AFF9D;
   background: rgba(10,255,157,0.08);
+  border-color: rgba(10,255,157,0.2);
 }
 
 /* ─── Blog prose styles ──────────────────────────────────── */
 .prose-blog {
-  color: #F0EDE6;
+  color: #b0b0b0;
   font-size: 15px;
   line-height: 1.85;
 }
@@ -215,7 +215,7 @@ body {
 
 .prose-blog p {
   margin-bottom: 1.25rem;
-  color: #F0EDE6;
+  color: #b0b0b0;
 }
 
 .prose-blog a {
@@ -245,7 +245,7 @@ body {
   border-left: 3px solid #0AFF9D;
   padding-left: 1rem;
   margin: 1.5rem 0;
-  color: #9e9e9e;
+  color: #b0b0b0;
   font-style: italic;
 }
 
@@ -261,15 +261,31 @@ article code:not(pre code) {
 }
 
 .prose-blog pre {
-  background: #111111;
-  border: 1px solid #222222;
-  border-radius: 8px;
-  padding: 1.25rem;
+  /* Terminal aesthetic: gradient creates the header bar without extra markup */
+  background: linear-gradient(to bottom, #141414 36px, #0d0d0d 36px);
+  border: 1px solid #1e1e1e;
+  border-radius: 10px;
+  /* Top padding: 36px header + inner breathing room */
+  padding: 52px 1rem 1rem;
   overflow-x: auto;
   margin: 1.5rem 0;
-  font-size: 0.8125rem;
-  line-height: 1.7;
+  font-size: clamp(0.5625rem, 1.3vw, 0.6875rem);
+  line-height: 1.75;
   position: relative;
+}
+
+/* Traffic-light dots via ::before */
+.prose-blog pre::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #FF5F56;
+  box-shadow: 18px 0 0 #FFBD2E, 36px 0 0 #27C93F;
+  pointer-events: none;
 }
 
 .prose-blog pre code {
@@ -278,7 +294,7 @@ article code:not(pre code) {
   background: transparent;
   border: none;
   padding: 0;
-  color: inherit;
+  color: #e0ddd6;
 }
 
 .prose-blog hr {
@@ -317,7 +333,7 @@ article code:not(pre code) {
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #9e9e9e;
+  color: #b0b0b0;
 }
 
 /* ─── Hide scrollbar utility ─────────────────────────────── */

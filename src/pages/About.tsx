@@ -200,7 +200,7 @@ export default function About() {
             <div className="flex flex-col sm:flex-row gap-8 sm:gap-6 items-start">
               <div className="flex-1 min-w-0">
                 {meta.aboutSections.imNick.split('\n\n').map((para, i) => (
-                  <p key={i} className="text-text-primary text-[15px] leading-[1.85] mb-4 last:mb-0">
+                  <p key={i} className="text-text-secondary text-[15px] leading-[1.85] mb-4 last:mb-0">
                     {para}
                   </p>
                 ))}
@@ -350,7 +350,7 @@ export default function About() {
           {/* ── Learning ──────────────────────────────────── */}
           <SectionBlock id="learning" label="Learning" reduced={reduced}>
             {meta.aboutSections.learning.split('\n\n').map((para, i) => (
-              <p key={i} className="text-text-primary text-[15px] leading-[1.85] mb-4 last:mb-0">
+              <p key={i} className="text-text-secondary text-[15px] leading-[1.85] mb-4 last:mb-0">
                 {renderInlineLinks(para)}
               </p>
             ))}
@@ -363,7 +363,7 @@ export default function About() {
             <div className="flex flex-col sm:flex-row gap-8 sm:gap-6 items-start">
               <div className="flex-1 min-w-0">
                 {meta.aboutSections.outsideWork.split('\n\n').map((para, i) => (
-                  <p key={i} className="text-text-primary text-[15px] leading-[1.85] mb-4 last:mb-0">
+                  <p key={i} className="text-text-secondary text-[15px] leading-[1.85] mb-4 last:mb-0">
                     {para}
                   </p>
                 ))}
@@ -390,7 +390,7 @@ export default function About() {
                   {renderInlineLinks(para.slice(2))}
                 </blockquote>
               ) : (
-                <p key={i} className="text-text-primary text-[15px] leading-[1.85] mb-4 last:mb-0">
+                <p key={i} className="text-text-secondary text-[15px] leading-[1.85] mb-4 last:mb-0">
                   {renderInlineLinks(para)}
                 </p>
               )
@@ -402,7 +402,7 @@ export default function About() {
           {/* ── Adventures ────────────────────────────────── */}
           <SectionBlock id="adventures" label="Adventures" reduced={reduced}>
             {meta.aboutSections.adventures.split('\n\n').map((para, i) => (
-              <p key={i} className="text-text-primary text-[15px] leading-[1.85] mb-4 last:mb-0">
+              <p key={i} className="text-text-secondary text-[15px] leading-[1.85] mb-4 last:mb-0">
                 {para}
               </p>
             ))}

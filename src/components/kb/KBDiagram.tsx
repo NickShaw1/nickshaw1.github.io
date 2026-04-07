@@ -12,6 +12,7 @@ export default function KBDiagram({ src, alt, caption }: KBDiagramProps) {
           src={src}
           alt={alt}
           className="max-w-full h-auto rounded"
+          loading="lazy"
         />
       </div>
       {caption && (

@@ -7,6 +7,8 @@ category: "Testing"
 readingTime: "7 min read"
 ---
 
+> **Note:** the Knowledge Base now includes a dedicated [Playwright CI/CD integration guide](/knowledge-base/playwright/ci-cd-integration) with more depth and up-to-date examples. This post remains a solid introduction to the topic.
+
 Once you have Playwright set up locally, the next step is making your tests run automatically on every push or pull request. This guide covers setting up a GitHub Actions workflow to run your Playwright test suite in CI, so broken tests are caught before code is merged.
 
 This guide assumes you already have a Playwright project set up. If not, see [Setting up Playwright in VS Code for automated testing](/blog/setting-up-playwright-in-vs-code) first.

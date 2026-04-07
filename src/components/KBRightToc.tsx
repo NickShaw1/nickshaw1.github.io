@@ -33,7 +33,7 @@ export default function KBRightToc({ sections, contentLoaded }: KBRightTocProps)
   if (sections.length === 0) return null
 
   return (
-    <aside className="w-44 flex-shrink-0 sticky top-[88px] self-start max-h-[calc(100vh-104px)] overflow-y-auto pl-2 hidden xl:block">
+    <aside className="w-44 flex-shrink-0 sticky top-[88px] self-start max-h-[calc(100vh-104px)] overflow-y-auto pl-2 hidden lg:block">
       <p className="font-mono text-[10px] tracking-widest uppercase text-text-muted mb-4 pb-3 border-b border-bg-border">
         On this page
       </p>
@@ -43,6 +43,7 @@ export default function KBRightToc({ sections, contentLoaded }: KBRightTocProps)
             <li key={id}>
               <a
                 href={`#${id}`}
+                aria-current={activeId === id ? 'true' : undefined}
                 className={`
                   block text-[12px] leading-snug px-2 py-1 rounded
                   transition-colors duration-150

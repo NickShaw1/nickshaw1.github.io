@@ -8,7 +8,7 @@ import {
   Gauge, Flame, BarChart2, Send, ShieldCheck, Link2, Smartphone, Blocks,
   Accessibility,
   BookMarked, CheckSquare, HelpCircle,
-  Construction, ArrowUpRight, Clock,
+  Construction, ArrowUpRight, Clock, Cpu,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
@@ -43,7 +43,9 @@ const THEORY: KBCard[] = [
 ]
 
 const GUIDES: KBCard[] = [
-  { title: 'Playwright Guide',  icon: Play,          blurb: 'From zero to a production-ready test suite using the Playwright framework.', href: '/knowledge-base/playwright/introduction', readingMins: 137 },
+  { title: 'Playwright Guide',           icon: Play,   blurb: 'From zero to a production-ready test suite using the Playwright framework.',                          href: '/knowledge-base/playwright/introduction',                              readingMins: 137 },
+  { title: 'Playwright API Testing',    icon: Globe,  blurb: 'Test REST APIs, mock network calls and seed test data.',      href: '/knowledge-base/playwright-api-testing/what-is-api-testing', readingMins: 75  },
+  { title: 'Playwright MCP & AI',       icon: Cpu,    blurb: 'Generate, debug and maintain tests using AI and MCP.',        href: '/knowledge-base/playwright-mcp/what-is-mcp',                  readingMins: 100 },
 ]
 
 const REFERENCE: KBCard[] = [

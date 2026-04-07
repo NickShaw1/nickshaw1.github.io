@@ -7,6 +7,8 @@ category: "Testing"
 readingTime: "6 min read"
 ---
 
+> **Note:** the Knowledge Base now includes a dedicated [Playwright installation and setup guide](/knowledge-base/playwright/installation-and-setup) with more comprehensive coverage. This post remains a useful starting point.
+
 This is a guide on setting up Playwright for test automation using VS Code, covering the installation of essential tools like Node.js, VS Code and the necessary extensions, along with configuring and running your first Playwright tests.
 
 ## Step 1: Sign up for a GitHub account

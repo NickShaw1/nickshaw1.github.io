@@ -2,128 +2,137 @@ import { KBH2, KBH3, KBP } from '../../../components/kb/KBHeading'
 import KBNote from '../../../components/kb/KBNote'
 import KBBanner from '../../../components/kb/KBBanner'
 import KBCode from '../../../components/kb/KBCode'
-import KBSteps from '../../../components/kb/KBSteps'
 import KBVideo from '../../../components/kb/KBVideo'
 
 export default function PlaywrightCiCdIntegration() {
   return (
     <>
       <KBBanner variant="info">
-        This article assumes your Playwright project is ready to run locally and that you
-        have a GitHub account. If not, complete the Installation and Project Setup article
-        first.
+        This article assumes your Playwright project runs locally. If not, complete the
+        Installation and Project Setup article first.
       </KBBanner>
 
       <KBVideo
         videoId="gRXPp6RuExU"
         title="Get started with end-to-end testing: Playwright | Episode 6 - Running Tests on CI"
-        caption="Running Playwright tests automatically in CI with GitHub Actions"
+        caption="Running Playwright tests in CI"
       />
 
       <KBP>
-        A test suite that only runs locally provides limited value. Tests should run
-        automatically on every push and on every pull request, catching failures before
-        code is merged. This is the core idea behind Continuous Integration (CI).
+        A test suite that only runs on a developer's machine provides limited value. Tests
+        should run automatically on every push and pull request, catching regressions before
+        code is merged. This is the purpose of Continuous Integration (CI).
       </KBP>
 
       <KBP>
-        GitHub Actions is GitHub's built-in CI/CD platform. It is free for public
-        repositories and has a generous free tier for private ones. It requires no
-        third-party account and is configured through YAML files stored directly in your
-        repository.
+        Playwright is designed to run well in CI environments. It runs headless by default,
+        produces machine-readable output and integrates cleanly with every major CI platform.
+        This article covers the concepts that apply everywhere, then shows how to implement
+        them in the most widely used platforms.
       </KBP>
 
-      <KBH2 id="what-is-ci">What is CI and why does it matter?</KBH2>
+      <KBH2 id="what-is-ci">What is CI/CD?</KBH2>
 
       <KBP>
-        CI stands for Continuous Integration. The principle is that every code change is
-        integrated into the main branch frequently, and every integration is verified by
-        an automated build and test process. When a test fails, the team knows immediately
-        and can fix the problem before it affects anyone else.
+        Continuous Integration (CI) is the practice of merging code changes frequently and
+        verifying each merge with an automated build and test process. The goal is to detect
+        failures as close to the moment they are introduced as possible, when they are
+        cheapest to fix.
       </KBP>
 
       <KBP>
-        Without CI, a common pattern emerges: developers run tests locally before pushing,
-        but only some of the time, and not always against the same environment. Tests that
-        pass locally fail in production. Failures pile up and become harder to attribute to
-        a specific change. CI breaks this pattern by making test execution automatic,
+        Continuous Delivery (CD) extends CI by automatically deploying code that has passed
+        all tests to a staging or production environment. Together, CI/CD replaces manual
+        release processes with a repeatable, auditable pipeline.
+      </KBP>
+
+      <KBP>
+        Without CI, a familiar pattern emerges: tests pass locally but fail in production,
+        failures accumulate before anyone notices, and it becomes difficult to identify which
+        change caused a problem. CI breaks this cycle by making test execution automatic,
         consistent and visible to the whole team.
       </KBP>
 
-      <KBH2 id="github-actions-concepts">GitHub Actions concepts</KBH2>
+      <KBH2 id="playwright-in-ci">How Playwright behaves in CI</KBH2>
 
       <KBP>
-        Before writing the workflow file, it helps to understand the key terms:
+        Playwright detects when it is running in a CI environment automatically by reading
+        the <code>CI</code> environment variable, which every major CI platform sets. When
+        this variable is present, Playwright adjusts its defaults:
       </KBP>
 
       <ul className="my-4 space-y-3 pl-5 list-disc text-text-secondary text-[14px] leading-relaxed">
         <li>
-          <strong className="text-text-primary">Workflow.</strong> A workflow is an automated
-          process defined in a YAML file. A repository can have multiple workflows, each
-          triggered independently.
+          <strong className="text-text-primary">Headless by default.</strong> Browsers run
+          without a visible window, which is required on CI runners that have no display
+          server.
         </li>
         <li>
-          <strong className="text-text-primary">Trigger.</strong> The event that starts a
-          workflow, such as a push to a branch or the opening of a pull request.
+          <strong className="text-text-primary">No interactive prompts.</strong> Playwright
+          never waits for user input.
         </li>
         <li>
-          <strong className="text-text-primary">Job.</strong> A workflow contains one or
-          more jobs. Each job runs on a fresh virtual machine called a runner.
-        </li>
-        <li>
-          <strong className="text-text-primary">Step.</strong> Each job contains a sequence
-          of steps. Each step either runs a shell command or uses a pre-built action from
-          the GitHub Actions marketplace.
-        </li>
-        <li>
-          <strong className="text-text-primary">Runner.</strong> A virtual machine provided
-          by GitHub that executes the steps in a job. The most commonly used runner is
-          <code>ubuntu-latest</code>.
+          <strong className="text-text-primary">Strict output.</strong> Exit codes are
+          non-zero on any failure, which CI platforms interpret as a failed step.
         </li>
       </ul>
 
-      <KBH2 id="pushing-your-project-to-github">Pushing your project to GitHub</KBH2>
-
       <KBP>
-        If your project is not already on GitHub, initialise a repository and push it.
-        First, create a new repository on GitHub through the website, then run the
-        following in your project folder:
+        One thing CI runners do not include by default is the browser binaries Playwright
+        needs. You must install them explicitly as part of your pipeline. The standard
+        command is:
       </KBP>
 
-      <KBCode language="bash">{`git init
-git add .
-git commit -m "Initial commit"
-git remote add origin https://github.com/your-username/your-repo.git
-git push -u origin main`}</KBCode>
+      <KBCode language="bash">{`npx playwright install --with-deps`}</KBCode>
 
       <KBP>
-        Before pushing, verify that your <code>.gitignore</code> file includes
-        <code>node_modules/</code>. The Playwright initialisation command adds this
-        automatically. You should also ensure <code>playwright.config.ts</code>,
-        <code>package.json</code> and <code>package-lock.json</code> are all committed,
-        as the CI workflow depends on them.
+        The <code>--with-deps</code> flag also installs the operating system libraries that
+        Chromium, Firefox and WebKit depend on. These are present on a developer's machine
+        but not on a fresh CI runner.
       </KBP>
 
-      <KBH2 id="creating-the-workflow-file">Creating the workflow file</KBH2>
+      <KBH2 id="playwright-config-for-ci">Configuring Playwright for CI</KBH2>
 
       <KBP>
-        GitHub Actions workflows are stored in a <code>.github/workflows/</code> folder in
-        your repository root. Create that folder and add a file called
-        <code>playwright.yml</code>:
+        Several <code>playwright.config.ts</code> settings are worth setting explicitly
+        for CI rather than relying on defaults.
       </KBP>
 
-      <KBCode language="text">{`your-project/
-├── .github/
-│   └── workflows/
-│       └── playwright.yml
-├── tests/
-├── playwright.config.ts
-└── package.json`}</KBCode>
+      <KBCode language="typescript">{`import { defineConfig } from '@playwright/test'
 
-      <KBH2 id="writing-the-workflow">Writing the workflow</KBH2>
+export default defineConfig({
+  // Fail the run if test.only() was accidentally committed
+  forbidOnly: !!process.env.CI,
+
+  // Retry failing tests once on CI to reduce flake noise
+  retries: process.env.CI ? 1 : 0,
+
+  // Use fewer workers on CI to avoid resource contention
+  workers: process.env.CI ? 2 : undefined,
+
+  reporter: [
+    ['html', { open: 'never' }],
+    ['junit', { outputFile: 'results.xml' }],
+  ],
+})`}</KBCode>
 
       <KBP>
-        Add the following to <code>.github/workflows/playwright.yml</code>:
+        The <code>!!process.env.CI</code> pattern evaluates to <code>true</code> when the
+        <code>CI</code> variable is set and <code>false</code> otherwise, so the same config
+        file works in both local and CI contexts.
+      </KBP>
+
+      <KBNote variant="blue">
+        The JUnit reporter produces an XML file that most CI platforms can parse to display
+        per-test results directly in the pipeline UI, without requiring the HTML report to
+        be downloaded.
+      </KBNote>
+
+      <KBH2 id="github-actions">GitHub Actions</KBH2>
+
+      <KBP>
+        GitHub Actions is GitHub's built-in CI/CD platform. Workflows are defined in YAML
+        files stored in a <code>.github/workflows/</code> folder in your repository.
       </KBP>
 
       <KBCode language="yaml">{`name: Playwright Tests
@@ -165,163 +174,40 @@ jobs:
           path: playwright-report/
           retention-days: 30`}</KBCode>
 
-      <KBH2 id="workflow-explained">The workflow explained step by step</KBH2>
-
-      <KBSteps variant="green" steps={[
-        {
-          title: 'Trigger',
-          body: 'The workflow runs on any push to main and on any pull request targeting main. This means every proposed change is tested before it is merged.',
-        },
-        {
-          title: 'Checkout repository',
-          body: 'The actions/checkout action downloads your repository code onto the runner. Without this step, the runner would have an empty workspace.',
-        },
-        {
-          title: 'Set up Node.js',
-          body: 'The actions/setup-node action installs Node.js version 20 on the runner. The cache: \'npm\' option caches your installed node_modules between runs, which is explained in detail below.',
-        },
-        {
-          title: 'Install dependencies',
-          body: 'npm ci installs your dependencies exactly as specified in package-lock.json. Unlike npm install, it never modifies package-lock.json and will fail if there is any discrepancy between the lock file and package.json. This ensures CI always installs the exact same dependency versions as your team.',
-        },
-        {
-          title: 'Install Playwright browsers',
-          body: 'npx playwright install downloads the browser binaries Playwright needs. The --with-deps flag also installs the operating system level dependencies required by those browsers, such as shared libraries that Chromium depends on. These are not installed on the runner by default.',
-        },
-        {
-          title: 'Run Playwright tests',
-          body: 'npx playwright test executes the full test suite. If any test fails, the step exits with a non-zero code and GitHub marks the job as failed.',
-        },
-        {
-          title: 'Upload test report',
-          body: 'The if: always() condition means this step runs whether the tests passed or failed. It uploads the playwright-report/ folder as a downloadable artifact, available for 30 days. This allows you to download and open the HTML report to investigate failures without needing to reproduce them locally.',
-        },
-      ]} />
-
-      <KBH2 id="dependency-caching">Dependency caching</KBH2>
-
       <KBP>
-        Without caching, every workflow run downloads and installs all your project's
-        dependencies from scratch. For a Playwright project this includes dozens of packages
-        and can take a minute or more before any test code runs.
+        The <code>if: always()</code> condition on the upload step ensures the report is
+        uploaded regardless of whether tests passed or failed. Without it, the artifact
+        would only be available on successful runs, which is exactly when you need it least.
       </KBP>
 
       <KBP>
-        Adding <code>cache: 'npm'</code> to the <code>actions/setup-node</code> step
-        instructs GitHub to save a copy of your <code>node_modules</code> after the first
-        run. On subsequent runs, GitHub restores the saved copy instead of downloading
-        everything again, making <code>npm ci</code> near-instant.
+        To require tests to pass before a pull request can be merged, go to your repository
+        <strong> Settings</strong>, open <strong>Branches</strong>, add a protection rule
+        for <code>main</code> and enable <strong>Require status checks to pass before
+        merging</strong>. Select the <code>test</code> job from your workflow.
       </KBP>
 
       <KBP>
-        GitHub derives the cache key from the contents of your <code>package-lock.json</code>
-        file. If the lock file has not changed since the last run, the cache is used. If you
-        have added, removed or updated any packages, the lock file changes and GitHub runs
-        a fresh install, then saves a new cache for future runs.
+        To pass secrets to your tests in GitHub Actions:
       </KBP>
 
-      <KBNote variant="green">
-        Caching is particularly valuable for Playwright projects because the browser binary
-        downloads alone can take 30 to 60 seconds. The combination of caching
-        <code>node_modules</code> and the browser binaries (via the
-        <code>PLAYWRIGHT_BROWSERS_PATH</code> environment variable if you choose to go
-        further) can reduce setup time significantly on projects with large suites.
-      </KBNote>
-
-      <KBH2 id="pushing-the-workflow">Pushing the workflow and watching it run</KBH2>
+      <KBCode language="yaml">{`- name: Run Playwright tests
+  run: npx playwright test
+  env:
+    BASE_URL: \${{ secrets.STAGING_URL }}
+    TEST_PASSWORD: \${{ secrets.TEST_USER_PASSWORD }}`}</KBCode>
 
       <KBP>
-        Commit the workflow file and push it:
+        Add secrets under repository <strong>Settings</strong>, then
+        <strong> Secrets and variables</strong>, then <strong>Actions</strong>. Secrets are
+        stored encrypted and are never visible in workflow logs.
       </KBP>
 
-      <KBCode language="bash">{`git add .github/workflows/playwright.yml
-git commit -m "Add Playwright CI workflow"
-git push`}</KBCode>
+      <KBH3 id="github-actions-sharding">Sharding in GitHub Actions</KBH3>
 
       <KBP>
-        Navigate to your repository on GitHub and click the <strong>Actions</strong> tab.
-        You should see a workflow run in progress. Click into it to follow the live output
-        of each step. Each step's logs expand to show exactly what was printed to the
-        terminal.
-      </KBP>
-
-      <KBP>
-        Once complete, if any tests failed you will see a red cross next to the run. Click
-        <strong>playwright-report</strong> under Artifacts to download the full HTML report.
-        Unzip it and open <code>index.html</code> in your browser to see the complete
-        results, including screenshots and traces for any failures.
-      </KBP>
-
-      <KBH2 id="branch-protection-rules">Requiring tests to pass before merging</KBH2>
-
-      <KBP>
-        Uploading a report is useful, but tests only become a genuine gate on quality if
-        failing tests prevent code from being merged. GitHub's branch protection rules
-        enforce this.
-      </KBP>
-
-      <KBSteps variant="green" steps={[
-        {
-          title: 'Open repository settings',
-          body: 'Go to your repository on GitHub and click Settings in the top navigation.',
-        },
-        {
-          title: 'Open branch rules',
-          body: 'In the left sidebar, click Branches under the Code and automation section.',
-        },
-        {
-          title: 'Add a rule for main',
-          body: 'Click Add branch protection rule. In the Branch name pattern field, enter main.',
-        },
-        {
-          title: 'Require status checks',
-          body: 'Enable Require status checks to pass before merging. Search for and select the test job from your Playwright workflow.',
-        },
-        {
-          title: 'Save the rule',
-          body: 'Click Create or Save changes. From now on, GitHub will block any pull request where the Playwright job has not passed.',
-        },
-      ]} />
-
-      <KBH2 id="running-on-pull-requests">Running tests on pull requests</KBH2>
-
-      <KBP>
-        The workflow as written already runs on pull requests targeting <code>main</code>.
-        When a developer opens a pull request, GitHub runs the workflow automatically and
-        shows the result in the pull request's Checks section. A green tick means all tests
-        passed. A red cross provides a link directly to the failing workflow run.
-      </KBP>
-
-      <KBH2 id="filtering-by-path">Skipping CI for irrelevant changes</KBH2>
-
-      <KBP>
-        If your repository contains documentation, configuration files or other content that
-        cannot affect your application's behaviour, you can skip the CI run when only those
-        files change. Add a <code>paths</code> filter to the trigger:
-      </KBP>
-
-      <KBCode language="yaml">{`on:
-  push:
-    branches: [main]
-    paths:
-      - 'src/**'
-      - 'tests/**'
-      - 'playwright.config.ts'
-      - 'package*.json'
-  pull_request:
-    branches: [main]
-    paths:
-      - 'src/**'
-      - 'tests/**'
-      - 'playwright.config.ts'
-      - 'package*.json'`}</KBCode>
-
-      <KBH2 id="sharding">Sharding for large test suites</KBH2>
-
-      <KBP>
-        As your suite grows, total run time in CI grows with it. Sharding splits your tests
-        across multiple parallel runners. Each runner handles a fraction of the suite and
-        they all run simultaneously, reducing the wall-clock time proportionally.
+        For large suites, sharding splits tests across multiple parallel runners. Each runner
+        handles a fraction of the suite simultaneously, reducing total run time proportionally.
       </KBP>
 
       <KBCode language="yaml">{`jobs:
@@ -342,22 +228,11 @@ git push`}</KBCode>
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report-\${{ matrix.shard }}
-          path: playwright-report/
-          retention-days: 30`}</KBCode>
+          name: blob-report-\${{ matrix.shard }}
+          path: blob-report/
+          retention-days: 1
 
-      <KBP>
-        This example splits the suite into four shards. With four runners each handling
-        25% of the tests, a suite that takes 20 minutes to run sequentially finishes in
-        approximately 5 minutes.
-      </KBP>
-
-      <KBP>
-        To merge the reports from all shards into a single HTML report, add a merge step
-        after all shards complete:
-      </KBP>
-
-      <KBCode language="yaml">{`  merge-reports:
+  merge-reports:
     if: always()
     needs: [test]
     runs-on: ubuntu-latest
@@ -371,7 +246,7 @@ git push`}</KBCode>
       - uses: actions/download-artifact@v4
         with:
           path: all-blob-reports
-          pattern: playwright-report-*
+          pattern: blob-report-*
           merge-multiple: true
       - run: npx playwright merge-reports --reporter html ./all-blob-reports
       - uses: actions/upload-artifact@v4
@@ -380,51 +255,271 @@ git push`}</KBCode>
           path: playwright-report/
           retention-days: 30`}</KBCode>
 
+      <KBH2 id="gitlab-ci">GitLab CI</KBH2>
+
+      <KBP>
+        GitLab CI/CD is configured through a <code>.gitlab-ci.yml</code> file in the root
+        of your repository. GitLab provides its own runner infrastructure and also supports
+        self-hosted runners.
+      </KBP>
+
+      <KBCode language="yaml">{`image: mcr.microsoft.com/playwright:v1.44.0-jammy
+
+stages:
+  - test
+
+playwright:
+  stage: test
+  script:
+    - npm ci
+    - npx playwright test
+  artifacts:
+    when: always
+    paths:
+      - playwright-report/
+    expire_in: 1 week`}</KBCode>
+
+      <KBP>
+        The <code>mcr.microsoft.com/playwright</code> Docker image is the official Microsoft
+        image that includes all required browser dependencies pre-installed. Using it means
+        you do not need to run <code>npx playwright install --with-deps</code> as the browsers
+        are already present in the image.
+      </KBP>
+
+      <KBP>
+        Pass secrets using GitLab CI/CD variables, which you add under
+        <strong> Settings &gt; CI/CD &gt; Variables</strong> in your project:
+      </KBP>
+
+      <KBCode language="yaml">{`playwright:
+  stage: test
+  script:
+    - npm ci
+    - npx playwright test
+  variables:
+    BASE_URL: $STAGING_URL
+    TEST_PASSWORD: $TEST_USER_PASSWORD`}</KBCode>
+
       <KBNote variant="warning">
-        Sharding is worth introducing only when your suite takes long enough to justify the
-        additional workflow complexity. For most projects, sharding becomes relevant when
-        the suite takes more than five to ten minutes on a single runner.
-      </KBNote>
-
-      <KBH2 id="secrets-and-environment-variables">Secrets and environment variables</KBH2>
-
-      <KBP>
-        If your tests require credentials such as an API key, a test user password or a
-        staging environment URL, do not put them in your workflow file. Store them as GitHub
-        repository secrets and reference them in the workflow:
-      </KBP>
-
-      <KBCode language="yaml">{`- name: Run Playwright tests
-  run: npx playwright test
-  env:
-    BASE_URL: \${{ secrets.STAGING_URL }}
-    TEST_PASSWORD: \${{ secrets.TEST_USER_PASSWORD }}`}</KBCode>
-
-      <KBP>
-        Secrets are stored encrypted by GitHub and are not visible in workflow logs. Add
-        them by going to your repository <strong>Settings</strong>, then
-        <strong>Secrets and variables</strong>, then <strong>Actions</strong>.
-      </KBP>
-
-      <KBNote variant="blue">
-        The official Playwright CI documentation covers additional CI providers including
-        Azure Pipelines, CircleCI and Jenkins at{' '}
+        The image tag <code>v1.44.0-jammy</code> is used as an example. Always use the tag
+        that matches your installed Playwright version. Check the latest available tags at{' '}
         <a
-          href="https://playwright.dev/docs/ci"
+          href="https://mcr.microsoft.com/en-us/artifact/mar/playwright"
           target="_blank"
           rel="noopener noreferrer"
           className="text-link hover:text-link/80 transition-colors duration-150"
         >
-          playwright.dev/docs/ci
+          mcr.microsoft.com
         </a>.
       </KBNote>
+
+      <KBNote variant="blue">
+        GitLab CI uses <code>$VARIABLE_NAME</code> syntax rather than the
+        <code>{`\${{ secrets.NAME }}`}</code> syntax used by GitHub Actions.
+      </KBNote>
+
+      <KBH2 id="azure-pipelines">Azure Pipelines</KBH2>
+
+      <KBP>
+        Azure Pipelines is Microsoft's CI/CD platform, part of Azure DevOps. It is
+        configured through an <code>azure-pipelines.yml</code> file in your repository root.
+        It integrates directly with Azure Repos but also supports GitHub repositories.
+      </KBP>
+
+      <KBCode language="yaml">{`trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '20.x'
+    displayName: 'Install Node.js'
+
+  - script: npm ci
+    displayName: 'Install dependencies'
+
+  - script: npx playwright install --with-deps
+    displayName: 'Install Playwright browsers'
+
+  - script: npx playwright test
+    displayName: 'Run Playwright tests'
+    env:
+      BASE_URL: $(STAGING_URL)
+      TEST_PASSWORD: $(TEST_USER_PASSWORD)
+
+  - task: PublishTestResults@2
+    condition: always()
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: 'results.xml'
+      testRunTitle: 'Playwright Tests'
+
+  - task: PublishPipelineArtifact@1
+    condition: always()
+    inputs:
+      targetPath: playwright-report
+      artifact: playwright-report`}</KBCode>
+
+      <KBP>
+        Azure Pipelines has a dedicated <code>PublishTestResults</code> task that reads the
+        JUnit XML file and renders per-test results directly in the pipeline run UI. This
+        is particularly useful for identifying individual failing tests without downloading
+        the full HTML report.
+      </KBP>
+
+      <KBP>
+        Store secrets as pipeline variables under
+        <strong> Pipelines &gt; Library &gt; Variable groups</strong> in Azure DevOps.
+        Reference them with <code>$(VARIABLE_NAME)</code> syntax.
+      </KBP>
+
+      <KBH2 id="circleci">CircleCI</KBH2>
+
+      <KBP>
+        CircleCI is configured through a <code>.circleci/config.yml</code> file. It supports
+        Docker executors natively and has a library of reusable config packages called orbs.
+      </KBP>
+
+      <KBCode language="yaml">{`version: 2.1
+
+jobs:
+  playwright:
+    docker:
+      - image: mcr.microsoft.com/playwright:v1.44.0-jammy
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm ci
+      - run:
+          name: Run Playwright tests
+          command: npx playwright test
+          environment:
+            BASE_URL: $STAGING_URL
+            TEST_PASSWORD: $TEST_USER_PASSWORD
+      - store_artifacts:
+          path: playwright-report
+      - store_test_results:
+          path: results.xml
+
+workflows:
+  test:
+    jobs:
+      - playwright`}</KBCode>
+
+      <KBP>
+        Like GitLab CI, this uses the official Playwright Docker image so browser
+        installation is handled by the image. The <code>store_test_results</code> step
+        sends the JUnit XML to CircleCI's test insights dashboard.
+      </KBP>
+
+      <KBP>
+        Store sensitive values as environment variables under
+        <strong> Project Settings &gt; Environment Variables</strong> in the CircleCI UI.
+        They are injected automatically into the build environment and referenced with
+        standard <code>$VARIABLE_NAME</code> syntax.
+      </KBP>
+
+      <KBH2 id="jenkins">Jenkins</KBH2>
+
+      <KBP>
+        Jenkins is a self-hosted automation server. Pipelines are defined in a
+        <code>Jenkinsfile</code> at the root of your repository using either declarative
+        or scripted syntax.
+      </KBP>
+
+      <KBCode language="groovy">{`pipeline {
+  agent {
+    docker {
+      image 'mcr.microsoft.com/playwright:v1.44.0-jammy'
+    }
+  }
+
+  environment {
+    BASE_URL     = credentials('staging-url')
+    TEST_PASSWORD = credentials('test-user-password')
+  }
+
+  stages {
+    stage('Install') {
+      steps {
+        sh 'npm ci'
+      }
+    }
+
+    stage('Test') {
+      steps {
+        sh 'npx playwright test'
+      }
+    }
+  }
+
+  post {
+    always {
+      junit 'results.xml'
+      archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
+    }
+  }
+}`}</KBCode>
+
+      <KBP>
+        The <code>credentials()</code> function reads secrets from Jenkins' built-in
+        credentials store. Add credentials under
+        <strong> Manage Jenkins &gt; Credentials</strong>. The <code>junit</code> post-step
+        publishes the test results to Jenkins' test trend graphs.
+      </KBP>
+
+      <KBNote variant="warning">
+        Jenkins requires the Pipeline, JUnit and Docker Pipeline plugins to use the syntax
+        above. Ensure these are installed before adding your Jenkinsfile.
+      </KBNote>
+
+      <KBH2 id="common-patterns">Patterns that apply everywhere</KBH2>
+
+      <KBP>
+        Regardless of which CI platform you use, several practices apply universally:
+      </KBP>
+
+      <ul className="my-4 space-y-3 pl-5 list-disc text-text-secondary text-[14px] leading-relaxed">
+        <li>
+          <strong className="text-text-primary">Never store secrets in code.</strong> Every
+          platform provides a secrets or credentials store. Use it. Credentials committed
+          to a repository are compromised the moment the repository is shared or made public.
+        </li>
+        <li>
+          <strong className="text-text-primary">Upload artifacts unconditionally.</strong> The
+          test report is most valuable when tests fail. Ensure your artifact upload step runs
+          regardless of test outcome using the platform's equivalent of <code>always()</code>.
+        </li>
+        <li>
+          <strong className="text-text-primary">Use the official Playwright Docker image.</strong> On
+          platforms that support Docker executors, <code>mcr.microsoft.com/playwright</code>
+          eliminates browser installation steps and produces consistent, reproducible
+          environments.
+        </li>
+        <li>
+          <strong className="text-text-primary">Cache dependencies.</strong> Installing
+          node_modules from scratch on every run adds unnecessary time. Most platforms offer
+          dependency caching keyed to your lock file.
+        </li>
+        <li>
+          <strong className="text-text-primary">Enforce tests as a merge gate.</strong> CI
+          only prevents regressions if failing tests can block a merge. Configure branch
+          protection or equivalent rules on your main branch.
+        </li>
+      </ul>
 
       <KBH2 id="next-steps">Next steps</KBH2>
 
       <KBP>
-        Your tests now run automatically on every push and pull request. The final article
-        in this guide covers advanced patterns: API mocking, authentication state, fixtures,
-        parallel execution strategies and accessibility testing.
+        Your tests now run automatically in CI on every push and pull request. The final
+        article in this guide covers advanced patterns: API mocking, authentication state,
+        fixtures, multiple tabs, iframes, file handling and accessibility testing.
       </KBP>
     </>
   )

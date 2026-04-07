@@ -21,7 +21,7 @@ const config: Config = {
         link: '#F5A623',
         text: {
           primary:   '#F0EDE6',
-          secondary: '#9e9e9e',
+          secondary: '#b0b0b0',
           muted:     '#9a9a9a',
         },
       },

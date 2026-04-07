@@ -1,5 +1,5 @@
 import type { ComponentType, FC } from 'react'
-import { BookOpen, Hand, ClipboardList, Bot, FlaskConical, Activity, Sparkles, Wrench, Lightbulb, Play } from 'lucide-react'
+import { BookOpen, Hand, ClipboardList, Bot, FlaskConical, Activity, Sparkles, Wrench, Lightbulb, Play, Globe, Cpu } from 'lucide-react'
 
 // Types — shared across all KB files
 export interface KBTocSection {
@@ -101,6 +101,18 @@ const SECTION_LOADERS: Record<string, {
     colour: '#E2574C',
     icon: Play,
     load: () => import('./playwright/index'),
+  },
+  'playwright-api-testing': {
+    title: 'API Testing in Playwright',
+    colour: '#E2574C',
+    icon: Globe,
+    load: () => import('./playwright-api-testing/index'),
+  },
+  'playwright-mcp': {
+    title: 'MCP and AI-Assisted Testing',
+    colour: '#E2574C',
+    icon: Cpu,
+    load: () => import('./playwright-mcp/index'),
   },
 }
 
