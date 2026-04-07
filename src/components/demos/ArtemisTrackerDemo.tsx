@@ -118,6 +118,8 @@ export default function ArtemisTrackerDemo() {
   const moonGlowRef    = useRef<THREE.Mesh | null>(null)
   const pathRef        = useRef<THREE.Mesh | null>(null)
   const fullPathRef    = useRef<THREE.Mesh | null>(null)
+  const sunLightRef    = useRef<THREE.DirectionalLight | null>(null)
+  const fillLightRef   = useRef<THREE.DirectionalLight | null>(null)
   const sceneRef       = useRef<THREE.Scene | null>(null)
   const cameraRef      = useRef<THREE.PerspectiveCamera | null>(null)
   const isDragging     = useRef(false)
@@ -355,15 +357,15 @@ export default function ArtemisTrackerDemo() {
     ringRef.current    = ring
     ringMatRef.current = ringMat
 
-    // Lighting: sun from one side
+    // Lighting: sun positioned from real solar direction (updated each frame)
     const sun = new THREE.DirectionalLight(0xfff8e7, 1.8)
-    sun.position.set(200, 40, 80)
     scene.add(sun)
+    sunLightRef.current = sun
     scene.add(new THREE.AmbientLight(0x2a3f5f, 1.4))
     // Soft fill from opposite side so dark hemispheres are still visible
     const fill = new THREE.DirectionalLight(0x1a2a44, 0.6)
-    fill.position.set(-200, -40, -80)
     scene.add(fill)
+    fillLightRef.current = fill
 
     function animate() {
       frameRef.current = requestAnimationFrame(animate)
@@ -381,6 +383,24 @@ export default function ArtemisTrackerDemo() {
       // The earth.jpg texture has the prime meridian (0° lon) at the centre-right seam.
       // An offset of -π/2 aligns that seam with Three.js's default sphere UV mapping.
       earth.rotation.y = -gmstRad - Math.PI / 2
+
+      // Sun direction in ICRF (low-precision solar coordinates, accurate to ~0.01°)
+      // Source: Astronomical Algorithms, Meeus Ch.25 / JPL low-precision formulae
+      {
+        const D     = jd - 2451545.0                             // days since J2000.0
+        const g     = (357.528 + 0.9856003 * D) * Math.PI / 180 // mean anomaly
+        const L     = (280.460 + 0.9856474 * D) * Math.PI / 180 // mean longitude
+        const lam   = L + (1.915 * Math.sin(g) + 0.020 * Math.sin(2 * g)) * Math.PI / 180 // ecliptic lon
+        const eps   = (23.439 - 0.0000004 * D) * Math.PI / 180  // obliquity of ecliptic
+        // Ecliptic → ICRF equatorial unit vector (Earth→Sun direction)
+        const sx = Math.cos(lam)
+        const sy = Math.cos(eps) * Math.sin(lam)
+        const sz = Math.sin(eps) * Math.sin(lam)
+        // ICRF → Three.js (same transform as icrf() helper: swap Y↔Z, negate X)
+        const sunDir = new THREE.Vector3(-sx, sz, sy).multiplyScalar(500)
+        if (sunLightRef.current)  sunLightRef.current.position.copy(sunDir)
+        if (fillLightRef.current) fillLightRef.current.position.copy(sunDir.clone().negate())
+      }
 
       // Pulse ring
       const ring    = ringRef.current!
