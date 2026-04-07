@@ -10,7 +10,7 @@ env:
 
 jobs:
   check:
-    name: Lint & Type Check
+    name: Type Check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
