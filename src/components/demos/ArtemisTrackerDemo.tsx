@@ -369,8 +369,18 @@ export default function ArtemisTrackerDemo() {
       frameRef.current = requestAnimationFrame(animate)
       const t = (performance.now() - clockRef.current) / 1000
 
-      // Rotate Earth slowly
-      earth.rotation.y = t * 0.02
+      // Rotate Earth on its axis using GMST (Greenwich Mean Sidereal Time)
+      // GMST gives the real-world rotation angle of Earth at the current UTC instant.
+      // J2000.0 epoch: 2000-Jan-1 12:00 UTC = 2451545.0 Julian Day
+      // GMST at J2000.0 = 280.46061837° and Earth rotates 360.98564724° per Julian day.
+      const nowMs   = Date.now()
+      const jd      = nowMs / 86400000 + 2440587.5          // Julian Day (UTC)
+      const T       = (jd - 2451545.0) / 36525              // Julian centuries from J2000.0
+      const gmstDeg = (280.46061837 + 360.98564736629 * (jd - 2451545.0) + 0.000387933 * T * T) % 360
+      const gmstRad = (gmstDeg * Math.PI) / 180
+      // The earth.jpg texture has the prime meridian (0° lon) at the centre-right seam.
+      // An offset of -π/2 aligns that seam with Three.js's default sphere UV mapping.
+      earth.rotation.y = -gmstRad - Math.PI / 2
 
       // Pulse ring
       const ring    = ringRef.current!
