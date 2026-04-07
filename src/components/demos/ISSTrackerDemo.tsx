@@ -27,6 +27,11 @@ export default function ISSTrackerDemo() {
 
   const [issData,  setIssData]  = useState<ISSData | null>(null)
   const [crew,     setCrew]     = useState<CrewMember[]>([])
+  const [crewFailed,  setCrewFailed]  = useState(false)
+  const [loading,     setLoading]     = useState(true)
+  const [fetchFailed, setFetchFailed] = useState(false)
+  const dataArrivedRef = useRef(false)
+  const crewArrivedRef = useRef(false)
 
   const centreOnISS = useCallback(() => {
     userControlled.current = false
@@ -200,6 +205,7 @@ export default function ISSTrackerDemo() {
       const d = await r.json()
       const data: ISSData = { latitude: d.latitude, longitude: d.longitude, altitude: d.altitude, velocity: d.velocity }
       setIssData(data)
+      if (!dataArrivedRef.current) { dataArrivedRef.current = true; setLoading(false) }
       const pos = issLatLonToVec3(d.latitude, d.longitude, 1.065)
       if (markerRef.current) markerRef.current.position.copy(pos)
     } catch { /* silent */ }
@@ -211,16 +217,31 @@ export default function ISSTrackerDemo() {
     return () => clearInterval(id)
   }, [fetchISS])
 
+  // Hard timeout — if no data after 8s show error
   useEffect(() => {
+    const id = setTimeout(() => {
+      if (!dataArrivedRef.current) setFetchFailed(true)
+    }, 8000)
+    return () => clearTimeout(id)
+  }, [])
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (!crewArrivedRef.current) setCrewFailed(true)
+    }, 8000)
     fetch('https://corquaid.github.io/international-space-station-APIs/JSON/people-in-space.json')
       .then(r => r.json())
       .then(d => {
-        if (d.people) setCrew(d.people.map((m: { name: string; craft?: string; spacecraft?: string }) => ({
-          name: m.name,
-          craft: m.craft || m.spacecraft || 'ISS',
-        })))
+        if (d.people) {
+          setCrew(d.people.map((m: { name: string; craft?: string; spacecraft?: string }) => ({
+            name: m.name,
+            craft: m.craft || m.spacecraft || 'ISS',
+          })))
+          crewArrivedRef.current = true
+        }
       })
-      .catch(() => {})
+      .catch(() => setCrewFailed(true))
+      .finally(() => clearTimeout(timeout))
   }, [])
 
   const craftGroups = crew.reduce<Record<string,string[]>>((acc,m) => { const k = m.craft||'ISS'; ;(acc[k]??=[]).push(m.name); return acc }, {})
@@ -263,7 +284,9 @@ export default function ISSTrackerDemo() {
               {names.map(n => <div key={n} style={{ fontSize:10, color:'#dde6ee', lineHeight:1.65 }}>{n}</div>)}
             </div>
           ))
-        : <div style={{ ...dim, fontSize:10 }}>Fetching…</div>
+        : crewFailed
+          ? <div style={{ fontSize:10, color:'rgba(255,77,77,0.7)', fontFamily:'monospace' }}>Unavailable</div>
+          : <div style={{ ...dim, fontSize:10 }}>Fetching…</div>
       }
     </div>
   )
@@ -305,6 +328,48 @@ export default function ISSTrackerDemo() {
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
           />
+
+          {/* Loading skeleton overlay — fades out once ISS data has arrived */}
+          <div
+            className="absolute inset-0 flex flex-col items-center justify-center gap-4 pointer-events-none"
+            style={{
+              background: '#000306',
+              transition: 'opacity 0.8s ease',
+              opacity: loading || fetchFailed ? 1 : 0,
+            }}
+            aria-hidden={!loading && !fetchFailed}
+          >
+            {fetchFailed ? (
+              <div className="flex flex-col items-center gap-2">
+                <span className="font-mono text-[11px] tracking-widest uppercase" style={{ color: '#ff4d4d' }}>
+                  Telemetry unavailable
+                </span>
+                <span className="font-mono text-[9px] tracking-wider text-center" style={{ color: 'rgba(255,77,77,0.5)' }}>
+                  Could not reach wheretheiss.at
+                </span>
+              </div>
+            ) : (
+              <>
+                <div className="relative flex items-center justify-center" style={{ width: 72, height: 72 }}>
+                  <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', border: '1px solid rgba(10,255,157,0.15)' }} />
+                  <div style={{ position: 'absolute', inset: 6, borderRadius: '50%', border: '1px solid rgba(10,255,157,0.1)' }} />
+                  <div className="animate-spin" style={{
+                    position: 'absolute', inset: 0, borderRadius: '50%',
+                    border: '2px solid transparent', borderTopColor: '#0AFF9D',
+                  }} />
+                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#0AFF9D', boxShadow: '0 0 8px #0AFF9D' }} />
+                </div>
+                <div className="flex flex-col items-center gap-1.5">
+                  <span className="font-mono text-[11px] tracking-widest uppercase" style={{ color: '#0AFF9D' }}>
+                    Acquiring telemetry
+                  </span>
+                  <span className="font-mono text-[9px] tracking-wider" style={{ color: 'rgba(10,255,157,0.4)' }}>
+                    wheretheiss.at
+                  </span>
+                </div>
+              </>
+            )}
+          </div>
 
           <div className="absolute top-3 left-3 hidden sm:block" style={{ minWidth: 195 }}>{posPanel}</div>
           <div className="absolute top-3 right-3 hidden sm:block" style={{ maxWidth: 172 }}>{crewPanel}</div>
@@ -368,7 +433,9 @@ export default function ISSTrackerDemo() {
                     </div>
                   </div>
                 ))
-              : <span style={{ ...dim, fontSize:10 }}>Fetching…</span>
+              : crewFailed
+                ? <span style={{ fontSize:10, color:'rgba(255,77,77,0.7)', fontFamily:'monospace' }}>Unavailable</span>
+                : <span style={{ ...dim, fontSize:10 }}>Fetching…</span>
             }
           </div>
 
