@@ -250,13 +250,15 @@ body {
 }
 
 .prose-blog code:not(pre code),
-article code:not(pre code) {
+article code:not(pre code),
+.kb-content code:not(pre code) {
   font-family: 'Space Mono', monospace;
   font-size: 0.875em;
   background: #242424;
   border: 1px solid #333333;
   border-radius: 4px;
-  padding: 0.15em 0.4em;
+  padding: 0 0.3em;
+  margin: 0 0.15em;
   color: #0AFF9D;
 }
 

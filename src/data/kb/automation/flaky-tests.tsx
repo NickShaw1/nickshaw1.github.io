@@ -34,7 +34,7 @@ export default function FlakyTests() {
         The most common cause of flakiness in end-to-end and integration tests is timing:
         a test that waits a fixed amount of time for an action to complete will fail on slow
         machines or under load, and pass reliably on fast machines. Fixed-time waits such as
-        <code> sleep(500)</code> are a red flag. The correct approach is to wait for the
+        <code>sleep(500)</code> are a red flag. The correct approach is to wait for the
         specific condition the test needs, not for an arbitrary amount of time. Modern
         end-to-end frameworks provide utilities for waiting until an element is visible, a
         network request completes or an assertion becomes true.

@@ -1,5 +1,7 @@
 import { useRef, useState } from 'react'
 import { Check, Copy } from 'lucide-react'
+import hljs from 'highlight.js'
+import 'highlight.js/styles/github-dark.css'
 
 interface KBCodeProps {
   language?: string
@@ -9,6 +11,10 @@ interface KBCodeProps {
 export default function KBCode({ language, children }: KBCodeProps) {
   const [copied, setCopied] = useState(false)
   const codeRef = useRef<HTMLElement>(null)
+
+  const highlighted = language
+    ? hljs.highlight(children.trimStart(), { language, ignoreIllegals: true }).value
+    : hljs.highlightAuto(children.trimStart()).value
 
   const handleCopy = () => {
     const text = codeRef.current?.innerText ?? children
@@ -70,18 +76,16 @@ export default function KBCode({ language, children }: KBCodeProps) {
       >
         <code
           ref={codeRef}
+          dangerouslySetInnerHTML={{ __html: highlighted }}
           style={{
             fontFamily: '"Space Mono", "Courier New", Courier, monospace',
             fontSize: 'inherit',
             background: 'transparent',
             border: 'none',
             padding: 0,
-            color: '#e0ddd6',
             whiteSpace: language ? 'pre' : 'pre-wrap',
           }}
-        >
-          {children.trimStart()}
-        </code>
+        />
       </pre>
     </div>
   )

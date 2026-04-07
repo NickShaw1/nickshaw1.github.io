@@ -124,6 +124,7 @@ export default function ArtemisTrackerDemo() {
   const cameraRef      = useRef<THREE.PerspectiveCamera | null>(null)
   const isDragging     = useRef(false)
   const userDragged    = useRef(false)
+  const sceneReadyRef  = useRef(false)
   const lastMouse      = useRef({ x: 0, y: 0 })
   const spherical      = useRef((() => {
     // Initialise camera facing the sun-lit side of Earth
@@ -432,7 +433,7 @@ export default function ArtemisTrackerDemo() {
       ring.lookAt(camera.position)
 
       // Auto-orbit until user has dragged
-      if (!isDragging.current && !userDragged.current) spherical.current.theta += 0.0015
+      if (!isDragging.current && !userDragged.current && sceneReadyRef.current) spherical.current.theta += 0.0015
 
       // Camera: orbit around the Earth-Moon midpoint, at a distance that always fits both
       const moon = moonMeshRef.current
@@ -518,7 +519,7 @@ export default function ArtemisTrackerDemo() {
 
   // Mark scene ready once the two live datasets have arrived (full trajectory is cosmetic, not blocking)
   useEffect(() => {
-    if (artemisPts.length && moonPts.length) setSceneReady(true)
+    if (artemisPts.length && moonPts.length) { setSceneReady(true); sceneReadyRef.current = true }
   }, [artemisPts, moonPts])
 
 

@@ -107,7 +107,7 @@ export default function KBArticlePage() {
             initial={reduced ? undefined : { opacity: 0, y: 12 }}
             animate={reduced ? undefined : { opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: 'easeOut' }}
-            className="flex-1 min-w-0"
+            className="flex-1 min-w-0 kb-content"
           >
             {/* ── Article header ─────────────────── */}
             <header className="mb-8 pb-8 border-b border-bg-border">
