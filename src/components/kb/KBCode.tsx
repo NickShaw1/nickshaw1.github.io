@@ -19,10 +19,10 @@ export default function KBCode({ language, children }: KBCodeProps) {
   }
 
   return (
-    <div className="my-6 rounded-[10px] overflow-hidden border border-[#1e1e1e]">
+    <div className="my-6 rounded-[10px] overflow-hidden border border-[#333333]">
 
       {/* ── Terminal header bar ── */}
-      <div className="relative flex items-center h-9 px-3 bg-[#141414] border-b border-[#1e1e1e]">
+      <div className="relative flex items-center h-9 px-3 bg-[#1a1a1a] border-b border-[#333333]">
 
         {/* Traffic-light dots */}
         <div className="flex items-center gap-1.5" aria-hidden="true">
@@ -33,7 +33,7 @@ export default function KBCode({ language, children }: KBCodeProps) {
 
         {/* Language label */}
         {language && (
-          <span className="absolute left-1/2 -translate-x-1/2 font-mono text-[10px] tracking-widest uppercase text-[#484848] select-none pointer-events-none">
+          <span className="absolute left-1/2 -translate-x-1/2 font-mono text-[10px] tracking-widest uppercase text-[#707070] select-none pointer-events-none">
             {language}
           </span>
         )}
@@ -60,7 +60,7 @@ export default function KBCode({ language, children }: KBCodeProps) {
       {/* ── Code body ── */}
       <pre
         style={{
-          background: '#0d0d0d',
+          background: '#111111',
           margin: 0,
           padding: '1rem',
           overflowX: 'auto',

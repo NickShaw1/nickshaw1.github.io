@@ -88,9 +88,9 @@ body {
 .skeleton {
   background: linear-gradient(
     90deg,
-    #111111 25%,
-    #1a1a1a 50%,
-    #111111 75%
+    #1a1a1a 25%,
+    #242424 50%,
+    #1a1a1a 75%
   );
   background-size: 200% 100%;
   animation: shimmer 1.8s linear infinite;
@@ -100,7 +100,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .skeleton {
     animation: none;
-    background: #111111;
+    background: #1a1a1a;
   }
 }
 
@@ -169,7 +169,7 @@ body {
   display: flex;
   align-items: center;
   padding: 0.15rem 0.4rem;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.08);
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 4px;
   color: #666;
@@ -253,8 +253,8 @@ body {
 article code:not(pre code) {
   font-family: 'Space Mono', monospace;
   font-size: 0.875em;
-  background: #1a1a1a;
-  border: 1px solid #222222;
+  background: #242424;
+  border: 1px solid #333333;
   border-radius: 4px;
   padding: 0.15em 0.4em;
   color: #0AFF9D;
@@ -262,7 +262,7 @@ article code:not(pre code) {
 
 .prose-blog pre {
   /* Terminal aesthetic: gradient creates the header bar without extra markup */
-  background: linear-gradient(to bottom, #141414 36px, #0d0d0d 36px);
+  background: linear-gradient(to bottom, #1a1a1a 36px, #111111 36px);
   border: 1px solid #1e1e1e;
   border-radius: 10px;
   /* Top padding: 36px header + inner breathing room */
@@ -299,7 +299,7 @@ article code:not(pre code) {
 
 .prose-blog hr {
   border: 0;
-  border-top: 1px solid #222222;
+  border-top: 1px solid #333333;
   margin: 2.5rem 0;
 }
 
@@ -321,13 +321,13 @@ article code:not(pre code) {
 
 .prose-blog th,
 .prose-blog td {
-  border: 1px solid #222222;
+  border: 1px solid #333333;
   padding: 0.5rem 0.75rem;
   text-align: left;
 }
 
 .prose-blog th {
-  background: #111111;
+  background: #1a1a1a;
   font-family: 'Space Mono', monospace;
   font-size: 0.75rem;
   font-weight: 400;

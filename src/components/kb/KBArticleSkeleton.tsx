@@ -24,11 +24,11 @@ export default function KBArticleSkeleton() {
       </div>
 
       {/* Terminal-style code block */}
-      <div className="rounded-[10px] overflow-hidden border border-[#1e1e1e]">
+      <div className="rounded-[10px] overflow-hidden border border-[#333333]">
         {/* Header bar */}
-        <div className="h-9 bg-[#141414] border-b border-[#1e1e1e]" />
+        <div className="h-9 bg-[#1a1a1a] border-b border-[#333333]" />
         {/* Body */}
-        <div className="bg-[#0d0d0d] px-4 py-4 space-y-2">
+        <div className="bg-[#111111] px-4 py-4 space-y-2">
           <div className="h-3 rounded bg-bg-elevated w-[60%]" />
           <div className="h-3 rounded bg-bg-elevated w-[80%]" />
           <div className="h-3 rounded bg-bg-elevated w-[45%]" />
