@@ -129,6 +129,7 @@ export default function ArtemisTrackerDemo() {
   const [artemisPts,    setArtemisPts]    = useState<HorizonsPoint[]>([])
   const [fullTrajPts,   setFullTrajPts]   = useState<HorizonsPoint[]>([])
   const [moonPts,       setMoonPts]       = useState<HorizonsPoint[]>([])
+  const [fullMoonPts,   setFullMoonPts]   = useState<HorizonsPoint[]>([])
   const [current,       setCurrent]       = useState<HorizonsPoint | null>(null)
   const [moonCurrent,   setMoonCurrent]   = useState<HorizonsPoint | null>(null)
   const [posSpeed,      setPosSpeed]      = useState<number | null>(null)
@@ -179,6 +180,11 @@ export default function ArtemisTrackerDemo() {
 
     fetchTarget('301', isoHorizons(back), isoHorizons(fwd), '1h').then(pts => {
       setMoonPts(pts)
+    })
+
+    // Full mission arc Moon positions — needed for accurate closest flyby calculation
+    fetchTarget('301', '2026-04-01T00:00', '2026-04-13T00:00', '6h').then(pts => {
+      setFullMoonPts(pts)
     })
   }, [])
 
@@ -541,13 +547,13 @@ export default function ArtemisTrackerDemo() {
   const altMoon = distMoon
 
 
-  // Closest approach — scan all trajectory points (past and future)
+  // Closest approach — scan full mission arc for the true minimum
   const closestApproach = (() => {
-    if (!artemisPts.length || !moonPts.length) return null
+    if (!fullTrajPts.length || !fullMoonPts.length) return null
     const now = Date.now()
     let best: { dist: number; t: Date } | null = null
-    for (const ap of artemisPts) {
-      const mp = interpolate(moonPts, ap.t)
+    for (const ap of fullTrajPts) {
+      const mp = interpolate(fullMoonPts, ap.t)
       if (!mp) continue
       const d = Math.sqrt((ap.x-mp.x)**2 + (ap.y-mp.y)**2 + (ap.z-mp.z)**2)
       if (!best || d < best.dist) best = { dist: d, t: ap.t }
