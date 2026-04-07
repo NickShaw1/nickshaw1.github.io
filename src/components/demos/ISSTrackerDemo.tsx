@@ -300,7 +300,7 @@ export default function ISSTrackerDemo() {
           <div
             ref={mountRef}
             className="absolute inset-0"
-            style={{ background: '#000306', cursor: isDragging.current ? 'grabbing' : 'grab', touchAction: 'none' }}
+            style={{ background: '#000306', cursor: isDragging.current ? 'grabbing' : 'grab', touchAction: 'pan-y' }}
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
