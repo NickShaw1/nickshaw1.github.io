@@ -29,10 +29,10 @@ export default function KBArticleSkeleton() {
         <div className="h-9 bg-[#141414] border-b border-[#1e1e1e]" />
         {/* Body */}
         <div className="bg-[#0d0d0d] px-4 py-4 space-y-2">
-          <div className="h-3 rounded bg-[#1a1a1a] w-[60%]" />
-          <div className="h-3 rounded bg-[#1a1a1a] w-[80%]" />
-          <div className="h-3 rounded bg-[#1a1a1a] w-[45%]" />
-          <div className="h-3 rounded bg-[#1a1a1a] w-[70%]" />
+          <div className="h-3 rounded bg-bg-elevated w-[60%]" />
+          <div className="h-3 rounded bg-bg-elevated w-[80%]" />
+          <div className="h-3 rounded bg-bg-elevated w-[45%]" />
+          <div className="h-3 rounded bg-bg-elevated w-[70%]" />
         </div>
       </div>
 

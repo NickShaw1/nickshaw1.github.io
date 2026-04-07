@@ -70,15 +70,15 @@ export default function HolidayPlannerDemo() {
     <div className="mb-5">
       <p className="font-mono text-[10px] tracking-widest uppercase text-text-muted mb-3">Live demo</p>
 
-      <div className="rounded-xl overflow-hidden" style={{ background: '#0d0f11', border: '1px solid #1f2427' }}>
+      <div className="rounded-xl overflow-hidden" style={{ background: '#0d0f11', border: '1px solid #3d5260' }}>
 
-        <div className="px-4 py-2.5 flex items-center justify-between" style={{ background: '#111316', borderBottom: '1px solid #1f2427' }}>
+        <div className="px-4 py-2.5 flex items-center justify-between" style={{ background: '#111316', borderBottom: '1px solid #3d5260' }}>
           <div className="flex items-baseline gap-2">
             <span className="font-mono font-bold text-[13px] tracking-[0.15em] uppercase" style={{ color: '#0AFF9D' }}>
               {destination || 'Holiday Planner'}
             </span>
             {nights !== null && nights > 0 && (
-              <span className="font-mono text-[8px] tracking-widest uppercase" style={{ color: '#3d4a4f' }}>
+              <span className="font-mono text-[8px] tracking-widest uppercase" style={{ color: '#7a9fad' }}>
                 {nights} night{nights !== 1 ? 's' : ''}
               </span>
             )}
@@ -86,9 +86,9 @@ export default function HolidayPlannerDemo() {
           <button
             onClick={() => { setDestination(''); setStartDate(''); setEndDate(''); setCurrency('GBP'); setItems([{ label: '', cost: '' }]) }}
             className="font-mono text-[8px] tracking-widest uppercase px-2.5 py-1 rounded transition-colors duration-150"
-            style={{ color: '#4d5c63', border: '1px solid #1f2427', background: 'transparent' }}
+            style={{ color: '#94b8c4', border: '1px solid #3d5260', background: 'transparent' }}
             onMouseEnter={e => { const el = e.currentTarget; el.style.color='#ff4444'; el.style.borderColor='#ff4444' }}
-            onMouseLeave={e => { const el = e.currentTarget; el.style.color='#4d5c63'; el.style.borderColor='#1f2427' }}
+            onMouseLeave={e => { const el = e.currentTarget; el.style.color='#94b8c4'; el.style.borderColor='#3d5260' }}
           >Reset</button>
         </div>
 
@@ -144,7 +144,7 @@ export default function HolidayPlannerDemo() {
             </div>
           </div>
 
-          <div style={{ borderTop: '1px solid #1f2427', paddingTop: '1rem' }}>
+          <div style={{ borderTop: '1px solid #3d5260', paddingTop: '1rem' }}>
             <div className="flex items-center justify-between mb-2">
               <p className={labelClass}>Itinerary &amp; costs</p>
               <span className={`${labelClass} mb-0`} style={{ color: items.length >= 10 ? '#0AFF9D' : undefined }}>{items.length}/10</span>
@@ -200,9 +200,9 @@ export default function HolidayPlannerDemo() {
             )}
           </div>
 
-          <div className="flex items-center justify-between rounded-lg px-4 py-3" style={{ background: '#111316', border: '1px solid #1f2427' }}>
-            <span className="font-mono text-[10px] tracking-widest uppercase" style={{ color: '#3d4a4f' }}>Total</span>
-            <span className="font-display font-bold text-[1.5rem] tabular-nums" style={{ color: total > 0 ? '#0AFF9D' : '#4d5c63' }}>
+          <div className="flex items-center justify-between rounded-lg px-4 py-3" style={{ background: '#111316', border: '1px solid #3d5260' }}>
+            <span className="font-mono text-[10px] tracking-widest uppercase" style={{ color: '#7a9fad' }}>Total</span>
+            <span className="font-display font-bold text-[1.5rem] tabular-nums" style={{ color: total > 0 ? '#0AFF9D' : '#94b8c4' }}>
               {symbol}{total.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </span>
           </div>

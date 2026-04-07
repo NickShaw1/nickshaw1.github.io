@@ -28,7 +28,7 @@ export default function TestingPyramid() {
       <div className="mt-7 mb-3 flex justify-center">
         <figure className="rounded-card overflow-hidden w-fit">
           <img src={testPyramidImg} alt="The testing pyramid" className="max-w-[320px] w-full block" />
-          <figcaption className="text-center font-mono text-[10px] tracking-widest uppercase text-[#0AFF9D]/60 py-2.5 bg-[#0a0a0a]">
+          <figcaption className="text-center font-mono text-[10px] tracking-widest uppercase text-[#0AFF9D]/60 py-2.5 bg-bg-base">
             The Testing Pyramid
           </figcaption>
         </figure>

@@ -149,15 +149,15 @@ export default function SynthDemo() {
     const pct = ((value - min) / (max - min)) * 100
     return (
       <div className="flex flex-col items-center gap-1">
-        <span className="font-mono text-[8px] tracking-widest uppercase" style={{ color: '#3d4a4f' }}>{label}</span>
+        <span className="font-mono text-[8px] tracking-widest uppercase" style={{ color: '#7a9fad' }}>{label}</span>
         <div className="relative w-10 h-10 flex items-center justify-center">
           <svg viewBox="0 0 40 40" className="absolute inset-0 w-full h-full" style={{ transform: 'rotate(-220deg)' }}>
-            <circle cx="20" cy="20" r="14" fill="none" stroke="#1f2427" strokeWidth="3" strokeLinecap="round"
+            <circle cx="20" cy="20" r="14" fill="none" stroke="#3d5260" strokeWidth="3" strokeLinecap="round"
               strokeDasharray={`${0.72 * 2 * Math.PI * 14} ${2 * Math.PI * 14}`} />
             <circle cx="20" cy="20" r="14" fill="none" stroke="#0AFF9D" strokeWidth="3" strokeLinecap="round"
               strokeDasharray={`${(pct / 100) * 0.72 * 2 * Math.PI * 14} ${2 * Math.PI * 14}`} />
           </svg>
-          <div className="absolute inset-[10px] rounded-full" style={{ background: '#111416', border: '1px solid #3d4a4f' }} />
+          <div className="absolute inset-[10px] rounded-full" style={{ background: '#111416', border: '1px solid #7a9fad' }} />
           <div className="absolute w-1 h-1 rounded-full" style={{
             background: '#0AFF9D',
             top: '50%', left: '50%',
@@ -182,9 +182,9 @@ export default function SynthDemo() {
     <div className="mb-5 select-none">
       <p className="font-mono text-[10px] tracking-widest uppercase text-text-muted mb-3">Live demo</p>
 
-      <div className="rounded-xl overflow-hidden" style={{ background: '#0d0f11', border: '1px solid #1f2427' }}>
+      <div className="rounded-xl overflow-hidden" style={{ background: '#0d0f11', border: '1px solid #3d5260' }}>
 
-        <div className="px-4 py-2.5 flex items-center justify-between" style={{ background: '#111316', borderBottom: '1px solid #1f2427' }}>
+        <div className="px-4 py-2.5 flex items-center justify-between" style={{ background: '#111316', borderBottom: '1px solid #3d5260' }}>
           <div className="flex items-baseline gap-2">
             <span className="font-mono font-bold text-[13px] tracking-[0.15em] uppercase" style={{ color: '#0AFF9D' }}>PRISM</span>
             <span className="font-mono text-[8px] tracking-widest uppercase" style={{ color: '#1e3a50' }}>Polyphonic Synthesizer</span>
@@ -192,9 +192,9 @@ export default function SynthDemo() {
           <div className="flex items-center gap-3">
             <button onClick={resetSynth}
               className="font-mono text-[8px] tracking-widest uppercase px-2.5 py-1 rounded transition-colors duration-150"
-              style={{ color: '#4d5c63', border: '1px solid #1f2427', background: 'transparent' }}
+              style={{ color: '#94b8c4', border: '1px solid #3d5260', background: 'transparent' }}
               onMouseEnter={e => { const el = e.currentTarget; el.style.color='#0AFF9D'; el.style.borderColor='#0AFF9D' }}
-              onMouseLeave={e => { const el = e.currentTarget; el.style.color='#4d5c63'; el.style.borderColor='#1f2427' }}
+              onMouseLeave={e => { const el = e.currentTarget; el.style.color='#94b8c4'; el.style.borderColor='#3d5260' }}
             >Reset</button>
             <div
               title="Power"
@@ -212,23 +212,23 @@ export default function SynthDemo() {
           </div>
         </div>
 
-        <div className="px-4 py-3 flex items-center gap-3" style={{ borderBottom: '1px solid #1f2427', background: '#0d0f11' }}>
-          <span className="font-mono text-[8px] tracking-widest uppercase flex-shrink-0" style={{ color: '#3d4a4f' }}>OSC</span>
-          <div className="flex rounded-md overflow-hidden flex-shrink-0" style={{ border: '1px solid #1f2427' }}>
+        <div className="px-4 py-3 flex items-center gap-3" style={{ borderBottom: '1px solid #3d5260', background: '#0d0f11' }}>
+          <span className="font-mono text-[8px] tracking-widest uppercase flex-shrink-0" style={{ color: '#7a9fad' }}>OSC</span>
+          <div className="flex rounded-md overflow-hidden flex-shrink-0" style={{ border: '1px solid #3d5260' }}>
             {WAVE_LABELS.map(([w, label]) => (
               <button key={w} onClick={() => setWave(w)}
                 className="font-mono text-[8px] tracking-wider uppercase px-3 py-1.5 transition-all duration-100"
                 style={{
                   background: wave === w ? '#002d1f' : 'transparent',
-                  color: wave === w ? '#0AFF9D' : '#3d4a4f',
-                  borderRight: '1px solid #1f2427',
+                  color: wave === w ? '#0AFF9D' : '#7a9fad',
+                  borderRight: '1px solid #3d5260',
                 }}>
                 {label}
               </button>
             ))}
           </div>
           <div className="ml-auto flex items-center gap-2 flex-shrink-0">
-            <span className="font-mono text-[8px] uppercase" style={{ color: '#3d4a4f' }}>VOL</span>
+            <span className="font-mono text-[8px] uppercase" style={{ color: '#7a9fad' }}>VOL</span>
             <input type="range" min={0} max={1} step={0.01} value={vol}
               onChange={e => setVol(parseFloat(e.target.value))}
               className="w-16 sm:w-24 cursor-pointer" style={{ accentColor: '#0AFF9D' }} aria-label="Volume" />
@@ -236,9 +236,9 @@ export default function SynthDemo() {
           </div>
         </div>
 
-        <div className="hidden sm:flex" style={{ borderBottom: '1px solid #1f2427' }}>
-          <div className="flex-1 px-3 py-3 flex flex-col gap-2" style={{ borderRight: '1px solid #1f2427' }}>
-            <span className="font-mono text-[8px] tracking-widest uppercase text-center" style={{ color: '#3d4a4f' }}>Envelope</span>
+        <div className="hidden sm:flex" style={{ borderBottom: '1px solid #3d5260' }}>
+          <div className="flex-1 px-3 py-3 flex flex-col gap-2" style={{ borderRight: '1px solid #3d5260' }}>
+            <span className="font-mono text-[8px] tracking-widest uppercase text-center" style={{ color: '#7a9fad' }}>Envelope</span>
             <div className="flex justify-around">
               {knob('ATK', attack, 0.001, 2, 0.001, setAttack, v => `${v.toFixed(2)}s`)}
               {knob('DEC', decay, 0.01, 2, 0.01, setDecay, v => `${v.toFixed(2)}s`)}
@@ -246,22 +246,22 @@ export default function SynthDemo() {
               {knob('REL', release, 0.01, 3, 0.01, setRelease, v => `${v.toFixed(2)}s`)}
             </div>
           </div>
-          <div className="flex-none px-3 py-3 flex flex-col gap-2" style={{ borderRight: '1px solid #1f2427' }}>
-            <span className="font-mono text-[8px] tracking-widest uppercase text-center" style={{ color: '#3d4a4f' }}>Filter</span>
+          <div className="flex-none px-3 py-3 flex flex-col gap-2" style={{ borderRight: '1px solid #3d5260' }}>
+            <span className="font-mono text-[8px] tracking-widest uppercase text-center" style={{ color: '#7a9fad' }}>Filter</span>
             <div className="flex justify-around gap-2">
               {knob('FREQ', cutoff, 80, 18000, 10, setCutoff, v => v >= 1000 ? `${(v/1000).toFixed(1)}k` : `${Math.round(v)}`)}
               {knob('RES', res, 0.01, 20, 0.1, setRes, v => v.toFixed(1))}
             </div>
           </div>
-          <div className="flex-none px-3 py-3 flex flex-col gap-2" style={{ borderRight: '1px solid #1f2427' }}>
-            <span className="font-mono text-[8px] tracking-widest uppercase text-center" style={{ color: '#3d4a4f' }}>FX</span>
+          <div className="flex-none px-3 py-3 flex flex-col gap-2" style={{ borderRight: '1px solid #3d5260' }}>
+            <span className="font-mono text-[8px] tracking-widest uppercase text-center" style={{ color: '#7a9fad' }}>FX</span>
             <div className="flex justify-around gap-2">
               {knob('DIST', dist, 0, 1, 0.01, setDist, v => v.toFixed(2))}
               {knob('REVB', revMix, 0, 1, 0.01, setRevMix, v => v.toFixed(2))}
             </div>
           </div>
           <div className="flex-none px-3 py-3 flex flex-col gap-2">
-            <span className="font-mono text-[8px] tracking-widest uppercase text-center" style={{ color: '#3d4a4f' }}>LFO</span>
+            <span className="font-mono text-[8px] tracking-widest uppercase text-center" style={{ color: '#7a9fad' }}>LFO</span>
             <div className="flex justify-around gap-2">
               {knob('RATE', lfoRate, 0.1, 20, 0.1, setLfoRate, v => `${v.toFixed(1)}hz`)}
               {knob('DPTH', lfoDepth, 0, 30, 0.5, setLfoDepth, v => v.toFixed(1))}
@@ -340,7 +340,7 @@ export default function SynthDemo() {
               </div>
             )
           })}
-          <p className="font-mono text-[7px] text-center mt-2.5 tracking-widest" style={{ color: '#1f2427' }}>
+          <p className="font-mono text-[7px] text-center mt-2.5 tracking-widest" style={{ color: '#3d5260' }}>
             Z – M &nbsp;·&nbsp; Q – U &nbsp;·&nbsp; keyboard playable
           </p>
         </div>
