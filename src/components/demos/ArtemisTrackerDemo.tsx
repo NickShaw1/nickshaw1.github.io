@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Rocket, Tv, Orbit, Timer, Clock } from 'lucide-react'
+import { Rocket, Tv, Orbit, Timer, Clock, AlertTriangle } from 'lucide-react'
 import * as THREE from 'three'
 
 // Positional scale: 1 unit = Earth's radius (6,371 km)
@@ -147,7 +147,7 @@ export default function ArtemisTrackerDemo() {
   const [met,           setMet]           = useState('')
   const [loading,       setLoading]       = useState(true)
   const [sceneReady,    setSceneReady]    = useState(false)
-  const [fetchFailed,   setFetchFailed]   = useState(false)
+  const [fetchError,    setFetchError]    = useState<string | null>(null)
 
   const FALLBACK_CREW = [
     { role: 'Commander',          name: 'Reid Wiseman' },
@@ -163,36 +163,46 @@ export default function ArtemisTrackerDemo() {
     const back  = new Date(now.getTime() - 8 * 3600_000)
     const fwd   = new Date(now.getTime() + 4 * 3600_000)
 
-    const fetchTarget = async (target: string, start: string, stop: string, step: string): Promise<HorizonsPoint[]> => {
-      const attempt = () =>
-        fetch(horizonsUrl(target, start, stop, step))
-          .then(r => r.json())
-          .then(d => parseHorizons(d.result as string))
+    const fetchTarget = async (target: string, start: string, stop: string, step: string): Promise<{ pts: HorizonsPoint[], status: number }> => {
+      const attempt = async () => {
+        const r = await fetch(horizonsUrl(target, start, stop, step))
+        const status = r.status
+        if (!r.ok) return { pts: [], status }
+        try {
+          const d = await r.json()
+          return { pts: parseHorizons(d.result as string), status }
+        } catch {
+          return { pts: [], status }
+        }
+      }
       try {
-        const pts = await attempt()
-        if (pts.length) return pts
+        const first = await attempt()
+        if (first.pts.length) return first
+        if (first.status !== 200) return first   // don't retry a known error
         return await attempt()
       } catch {
-        return []
+        return { pts: [], status: 0 }
       }
     }
 
     // Live window — fine resolution for accurate current position
-    fetchTarget('-1024', isoHorizons(back), isoHorizons(fwd), '30m').then(pts => {
+    fetchTarget('-1024', isoHorizons(back), isoHorizons(fwd), '30m').then(({ pts, status }) => {
       if (pts.length) {
         setArtemisPts(pts)
       } else {
-        setFetchFailed(true)
+        if (status === 503) setFetchError('JPL Horizons offline. Service unavailable.')
+        else if (status === 0)  setFetchError('No contact with JPL Horizons. Check network.')
+        else                    setFetchError(`JPL Horizons fault. Status ${status}.`)
       }
       setLoading(false)
     })
 
     // Full mission arc — coarse resolution just for the trajectory shape
-    fetchTarget('-1024', '2026-04-01T00:00', '2026-04-13T00:00', '6h').then(pts => {
+    fetchTarget('-1024', '2026-04-01T00:00', '2026-04-13T00:00', '6h').then(({ pts }) => {
       setFullTrajPts(pts)
     })
 
-    fetchTarget('301', isoHorizons(back), isoHorizons(fwd), '1h').then(pts => {
+    fetchTarget('301', isoHorizons(back), isoHorizons(fwd), '1h').then(({ pts }) => {
       setMoonPts(pts)
     })
 
@@ -711,9 +721,13 @@ export default function ArtemisTrackerDemo() {
             </div>
 
             {/* Desktop: 2x2 stats */}
-            {fetchFailed ? (
-              <div className="hidden sm:flex items-center gap-3 px-4 py-4">
-                <span className="font-mono text-[10px] tracking-widest uppercase" style={{ color: '#ff4d4d' }}>Telemetry unavailable</span>
+            {fetchError ? (
+              <div className="hidden sm:block px-4 py-4">
+                <div className="flex items-center gap-2 mb-2.5">
+                  <AlertTriangle size={13} style={{ color: '#ff4d4d', flexShrink: 0 }} />
+                  <span className="font-mono text-[11px] tracking-wide" style={{ color: '#ff4d4d' }}>Telemetry unavailable</span>
+                </div>
+                <span className="font-mono text-[12px]" style={{ color: 'rgba(255,77,77,0.85)' }}>{fetchError}</span>
               </div>
             ) : (loading || !current) ? (
               <div className="hidden sm:flex items-center gap-3 px-4 py-4">
@@ -750,9 +764,13 @@ export default function ArtemisTrackerDemo() {
 
         {/* Mobile stats */}
         <div className="sm:hidden grid grid-cols-2" style={{ borderBottom: '1px solid rgba(10,255,157,0.07)' }}>
-          {fetchFailed ? (
-            <div className="col-span-2 flex items-center gap-3 px-4 py-4">
-              <span className="font-mono text-[10px] tracking-widest uppercase" style={{ color: '#ff4d4d' }}>Telemetry unavailable</span>
+          {fetchError ? (
+            <div className="col-span-2 px-4 py-4">
+              <div className="flex items-center gap-2 mb-2.5">
+                <AlertTriangle size={13} style={{ color: '#ff4d4d', flexShrink: 0 }} />
+                <span className="font-mono text-[11px] tracking-wide" style={{ color: '#ff4d4d' }}>Telemetry unavailable</span>
+              </div>
+              <span className="font-mono text-[12px]" style={{ color: 'rgba(255,77,77,0.85)' }}>{fetchError}</span>
             </div>
           ) : (loading || !current) ? (
             <div className="col-span-2 flex items-center gap-3 px-4 py-4">
@@ -821,17 +839,17 @@ export default function ArtemisTrackerDemo() {
             style={{
               background: '#000306',
               transition: 'opacity 0.8s ease',
-              opacity: sceneReady && !fetchFailed ? 0 : 1,
+              opacity: sceneReady && !fetchError ? 0 : 1,
             }}
             aria-hidden={sceneReady}
           >
-            {fetchFailed ? (
+            {fetchError ? (
               <div className="flex flex-col items-center gap-2">
                 <span className="font-mono text-[11px] tracking-widest uppercase" style={{ color: '#ff4d4d' }}>
                   Telemetry unavailable
                 </span>
-                <span className="font-mono text-[9px] tracking-wider text-center" style={{ color: 'rgba(255,77,77,0.5)' }}>
-                  Could not reach NASA / JPL Horizons
+                <span className="font-mono text-[9px] tracking-wider text-center" style={{ color: 'rgba(255,77,77,0.85)' }}>
+                  {fetchError}
                 </span>
               </div>
             ) : (
