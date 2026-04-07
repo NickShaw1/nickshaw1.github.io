@@ -134,6 +134,7 @@ export default function ArtemisTrackerDemo() {
   const [posSpeed,      setPosSpeed]      = useState<number | null>(null)
   const [met,           setMet]           = useState('')
   const [loading,       setLoading]       = useState(true)
+  const [sceneReady,    setSceneReady]    = useState(false)
 
   const FALLBACK_CREW = [
     { role: 'Commander',          name: 'Reid Wiseman' },
@@ -417,40 +418,44 @@ export default function ArtemisTrackerDemo() {
     }
   }, [])
 
-  // Build trajectory dots when points arrive
-  function buildDots(
+  // Build trajectory line
+  function buildLine(
     scene: THREE.Scene,
     pts: HorizonsPoint[],
-    dotR: number,
     color: number,
     opacity: number,
-  ): THREE.Mesh {
-    const geo = new THREE.BufferGeometry()
+  ): THREE.Line {
     const positions = new Float32Array(pts.length * 3)
     pts.forEach((p, i) => {
       const v = icrf(p.x, p.y, p.z, 1 / KM_PER_UNIT)
       positions[i * 3] = v.x; positions[i * 3 + 1] = v.y; positions[i * 3 + 2] = v.z
     })
+    const geo = new THREE.BufferGeometry()
     geo.setAttribute('position', new THREE.BufferAttribute(positions, 3))
-    const mat = new THREE.PointsMaterial({ color, size: dotR, sizeAttenuation: true, transparent: true, opacity })
-    const points = new THREE.Points(geo, mat)
-    scene.add(points)
-    return points as unknown as THREE.Mesh
+    const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity })
+    const line = new THREE.Line(geo, mat)
+    scene.add(line)
+    return line
   }
-
-  useEffect(() => {
-    const scene = sceneRef.current
-    if (!scene || !artemisPts.length) return
-    if (pathRef.current) { scene.remove(pathRef.current); pathRef.current = null }
-    pathRef.current = buildDots(scene, artemisPts, 0.5, 0x0AFF9D, 0.8)
-  }, [artemisPts])
 
   useEffect(() => {
     const scene = sceneRef.current
     if (!scene || !fullTrajPts.length) return
     if (fullPathRef.current) { scene.remove(fullPathRef.current); fullPathRef.current = null }
-    fullPathRef.current = buildDots(scene, fullTrajPts, 0.3, 0x0AFF9D, 0.25)
+    fullPathRef.current = buildLine(scene, fullTrajPts, 0x0AFF9D, 0.35) as unknown as THREE.Mesh
   }, [fullTrajPts])
+
+  useEffect(() => {
+    const scene = sceneRef.current
+    if (!scene || !artemisPts.length) return
+    if (pathRef.current) { scene.remove(pathRef.current); pathRef.current = null }
+    pathRef.current = buildLine(scene, artemisPts, 0x0AFF9D, 1.0) as unknown as THREE.Mesh
+  }, [artemisPts])
+
+  // Mark scene ready once all three datasets have arrived
+  useEffect(() => {
+    if (artemisPts.length && moonPts.length && fullTrajPts.length) setSceneReady(true)
+  }, [artemisPts, moonPts, fullTrajPts])
 
   // Once both datasets load, orient camera to Artemis-side of Moon so it's never occluded
   const autoOriented = useRef(false)
@@ -732,6 +737,43 @@ export default function ArtemisTrackerDemo() {
             onPointerUp={handlePointerUp}
             onPointerLeave={handlePointerUp}
           />
+
+          {/* Loading skeleton overlay — fades out once all data has arrived */}
+          <div
+            className="absolute inset-0 flex flex-col items-center justify-center gap-4 pointer-events-none"
+            style={{
+              background: '#000306',
+              transition: 'opacity 0.8s ease',
+              opacity: sceneReady ? 0 : 1,
+            }}
+            aria-hidden={sceneReady}
+          >
+            {/* Animated radar ring */}
+            <div className="relative flex items-center justify-center" style={{ width: 72, height: 72 }}>
+              <div style={{
+                position: 'absolute', inset: 0, borderRadius: '50%',
+                border: '1px solid rgba(10,255,157,0.15)',
+              }} />
+              <div style={{
+                position: 'absolute', inset: 6, borderRadius: '50%',
+                border: '1px solid rgba(10,255,157,0.1)',
+              }} />
+              <div className="animate-spin" style={{
+                position: 'absolute', inset: 0, borderRadius: '50%',
+                border: '2px solid transparent',
+                borderTopColor: '#0AFF9D',
+              }} />
+              <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#0AFF9D', boxShadow: '0 0 8px #0AFF9D' }} />
+            </div>
+            <div className="flex flex-col items-center gap-1.5">
+              <span className="font-mono text-[11px] tracking-widest uppercase" style={{ color: '#0AFF9D' }}>
+                Acquiring telemetry
+              </span>
+              <span className="font-mono text-[9px] tracking-wider" style={{ color: 'rgba(10,255,157,0.4)' }}>
+                NASA / JPL Horizons
+              </span>
+            </div>
+          </div>
 
           <div className="absolute bottom-0 left-0 right-0 hidden sm:flex items-center justify-between px-3 py-1.5"
             style={{ background: 'rgba(8,13,18,0.7)', borderTop: '1px solid rgba(10,255,157,0.08)' }}>
