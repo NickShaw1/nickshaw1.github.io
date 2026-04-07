@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { m } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import SEOHead from '../components/SEOHead'
 import { webPageSchema } from '../seo/structured-data'
 import BlogCard from '../components/BlogCard'
@@ -78,20 +78,30 @@ export default function Blog() {
         </m.div>
 
         {/* ── Post list ───────────────────────────────────── */}
-        {filtered.length === 0 ? (
-          <p className="text-text-muted font-mono text-sm">No posts in this category yet.</p>
-        ) : (
-          <div className="flex flex-col">
-            {filtered.map((post, i) => (
-              <BlogCard
-                key={post.slug}
-                post={post}
-                delay={reduced ? 0 : i * 80}
-                reduced={reduced}
-              />
-            ))}
-          </div>
-        )}
+        <AnimatePresence mode="wait">
+          <m.div
+            key={activeCategory}
+            initial={reduced ? undefined : { opacity: 0 }}
+            animate={reduced ? undefined : { opacity: 1 }}
+            exit={reduced ? undefined : { opacity: 0 }}
+            transition={{ duration: 0.15 }}
+          >
+            {filtered.length === 0 ? (
+              <p className="text-text-muted font-mono text-sm">No posts in this category yet.</p>
+            ) : (
+              <div className="flex flex-col">
+                {filtered.map((post, i) => (
+                  <BlogCard
+                    key={post.slug}
+                    post={post}
+                    delay={reduced ? 0 : i * 80}
+                    reduced={reduced}
+                  />
+                ))}
+              </div>
+            )}
+          </m.div>
+        </AnimatePresence>
 
       </div>
     </>

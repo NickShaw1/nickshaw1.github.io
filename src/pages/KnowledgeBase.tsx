@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import type { ComponentType } from 'react'
-import { m } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import {
   BookOpen, Hand, ClipboardList, Bot, FlaskConical, Activity,
   Sparkles, Wrench, Lightbulb,
@@ -187,6 +187,14 @@ export default function KnowledgeBase() {
         </m.div>
 
         {/* ── Unified card grid ────────────────────────────── */}
+        <AnimatePresence mode="wait">
+        <m.div
+          key={activeTab}
+          initial={reduced ? undefined : { opacity: 0 }}
+          animate={reduced ? undefined : { opacity: 1 }}
+          exit={reduced ? undefined : { opacity: 0 }}
+          transition={{ duration: 0.15 }}
+        >
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 [&>article]:min-h-[180px]">
           {visible.map((section, si) => {
             let cardIndex = 0
@@ -223,6 +231,8 @@ export default function KnowledgeBase() {
             )
           })}
         </div>
+        </m.div>
+        </AnimatePresence>
 
       </div>
     </>

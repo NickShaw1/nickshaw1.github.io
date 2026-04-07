@@ -1,6 +1,6 @@
 import { useState, useCallback, lazy, Suspense } from 'react'
 import { Link } from 'react-router-dom'
-import { m } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { ArrowUpRight, Monitor, BookOpen } from 'lucide-react'
 import type { ComponentType } from 'react'
 
@@ -95,6 +95,14 @@ export default function Projects() {
         </m.div>
 
         {/* ── Category sections ───────────────────────────── */}
+        <AnimatePresence mode="wait">
+        <m.div
+          key={activeCategory}
+          initial={reduced ? undefined : { opacity: 0 }}
+          animate={reduced ? undefined : { opacity: 1 }}
+          exit={reduced ? undefined : { opacity: 0 }}
+          transition={{ duration: 0.15 }}
+        >
         {visibleCategories.map((cat, catIndex) => {
           const projects = projectsByCategory(cat)
           if (!projects?.length) return null
@@ -198,6 +206,8 @@ export default function Projects() {
             </section>
           )
         })}
+        </m.div>
+        </AnimatePresence>
 
       </div>
 
