@@ -385,11 +385,11 @@ export default function ISSTrackerDemo() {
             )}
           </div>
 
-          <div className="absolute top-3 left-3 hidden sm:block" style={{ minWidth: 195 }}>{posPanel}</div>
-          <div className="absolute top-3 right-3 hidden sm:block" style={{ maxWidth: 172 }}>{crewPanel}</div>
+          <div className="absolute top-3 left-3 hidden sm:block" style={{ minWidth: 195, opacity: loading ? 0 : 1, transition: 'opacity 0.6s ease', pointerEvents: loading ? 'none' : 'auto' }}>{posPanel}</div>
+          <div className="absolute top-3 right-3 hidden sm:block" style={{ maxWidth: 172, opacity: loading ? 0 : 1, transition: 'opacity 0.6s ease', pointerEvents: loading ? 'none' : 'auto' }}>{crewPanel}</div>
 
           {/* Centre on ISS button — panel style, bottom left */}
-          <div className="absolute bottom-9 left-3 hidden sm:block">
+          <div className="absolute bottom-9 left-3 hidden sm:block" style={{ opacity: loading ? 0 : 1, transition: 'opacity 0.6s ease', pointerEvents: loading ? 'none' : 'auto' }}>
             <button
               onClick={centreOnISS}
               disabled={following}
