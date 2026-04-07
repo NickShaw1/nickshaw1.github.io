@@ -100,7 +100,7 @@ function horizonsUrl(target: string, start: string, stop: string, step: string) 
     OUT_UNITS:  'KM-S',
   })
   const horizons = `https://ssd.jpl.nasa.gov/api/horizons.api?${p}`
-  return `https://corsproxy.io/?url=${encodeURIComponent(horizons)}`
+  return `https://api.allorigins.win/raw?url=${encodeURIComponent(horizons)}`
 }
 
 function isoHorizons(d: Date): string {
