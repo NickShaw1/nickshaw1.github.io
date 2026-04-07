@@ -216,7 +216,7 @@ export default function ISSTrackerDemo() {
     } catch {
       if (!dataArrivedRef.current && !issRetriedRef.current) {
         issRetriedRef.current = true
-        try { await attempt() } catch { /* definite fail — 8s timeout will handle the UI */ }
+        try { await attempt() } catch { setFetchFailed(true) }
       }
     }
   }, [])
@@ -226,14 +226,6 @@ export default function ISSTrackerDemo() {
     const id = setInterval(fetchISS, 5000)
     return () => clearInterval(id)
   }, [fetchISS])
-
-  // Hard timeout — if no data after 8s show error
-  useEffect(() => {
-    const id = setTimeout(() => {
-      if (!dataArrivedRef.current) setFetchFailed(true)
-    }, 8000)
-    return () => clearTimeout(id)
-  }, [])
 
   useEffect(() => {
     const timeout = setTimeout(() => {

@@ -167,8 +167,11 @@ export default function ArtemisTrackerDemo() {
 
     // Live window — fine resolution for accurate current position
     fetchTarget('-1024', isoHorizons(back), isoHorizons(fwd), '30m').then(pts => {
-      setArtemisPts(pts)
-
+      if (pts.length) {
+        setArtemisPts(pts)
+      } else {
+        setFetchFailed(true)
+      }
       setLoading(false)
     })
 
@@ -468,17 +471,6 @@ export default function ArtemisTrackerDemo() {
     if (artemisPts.length && moonPts.length) setSceneReady(true)
   }, [artemisPts, moonPts])
 
-  // Hard timeout — if data hasn't arrived after 8s, show an error and clear the skeleton
-  const sceneReadyRef = useRef(false)
-  useEffect(() => {
-    if (sceneReady) sceneReadyRef.current = true
-  }, [sceneReady])
-  useEffect(() => {
-    const id = setTimeout(() => {
-      if (!sceneReadyRef.current) setFetchFailed(true)
-    }, 8000)
-    return () => clearTimeout(id)
-  }, [])
 
   // Once both datasets load, orient camera to Artemis-side of Moon so it's never occluded
   const autoOriented = useRef(false)
