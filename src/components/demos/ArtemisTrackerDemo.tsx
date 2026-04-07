@@ -161,7 +161,7 @@ export default function ArtemisTrackerDemo() {
         if (pts.length) return pts
         return await attempt()
       } catch {
-        try { return await attempt() } catch { return [] }
+        return []
       }
     }
 
@@ -545,7 +545,7 @@ export default function ArtemisTrackerDemo() {
 
   // Closest approach — hardcoded from mission parameters (~7,400 km / ~4,600 mi on April 8)
   const CLOSEST_FLYBY_KM = 7400
-  const CLOSEST_FLYBY_T  = new Date('2026-04-08T20:00:00Z')
+  const CLOSEST_FLYBY_T  = new Date('2026-04-06T18:00:00Z')
   const closestApproach  = { dist: CLOSEST_FLYBY_KM, t: CLOSEST_FLYBY_T, passed: CLOSEST_FLYBY_T.getTime() < Date.now() }
 
 
@@ -616,10 +616,10 @@ export default function ArtemisTrackerDemo() {
                 </div>
                 <div className="w-1 h-3 rounded-sm flex-shrink-0" style={{ background: 'rgba(56,189,248,0.4)' }} />
               </div>
-              <div className="flex items-center justify-between mt-2">
+              <div className="relative flex items-center justify-between mt-2">
                 <span className="font-mono text-[10px] text-text-muted">Launch</span>
                 {flybyPct !== null && (
-                  <span className="font-mono text-[10px] text-text-muted" style={{ position: 'absolute', left: `calc(${flybyPct * 100}%)`, transform: 'translateX(-50%)', marginTop: '0.25rem' }}>Flyby</span>
+                  <span className="font-mono text-[10px] text-text-muted" style={{ position: 'absolute', left: `calc(${flybyPct * 100}%)`, transform: 'translateX(-50%)' }}>Flyby</span>
                 )}
                 <span className="font-mono text-[10px] text-text-muted">Splashdown</span>
               </div>
@@ -679,8 +679,24 @@ export default function ArtemisTrackerDemo() {
             </div>
 
             {/* Desktop: 2x2 stats */}
-            {(loading || !current) ? (
-              <span className="hidden sm:block px-4 py-4 font-mono text-[10px] text-text-muted">Fetching telemetry…</span>
+            {fetchFailed ? (
+              <div className="hidden sm:flex items-center gap-3 px-4 py-4">
+                <span className="font-mono text-[10px] tracking-widest uppercase" style={{ color: '#ff4d4d' }}>Telemetry unavailable</span>
+              </div>
+            ) : (loading || !current) ? (
+              <div className="hidden sm:flex items-center gap-3 px-4 py-4">
+                <div className="relative flex-shrink-0" style={{ width: 28, height: 28 }}>
+                  <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', border: '1px solid rgba(10,255,157,0.15)' }} />
+                  <div className="animate-spin" style={{ position: 'absolute', inset: 0, borderRadius: '50%', border: '2px solid transparent', borderTopColor: '#0AFF9D' }} />
+                  <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#0AFF9D', boxShadow: '0 0 6px #0AFF9D' }} />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-0.5">
+                  <span className="font-mono text-[10px] tracking-widest uppercase" style={{ color: '#0AFF9D' }}>Acquiring telemetry</span>
+                  <span className="font-mono text-[9px]" style={{ color: 'rgba(10,255,157,0.4)' }}>NASA / JPL Horizons</span>
+                </div>
+              </div>
             ) : (
               <div className="hidden sm:grid grid-cols-2 h-full">
                 {[
@@ -702,8 +718,24 @@ export default function ArtemisTrackerDemo() {
 
         {/* Mobile stats */}
         <div className="sm:hidden grid grid-cols-2" style={{ borderBottom: '1px solid rgba(10,255,157,0.07)' }}>
-          {(loading || !current) ? (
-            <span className="font-mono text-[10px] text-text-muted px-4 py-4 col-span-2">Fetching telemetry…</span>
+          {fetchFailed ? (
+            <div className="col-span-2 flex items-center gap-3 px-4 py-4">
+              <span className="font-mono text-[10px] tracking-widest uppercase" style={{ color: '#ff4d4d' }}>Telemetry unavailable</span>
+            </div>
+          ) : (loading || !current) ? (
+            <div className="col-span-2 flex items-center gap-3 px-4 py-4">
+              <div className="relative flex-shrink-0" style={{ width: 28, height: 28 }}>
+                <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', border: '1px solid rgba(10,255,157,0.15)' }} />
+                <div className="animate-spin" style={{ position: 'absolute', inset: 0, borderRadius: '50%', border: '2px solid transparent', borderTopColor: '#0AFF9D' }} />
+                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#0AFF9D', boxShadow: '0 0 6px #0AFF9D' }} />
+                </div>
+              </div>
+              <div className="flex flex-col gap-0.5">
+                <span className="font-mono text-[10px] tracking-widest uppercase" style={{ color: '#0AFF9D' }}>Acquiring telemetry</span>
+                <span className="font-mono text-[9px]" style={{ color: 'rgba(10,255,157,0.4)' }}>NASA / JPL Horizons</span>
+              </div>
+            </div>
           ) : (
             [
               { label: 'Distance from Earth', value: distEarth ? mi(distEarth) + ' mi' : '—' },

@@ -30,8 +30,10 @@ export default function ISSTrackerDemo() {
   const [crewFailed,  setCrewFailed]  = useState(false)
   const [loading,     setLoading]     = useState(true)
   const [fetchFailed, setFetchFailed] = useState(false)
-  const dataArrivedRef = useRef(false)
-  const crewArrivedRef = useRef(false)
+  const dataArrivedRef  = useRef(false)
+  const crewArrivedRef  = useRef(false)
+  const issRetriedRef   = useRef(false)
+  const crewRetriedRef  = useRef(false)
 
   const centreOnISS = useCallback(() => {
     userControlled.current = false
@@ -200,15 +202,23 @@ export default function ISSTrackerDemo() {
   }, [])
 
   const fetchISS = useCallback(async () => {
-    try {
+    const attempt = async () => {
       const r = await fetch('https://api.wheretheiss.at/v1/satellites/25544')
       const d = await r.json()
       const data: ISSData = { latitude: d.latitude, longitude: d.longitude, altitude: d.altitude, velocity: d.velocity }
       setIssData(data)
-      if (!dataArrivedRef.current) { dataArrivedRef.current = true; setLoading(false) }
+      if (!dataArrivedRef.current) { dataArrivedRef.current = true; setLoading(false); setFetchFailed(false) }
       const pos = issLatLonToVec3(d.latitude, d.longitude, 1.065)
       if (markerRef.current) markerRef.current.position.copy(pos)
-    } catch { /* silent */ }
+    }
+    try {
+      await attempt()
+    } catch {
+      if (!dataArrivedRef.current && !issRetriedRef.current) {
+        issRetriedRef.current = true
+        try { await attempt() } catch { /* definite fail — 8s timeout will handle the UI */ }
+      }
+    }
   }, [])
 
   useEffect(() => {
@@ -229,19 +239,30 @@ export default function ISSTrackerDemo() {
     const timeout = setTimeout(() => {
       if (!crewArrivedRef.current) setCrewFailed(true)
     }, 8000)
-    fetch('https://corquaid.github.io/international-space-station-APIs/JSON/people-in-space.json')
+
+    const parseCrew = (d: { people?: { name: string; craft?: string; spacecraft?: string }[] }) => {
+      if (d.people) {
+        setCrew(d.people.map((m) => ({ name: m.name, craft: m.craft || m.spacecraft || 'ISS' })))
+        crewArrivedRef.current = true
+        clearTimeout(timeout)
+      }
+    }
+
+    const url = 'https://corquaid.github.io/international-space-station-APIs/JSON/people-in-space.json'
+    fetch(url)
       .then(r => r.json())
-      .then(d => {
-        if (d.people) {
-          setCrew(d.people.map((m: { name: string; craft?: string; spacecraft?: string }) => ({
-            name: m.name,
-            craft: m.craft || m.spacecraft || 'ISS',
-          })))
-          crewArrivedRef.current = true
+      .then(parseCrew)
+      .catch(() => {
+        if (!crewRetriedRef.current) {
+          crewRetriedRef.current = true
+          fetch(url)
+            .then(r => r.json())
+            .then(parseCrew)
+            .catch(() => setCrewFailed(true))
+        } else {
+          setCrewFailed(true)
         }
       })
-      .catch(() => setCrewFailed(true))
-      .finally(() => clearTimeout(timeout))
   }, [])
 
   const craftGroups = crew.reduce<Record<string,string[]>>((acc,m) => { const k = m.craft||'ISS'; ;(acc[k]??=[]).push(m.name); return acc }, {})
@@ -336,6 +357,7 @@ export default function ISSTrackerDemo() {
               background: '#000306',
               transition: 'opacity 0.8s ease',
               opacity: loading || fetchFailed ? 1 : 0,
+              pointerEvents: loading || fetchFailed ? 'auto' : 'none',
             }}
             aria-hidden={!loading && !fetchFailed}
           >
