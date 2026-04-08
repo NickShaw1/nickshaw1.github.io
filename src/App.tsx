@@ -44,7 +44,7 @@ export default function App() {
       <Nav />
 
       <main id="main-content" className="flex-1 pt-[72px]">
-        <AnimatePresence mode="wait" initial={false}>
+        <AnimatePresence initial={false}>
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={
               <Suspense fallback={<HomePageSkeleton />}>
