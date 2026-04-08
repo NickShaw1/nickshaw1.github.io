@@ -315,7 +315,7 @@ export default function ArtemisTrackerDemo() {
 
     // Earth
     const loader   = new THREE.TextureLoader()
-    const earthMat = new THREE.MeshPhongMaterial({ specular: new THREE.Color(0x1a3a5c), shininess: 12 })
+    const earthMat = new THREE.MeshPhongMaterial({ specular: new THREE.Color(0x1a3a5c), shininess: 12, emissive: new THREE.Color(0x112233), emissiveIntensity: 0.4 })
     const earth    = new THREE.Mesh(new THREE.SphereGeometry(EARTH_VR, 64, 64), earthMat)
     scene.add(earth)
     loader.load('/textures/earth.jpg', (tex) => {
@@ -336,7 +336,7 @@ export default function ArtemisTrackerDemo() {
     ))
 
     // Moon — procedural grey sphere with subtle darker patches
-    const moonMat  = new THREE.MeshPhongMaterial({ specular: 0x111111, shininess: 4 })
+    const moonMat  = new THREE.MeshPhongMaterial({ specular: 0x111111, shininess: 4, emissive: new THREE.Color(0x1a1a1a), emissiveIntensity: 0.5 })
     loader.load('/textures/2k_moon.jpg', (tex) => {
       tex.colorSpace = THREE.SRGBColorSpace
       moonMat.map = tex
@@ -365,9 +365,12 @@ export default function ArtemisTrackerDemo() {
 
     // Artemis marker
     const marker = new THREE.Mesh(
-      new THREE.SphereGeometry(0.55, 10, 10),
+      new THREE.SphereGeometry(0.7, 16, 16),
       new THREE.MeshBasicMaterial({ color: 0x0AFF9D }),
     )
+    // Point light on the marker so it casts a green glow onto nearby space
+    const markerLight = new THREE.PointLight(0x0AFF9D, 2.5, 20)
+    marker.add(markerLight)
     scene.add(marker)
     markerRef.current = marker
 
@@ -379,12 +382,12 @@ export default function ArtemisTrackerDemo() {
     ringMatRef.current = ringMat
 
     // Lighting: sun positioned from real solar direction (updated each frame)
-    const sun = new THREE.DirectionalLight(0xfff8e7, 1.8)
+    const sun = new THREE.DirectionalLight(0xfff8e7, 2.2)
     scene.add(sun)
     sunLightRef.current = sun
-    scene.add(new THREE.AmbientLight(0x2a3f5f, 1.4))
+    scene.add(new THREE.AmbientLight(0x6080aa, 1.8))
     // Soft fill from opposite side so dark hemispheres are still visible
-    const fill = new THREE.DirectionalLight(0x1a2a44, 0.6)
+    const fill = new THREE.DirectionalLight(0x4466aa, 1.0)
     scene.add(fill)
     fillLightRef.current = fill
 
