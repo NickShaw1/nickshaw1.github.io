@@ -224,17 +224,18 @@ export function ProjectsPageSkeleton() {
 
 export function AboutPageSkeleton() {
   return (
-    <div className="min-h-screen bg-bg-base px-6 md:px-10 pt-16 pb-16 max-w-6xl mx-auto lg:flex lg:gap-16" aria-busy="true" aria-label="Loading about page">
+    <div className="min-h-screen bg-bg-base px-6 md:px-10 py-10 md:py-16 max-w-6xl mx-auto lg:flex lg:gap-16" aria-busy="true" aria-label="Loading about page">
       {/* Sidebar nav */}
-      <div className="hidden lg:flex flex-col gap-3 w-36 flex-shrink-0 pt-1">
+      <div className="hidden lg:flex flex-col gap-3 w-36 flex-shrink-0">
         {[0, 1, 2, 3, 4, 5].map((i) => (
           <SkeletonBlock key={i} className="h-3 w-20" />
         ))}
       </div>
       {/* Main content */}
       <div className="flex-1 min-w-0">
-        {/* I'm Nick section */}
-        <SkeletonBlock className="h-3 w-16 mb-4" />
+        {/* About me section */}
+        <SkeletonBlock className="h-3 w-16 mb-3" />
+        <SkeletonBlock className="h-9 w-36 mb-6" />
         <div className="flex flex-col sm:flex-row gap-6 mb-12">
           <div className="flex-1 space-y-3">
             {[100, 95, 88, 100, 80].map((w, i) => (
@@ -243,11 +244,13 @@ export function AboutPageSkeleton() {
           </div>
           <SkeletonBlock className="w-full sm:w-48 h-48 rounded-card flex-shrink-0" />
         </div>
-        {/* Experience card */}
-        <SkeletonBlock className="h-3 w-24 mb-4" />
+        {/* Experience section */}
+        <SkeletonBlock className="h-3 w-24 mb-3" />
+        <SkeletonBlock className="h-9 w-52 mb-6" />
         <SkeletonBlock className="h-64 rounded-card mb-12" />
-        {/* Learning */}
-        <SkeletonBlock className="h-3 w-16 mb-4" />
+        {/* Learning section */}
+        <SkeletonBlock className="h-3 w-16 mb-3" />
+        <SkeletonBlock className="h-9 w-48 mb-6" />
         <div className="space-y-3 mb-12">
           {[100, 92, 85, 78].map((w, i) => (
             <SkeletonBlock key={i} className="h-4" style={{ width: `${w}%` }} />
