@@ -12,19 +12,14 @@ interface CrewMember { name: string; craft: string }
 export default function ISSTrackerDemo() {
   const mountRef        = useRef<HTMLDivElement>(null)
   const frameRef        = useRef<number>(0)
-  const clockRef        = useRef(performance.now())
   const markerRef       = useRef<THREE.Mesh | null>(null)
-  const ringRef         = useRef<THREE.Mesh | null>(null)
-  const ringMatRef      = useRef<THREE.MeshBasicMaterial | null>(null)
   const cameraRef       = useRef<THREE.PerspectiveCamera | null>(null)
   const earthMeshRef    = useRef<THREE.Mesh | null>(null)
   const earthMatRef     = useRef<THREE.ShaderMaterial | null>(null)
   const sunLightRef     = useRef<THREE.DirectionalLight | null>(null)
   const fillLightRef    = useRef<THREE.DirectionalLight | null>(null)
   const issGeoRef       = useRef<{ lat: number; lon: number } | null>(null)
-  const orbitRingRef    = useRef<THREE.Line | null>(null)
-  const prevApiWorld    = useRef<THREE.Vector3 | null>(null)
-  const orbitNormalRef  = useRef<THREE.Vector3 | null>(null)
+
   const userControlled  = useRef(false)
   const isDragging      = useRef(false)
   const lastMouse       = useRef({ x: 0, y: 0 })
@@ -210,23 +205,8 @@ export default function ISSTrackerDemo() {
     scene.add(marker)
     markerRef.current = marker as unknown as THREE.Mesh
 
-    const ringMat = new THREE.MeshBasicMaterial({ color: 0x0AFF9D, side: THREE.DoubleSide, transparent: true, opacity: 1, depthWrite: false })
-    const ring = new THREE.Mesh(new THREE.RingGeometry(0.03, 0.042, 32), ringMat)
-    scene.add(ring)
-    ringRef.current = ring
-    ringMatRef.current = ringMat
-
-
-    // Orbit ring — faint circle showing ISS orbital plane, built from two real positions
-    const orbitRingGeo = new THREE.BufferGeometry()
-    const orbitRingMat = new THREE.LineBasicMaterial({ color: 0xdde6ee, transparent: true, opacity: 0.25, depthWrite: false })
-    const orbitRing = new THREE.LineLoop(orbitRingGeo, orbitRingMat)
-    scene.add(orbitRing)
-    orbitRingRef.current = orbitRing
-
     function animate() {
       frameRef.current = requestAnimationFrame(animate)
-      const t = (performance.now() - clockRef.current) / 1000
 
 
 
@@ -263,33 +243,9 @@ export default function ISSTrackerDemo() {
         base.applyEuler(new THREE.Euler(0, earthRotY, 0))
         markerRef.current.position.copy(base)
 
-        // Trail — store world positions, max 20 min at 5s poll = 240 pts
-        // Orbit ring — redrawn each frame using the stable normal from API updates
-        if (orbitNormalRef.current && orbitRingRef.current) {
-          const n       = orbitNormalRef.current
-          const r       = 1.065
-          const ref     = new THREE.Vector3(0, 1, 0)
-          if (Math.abs(n.dot(ref)) > 0.9) ref.set(1, 0, 0)
-          const tangent = new THREE.Vector3().crossVectors(n, ref).normalize()
-          const bitangent = new THREE.Vector3().crossVectors(tangent, n).normalize()
-          const pts360: THREE.Vector3[] = []
-          for (let i = 0; i <= 128; i++) {
-            const a = (i / 128) * Math.PI * 2
-            pts360.push(
-              tangent.clone().multiplyScalar(Math.cos(a) * r)
-                     .addScaledVector(bitangent, Math.sin(a) * r)
-            )
-          }
-          orbitRingRef.current.geometry.dispose()
-          orbitRingRef.current.geometry = new THREE.BufferGeometry().setFromPoints(pts360)
-        }
+
       }
 
-      const pulse = (t % 1.8) / 1.8
-      ring.scale.setScalar(1 + pulse * 1.8)
-      ringMat.opacity = Math.max(0, 1 - pulse * 1.2)
-      ring.position.copy(marker.position)
-      ring.lookAt(camera.position)
 
       if (userControlled.current) {
         const { theta, phi } = spherical.current
