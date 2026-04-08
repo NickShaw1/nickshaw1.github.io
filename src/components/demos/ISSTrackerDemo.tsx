@@ -18,9 +18,13 @@ export default function ISSTrackerDemo() {
   const ringMatRef      = useRef<THREE.MeshBasicMaterial | null>(null)
   const cameraRef       = useRef<THREE.PerspectiveCamera | null>(null)
   const earthMeshRef    = useRef<THREE.Mesh | null>(null)
+  const earthMatRef     = useRef<THREE.ShaderMaterial | null>(null)
   const sunLightRef     = useRef<THREE.DirectionalLight | null>(null)
   const fillLightRef    = useRef<THREE.DirectionalLight | null>(null)
   const issGeoRef       = useRef<{ lat: number; lon: number } | null>(null)
+  const orbitRingRef    = useRef<THREE.Line | null>(null)
+  const prevApiWorld    = useRef<THREE.Vector3 | null>(null)
+  const orbitNormalRef  = useRef<THREE.Vector3 | null>(null)
   const userControlled  = useRef(false)
   const isDragging      = useRef(false)
   const lastMouse       = useRef({ x: 0, y: 0 })
@@ -66,7 +70,7 @@ export default function ISSTrackerDemo() {
     const scene  = new THREE.Scene()
     scene.background = new THREE.Color(0x010209)
     const camera = new THREE.PerspectiveCamera(45, W/H, 0.1, 1000)
-    camera.position.set(0, 0, 3.4)
+    camera.position.set(0, 0, 3.0)
     cameraRef.current = camera
 
     function makeStars(count: number, rMin: number, rMax: number, size: number, opacity: number) {
@@ -112,26 +116,70 @@ export default function ISSTrackerDemo() {
     }
 
     const loader = new THREE.TextureLoader()
-    const earthMat = new THREE.MeshPhongMaterial({ specular: new THREE.Color(0x1a3a5c), shininess: 12, emissive: new THREE.Color(0x112233), emissiveIntensity: 0.2 })
-    const earthMesh = new THREE.Mesh(new THREE.SphereGeometry(1, 64, 64), earthMat)
-    earthMesh.receiveShadow = false
-    earthMesh.castShadow    = false
-    scene.add(earthMesh)
-    earthMeshRef.current = earthMesh
+
+    // Day/night shader — blends textures based on sun angle, city lights only on dark side
+    const earthMat = new THREE.ShaderMaterial({
+      uniforms: {
+        dayMap:       { value: null },
+        nightMap:     { value: null },
+        sunDirection: { value: new THREE.Vector3(1, 0, 0) },
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        varying vec3 vWorldNormal;
+        void main() {
+          vUv = uv;
+          vWorldNormal = normalize(mat3(modelMatrix) * normal);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform sampler2D dayMap;
+        uniform sampler2D nightMap;
+        uniform vec3 sunDirection;
+        varying vec2 vUv;
+        varying vec3 vWorldNormal;
+        void main() {
+          vec3 n    = normalize(vWorldNormal);
+          vec3 sun  = normalize(sunDirection);
+          float cosA = dot(n, sun);
+          // Blend day/night over ±8° around the terminator
+          float blend = smoothstep(-0.14, 0.14, cosA);
+          // Diffuse lighting: boost day side, soft ambient on night side
+          float diffuse = max(0.0, cosA);
+          float ambient = 0.45;
+          float light   = ambient + diffuse * 1.4;
+          vec4 day   = texture2D(dayMap,   vUv) * light;
+          vec4 night = texture2D(nightMap, vUv) * 1.2;
+          // Blue floor + earthshine: brighter toward limb on dark side
+          float darkness = 1.0 - blend;
+          vec3 earthshine = vec3(0.04, 0.07, 0.18) * darkness;
+          vec3 nightFinal = max(night.rgb + earthshine, vec3(0.05, 0.09, 0.20));
+          gl_FragColor = vec4(mix(nightFinal, day.rgb, blend), 1.0);
+        }
+      `,
+    })
     loader.load('/textures/earth.jpg', (tex) => {
       tex.colorSpace = THREE.SRGBColorSpace
-      earthMat.map = tex
-      earthMat.needsUpdate = true
+      earthMat.uniforms.dayMap.value = tex
     })
+    loader.load('/textures/2k_earth_nightmap.jpg', (tex) => {
+      tex.colorSpace = THREE.LinearSRGBColorSpace
+      earthMat.uniforms.nightMap.value = tex
+    })
+    const earthMesh = new THREE.Mesh(new THREE.SphereGeometry(1, 64, 64), earthMat)
+    scene.add(earthMesh)
+    earthMeshRef.current = earthMesh
+    earthMatRef.current  = earthMat
 
 
 
     scene.add(new THREE.Mesh(
       new THREE.SphereGeometry(1.08, 64, 64),
       new THREE.ShaderMaterial({
-        uniforms: { c: { value: 0.38 }, p: { value: 5.0 }, glowColor: { value: new THREE.Color(0x1a66ff) } },
+        uniforms: { p: { value: 3.5 }, glowColor: { value: new THREE.Color(0x3388ff) } },
         vertexShader:   `varying vec3 vNormal; void main(){vNormal=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
-        fragmentShader: `uniform float c,p;uniform vec3 glowColor;varying vec3 vNormal;void main(){float i=pow(c-dot(vNormal,vec3(0,0,1)),p);gl_FragColor=vec4(glowColor,i);}`,
+        fragmentShader: `uniform float p;uniform vec3 glowColor;varying vec3 vNormal;void main(){float rim=1.0-max(0.0,dot(vNormal,vec3(0,0,1)));float i=pow(rim,p)*0.9;gl_FragColor=vec4(glowColor*i,i);}`,
         side: THREE.FrontSide, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false,
       }),
     ))
@@ -145,18 +193,36 @@ export default function ISSTrackerDemo() {
     scene.add(fill)
     fillLightRef.current = fill
 
-    const marker = new THREE.Mesh(
-      new THREE.SphereGeometry(0.014, 12, 12),
-      new THREE.MeshBasicMaterial({ color: 0x0AFF9D }),
-    )
+    // Sprite marker — always faces camera, consistent screen size, readable on any terrain
+    const markerCanvas = document.createElement('canvas')
+    markerCanvas.width = 64; markerCanvas.height = 64
+    const ctx = markerCanvas.getContext('2d')!
+    const cx = 32, cy = 32
+    // White outer ring
+    ctx.beginPath(); ctx.arc(cx, cy, 18, 0, Math.PI * 2)
+    ctx.strokeStyle = 'rgba(255,255,255,0.95)'; ctx.lineWidth = 3; ctx.stroke()
+    // Green inner dot
+    ctx.beginPath(); ctx.arc(cx, cy, 8, 0, Math.PI * 2)
+    ctx.fillStyle = '#0AFF9D'; ctx.fill()
+    const markerTex = new THREE.CanvasTexture(markerCanvas)
+    const marker = new THREE.Sprite(new THREE.SpriteMaterial({ map: markerTex, depthTest: true, transparent: true }))
+    marker.scale.setScalar(0.18)
     scene.add(marker)
-    markerRef.current = marker
+    markerRef.current = marker as unknown as THREE.Mesh
 
     const ringMat = new THREE.MeshBasicMaterial({ color: 0x0AFF9D, side: THREE.DoubleSide, transparent: true, opacity: 1, depthWrite: false })
-    const ring = new THREE.Mesh(new THREE.RingGeometry(0.022, 0.03, 32), ringMat)
+    const ring = new THREE.Mesh(new THREE.RingGeometry(0.03, 0.042, 32), ringMat)
     scene.add(ring)
     ringRef.current = ring
     ringMatRef.current = ringMat
+
+
+    // Orbit ring — faint circle showing ISS orbital plane, built from two real positions
+    const orbitRingGeo = new THREE.BufferGeometry()
+    const orbitRingMat = new THREE.LineBasicMaterial({ color: 0xdde6ee, transparent: true, opacity: 0.25, depthWrite: false })
+    const orbitRing = new THREE.LineLoop(orbitRingGeo, orbitRingMat)
+    scene.add(orbitRing)
+    orbitRingRef.current = orbitRing
 
     function animate() {
       frameRef.current = requestAnimationFrame(animate)
@@ -173,16 +239,8 @@ export default function ISSTrackerDemo() {
       const earthRotY = -gmstRad - Math.PI / 2
       if (earthMeshRef.current) earthMeshRef.current.rotation.y = earthRotY
 
-      // Keep ISS marker co-rotating with Earth's texture
-      if (issGeoRef.current && markerRef.current) {
-        const geo = issGeoRef.current
-        const base = issLatLonToVec3(geo.lat, geo.lon, 1.065)
-        base.applyEuler(new THREE.Euler(0, earthRotY, 0))
-        markerRef.current.position.copy(base)
-      }
-
       // Sun direction from real solar coordinates (low-precision, ~0.01° accuracy)
-      {
+      const sunDirNorm = (() => {
         const D   = jd - 2451545.0
         const g   = (357.528 + 0.9856003 * D) * Math.PI / 180
         const L   = (280.460 + 0.9856474 * D) * Math.PI / 180
@@ -191,10 +249,40 @@ export default function ISSTrackerDemo() {
         const sx  = Math.cos(lam)
         const sy  = Math.cos(eps) * Math.sin(lam)
         const sz  = Math.sin(eps) * Math.sin(lam)
-        // ICRF → Three.js coordinate transform (negate X, swap Y↔Z)
-        const sunDir = new THREE.Vector3(-sx, sz, sy).multiplyScalar(500)
-        if (sunLightRef.current)  sunLightRef.current.position.copy(sunDir)
-        if (fillLightRef.current) fillLightRef.current.position.copy(sunDir.clone().negate())
+        return new THREE.Vector3(-sx, sz, sy).normalize()
+      })()
+      if (sunLightRef.current)  sunLightRef.current.position.copy(sunDirNorm.clone().multiplyScalar(500))
+      if (fillLightRef.current) fillLightRef.current.position.copy(sunDirNorm.clone().negate().multiplyScalar(500))
+      // Pass normalised sun direction into the day/night shader
+      if (earthMatRef.current) earthMatRef.current.uniforms.sunDirection.value.copy(sunDirNorm)
+
+      // Keep ISS marker co-rotating with Earth's texture
+      if (issGeoRef.current && markerRef.current) {
+        const geo = issGeoRef.current
+        const base = issLatLonToVec3(geo.lat, geo.lon, 1.065)
+        base.applyEuler(new THREE.Euler(0, earthRotY, 0))
+        markerRef.current.position.copy(base)
+
+        // Trail — store world positions, max 20 min at 5s poll = 240 pts
+        // Orbit ring — redrawn each frame using the stable normal from API updates
+        if (orbitNormalRef.current && orbitRingRef.current) {
+          const n       = orbitNormalRef.current
+          const r       = 1.065
+          const ref     = new THREE.Vector3(0, 1, 0)
+          if (Math.abs(n.dot(ref)) > 0.9) ref.set(1, 0, 0)
+          const tangent = new THREE.Vector3().crossVectors(n, ref).normalize()
+          const bitangent = new THREE.Vector3().crossVectors(tangent, n).normalize()
+          const pts360: THREE.Vector3[] = []
+          for (let i = 0; i <= 128; i++) {
+            const a = (i / 128) * Math.PI * 2
+            pts360.push(
+              tangent.clone().multiplyScalar(Math.cos(a) * r)
+                     .addScaledVector(bitangent, Math.sin(a) * r)
+            )
+          }
+          orbitRingRef.current.geometry.dispose()
+          orbitRingRef.current.geometry = new THREE.BufferGeometry().setFromPoints(pts360)
+        }
       }
 
       const pulse = (t % 1.8) / 1.8
@@ -205,7 +293,7 @@ export default function ISSTrackerDemo() {
 
       if (userControlled.current) {
         const { theta, phi } = spherical.current
-        const r = 3.4
+        const r = 3.0
         camera.position.set(
           r * Math.sin(phi) * Math.cos(theta),
           r * Math.cos(phi),
@@ -213,7 +301,7 @@ export default function ISSTrackerDemo() {
         )
         camera.lookAt(0, 0, 0)
       } else if (marker.position.lengthSq() > 0) {
-        const target = marker.position.clone().normalize().multiplyScalar(3.4)
+        const target = marker.position.clone().normalize().multiplyScalar(3.0)
         camera.position.lerp(target, 0.03)
         camera.lookAt(0, 0, 0)
         const r = camera.position.length()
@@ -247,6 +335,20 @@ export default function ISSTrackerDemo() {
       setIssData(data)
       if (!dataArrivedRef.current) { dataArrivedRef.current = true; setLoading(false); setFetchFailed(false) }
       issGeoRef.current = { lat: d.latitude, lon: d.longitude }
+      // Compute world position (ICRF) for orbital plane — includes GMST at time of fetch
+      const jdNow    = Date.now() / 86400000 + 2440587.5
+      const tNow     = (jdNow - 2451545.0) / 36525
+      const gmstNow  = (280.46061837 + 360.98564736629 * (jdNow - 2451545.0) + 0.000387933 * tNow * tNow) % 360
+      const rotY     = -(gmstNow * Math.PI / 180) - Math.PI / 2
+      const worldPos = issLatLonToVec3(d.latitude, d.longitude, 1.065).applyEuler(new THREE.Euler(0, rotY, 0))
+      if (prevApiWorld.current) {
+        const rawNormal = new THREE.Vector3().crossVectors(prevApiWorld.current.normalize(), worldPos.clone().normalize()).normalize()
+        if (rawNormal.lengthSq() > 0.0001) {
+          if (!orbitNormalRef.current) orbitNormalRef.current = rawNormal.clone()
+          else orbitNormalRef.current.lerp(rawNormal, 0.25).normalize()
+        }
+      }
+      prevApiWorld.current = worldPos.clone()
     }
     try {
       await attempt()
@@ -360,7 +462,7 @@ export default function ISSTrackerDemo() {
   }
   const handlePointerUp = () => {
     isDragging.current = false
-    if (userControlled.current && lastPointerType.current !== 'mouse') scheduleRetract()
+    if (userControlled.current) scheduleRetract()
   }
 
   return (
@@ -454,9 +556,10 @@ export default function ISSTrackerDemo() {
             </button>
           </div>
 
-          <div className="absolute bottom-0 left-0 right-0 hidden sm:flex items-center justify-end px-3 py-1.5" style={{ background:'rgba(8,13,18,0.7)', borderTop:'1px solid rgba(10,255,157,0.08)' }}>
-            <span style={{ ...dim, fontSize:7 }}>Earth texture: <span style={{ color:'#3d6070' }}>Solar System Scope (CC BY 4.0)</span></span>
-          </div>
+        </div>
+
+        <div className="hidden sm:flex items-center justify-end px-3 py-1.5" style={{ background:'rgba(8,13,18,0.7)', borderTop:'1px solid rgba(10,255,157,0.08)' }}>
+          <span style={{ ...dim, fontSize:7 }}>Earth texture: <span style={{ color:'#3d6070' }}>Solar System Scope (CC BY 4.0)</span></span>
         </div>
 
         <div className="block sm:hidden">
