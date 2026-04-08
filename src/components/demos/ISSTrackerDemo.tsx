@@ -17,6 +17,10 @@ export default function ISSTrackerDemo() {
   const ringRef         = useRef<THREE.Mesh | null>(null)
   const ringMatRef      = useRef<THREE.MeshBasicMaterial | null>(null)
   const cameraRef       = useRef<THREE.PerspectiveCamera | null>(null)
+  const earthMeshRef    = useRef<THREE.Mesh | null>(null)
+  const sunLightRef     = useRef<THREE.DirectionalLight | null>(null)
+  const fillLightRef    = useRef<THREE.DirectionalLight | null>(null)
+  const issGeoRef       = useRef<{ lat: number; lon: number } | null>(null)
   const userControlled  = useRef(false)
   const isDragging      = useRef(false)
   const lastMouse       = useRef({ x: 0, y: 0 })
@@ -108,11 +112,12 @@ export default function ISSTrackerDemo() {
     }
 
     const loader = new THREE.TextureLoader()
-    const earthMat = new THREE.MeshPhongMaterial({ specular: new THREE.Color(0x1a3a5c), shininess: 12 })
+    const earthMat = new THREE.MeshPhongMaterial({ specular: new THREE.Color(0x1a3a5c), shininess: 12, emissive: new THREE.Color(0x112233), emissiveIntensity: 0.2 })
     const earthMesh = new THREE.Mesh(new THREE.SphereGeometry(1, 64, 64), earthMat)
     earthMesh.receiveShadow = false
     earthMesh.castShadow    = false
     scene.add(earthMesh)
+    earthMeshRef.current = earthMesh
     loader.load('/textures/earth.jpg', (tex) => {
       tex.colorSpace = THREE.SRGBColorSpace
       earthMat.map = tex
@@ -132,13 +137,13 @@ export default function ISSTrackerDemo() {
     ))
 
     const sun = new THREE.DirectionalLight(0xfff8e7, 1.8)
-    sun.position.set(5, 2, 3)
     sun.castShadow = false
     scene.add(sun)
-    scene.add(new THREE.AmbientLight(0x2a3f5f, 1.4))
-    const fill = new THREE.DirectionalLight(0x1a2a44, 0.6)
-    fill.position.set(-5, -2, -3)
+    sunLightRef.current = sun
+    scene.add(new THREE.AmbientLight(0x3a5070, 1.1))
+    const fill = new THREE.DirectionalLight(0x2a4060, 0.5)
     scene.add(fill)
+    fillLightRef.current = fill
 
     const marker = new THREE.Mesh(
       new THREE.SphereGeometry(0.014, 12, 12),
@@ -158,6 +163,39 @@ export default function ISSTrackerDemo() {
       const t = (performance.now() - clockRef.current) / 1000
 
 
+
+      // Rotate Earth on its axis using GMST (same formula as Artemis tracker)
+      const nowMs   = Date.now()
+      const jd      = nowMs / 86400000 + 2440587.5
+      const T       = (jd - 2451545.0) / 36525
+      const gmstDeg = (280.46061837 + 360.98564736629 * (jd - 2451545.0) + 0.000387933 * T * T) % 360
+      const gmstRad = (gmstDeg * Math.PI) / 180
+      const earthRotY = -gmstRad - Math.PI / 2
+      if (earthMeshRef.current) earthMeshRef.current.rotation.y = earthRotY
+
+      // Keep ISS marker co-rotating with Earth's texture
+      if (issGeoRef.current && markerRef.current) {
+        const geo = issGeoRef.current
+        const base = issLatLonToVec3(geo.lat, geo.lon, 1.065)
+        base.applyEuler(new THREE.Euler(0, earthRotY, 0))
+        markerRef.current.position.copy(base)
+      }
+
+      // Sun direction from real solar coordinates (low-precision, ~0.01° accuracy)
+      {
+        const D   = jd - 2451545.0
+        const g   = (357.528 + 0.9856003 * D) * Math.PI / 180
+        const L   = (280.460 + 0.9856474 * D) * Math.PI / 180
+        const lam = L + (1.915 * Math.sin(g) + 0.020 * Math.sin(2 * g)) * Math.PI / 180
+        const eps = (23.439 - 0.0000004 * D) * Math.PI / 180
+        const sx  = Math.cos(lam)
+        const sy  = Math.cos(eps) * Math.sin(lam)
+        const sz  = Math.sin(eps) * Math.sin(lam)
+        // ICRF → Three.js coordinate transform (negate X, swap Y↔Z)
+        const sunDir = new THREE.Vector3(-sx, sz, sy).multiplyScalar(500)
+        if (sunLightRef.current)  sunLightRef.current.position.copy(sunDir)
+        if (fillLightRef.current) fillLightRef.current.position.copy(sunDir.clone().negate())
+      }
 
       const pulse = (t % 1.8) / 1.8
       ring.scale.setScalar(1 + pulse * 1.8)
@@ -208,8 +246,7 @@ export default function ISSTrackerDemo() {
       const data: ISSData = { latitude: d.latitude, longitude: d.longitude, altitude: d.altitude, velocity: d.velocity }
       setIssData(data)
       if (!dataArrivedRef.current) { dataArrivedRef.current = true; setLoading(false); setFetchFailed(false) }
-      const pos = issLatLonToVec3(d.latitude, d.longitude, 1.065)
-      if (markerRef.current) markerRef.current.position.copy(pos)
+      issGeoRef.current = { lat: d.latitude, lon: d.longitude }
     }
     try {
       await attempt()
