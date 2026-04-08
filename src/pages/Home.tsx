@@ -175,7 +175,7 @@ export default function Home() {
             </div>
 
             {/* ── Right: certifications ── */}
-            <div className="mt-14 lg:mt-0 flex-shrink-0 flex flex-col w-full lg:w-72">
+            <div className="mt-14 lg:mt-0 flex-shrink-0 flex flex-col justify-center w-full lg:w-72">
               {[
                 {
                   abbr: 'ISTQB',
@@ -210,14 +210,14 @@ export default function Home() {
                   <div className="w-px bg-accent/20 group-hover:bg-accent flex-shrink-0 transition-colors duration-150" />
 
                   <div className="flex flex-col justify-center min-w-0">
-                    <span className="font-mono text-[10px] tracking-widest uppercase text-accent mb-1">
+                    <span className="font-mono text-[11px] tracking-widest uppercase text-accent mb-1">
                       {abbr}
                     </span>
-                    <h3 className="font-display font-semibold text-[15px] text-text-primary leading-snug">
+                    <h3 className="font-display font-semibold text-[16px] text-text-primary leading-snug">
                       {name}
                     </h3>
-                    <p className="font-mono text-[11px] text-text-muted tracking-wide mt-1">
-                      {level} · {issuer}
+                    <p className="font-mono text-[12px] text-text-muted tracking-wide mt-1 leading-relaxed">
+                      {level}<br />{issuer}
                     </p>
                   </div>
                 </m.div>

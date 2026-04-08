@@ -9,10 +9,10 @@ const config: Config = {
     extend: {
       colors: {
         bg: {
-          base:    '#0a0a0a',
-          surface: '#1a1a1a',
-          elevated:'#242424',
-          border:  'rgba(255,255,255,0.20)',
+          base:    '#111111',
+          surface: '#1c1c1c',
+          elevated:'#262626',
+          border:  'rgba(255,255,255,0.12)',
         },
         accent: {
           DEFAULT: '#0AFF9D',
@@ -21,8 +21,8 @@ const config: Config = {
         link: '#F5A623',
         text: {
           primary:   '#F0EDE6',
-          secondary: '#cccccc',
-          muted:     '#b4b4b4',
+          secondary: '#c8c4bc',
+          muted:     '#888880',
         },
       },
       fontFamily: {
