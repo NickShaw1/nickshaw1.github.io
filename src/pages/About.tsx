@@ -69,9 +69,10 @@ interface SectionBlockProps {
   children: React.ReactNode
   reduced: boolean
   noYOffset?: boolean
+  card?: React.ReactNode
 }
 
-function SectionBlock({ id, label, heading, children, reduced, noYOffset }: SectionBlockProps) {
+function SectionBlock({ id, label, heading, children, reduced, noYOffset, card }: SectionBlockProps) {
   return (
     <m.section
       id={id}
@@ -83,13 +84,30 @@ function SectionBlock({ id, label, heading, children, reduced, noYOffset }: Sect
       className="scroll-mt-[88px] m-0"
     >
       <SectionLabel>{label}</SectionLabel>
-      <h2
-        id={`${id}-heading`}
-        className="font-display font-semibold text-[clamp(1.5rem,3vw,2rem)] text-text-primary leading-tight tracking-[-0.02em] mb-6"
-      >
-        {heading}
-      </h2>
-      {children}
+      {card ? (
+        <div className="flex flex-col sm:flex-row gap-8 sm:gap-6 items-center">
+          <div className="flex-1 min-w-0">
+            <h2
+              id={`${id}-heading`}
+              className="font-display font-semibold text-[clamp(1.5rem,3vw,2rem)] text-text-primary leading-tight tracking-[-0.02em] mb-6"
+            >
+              {heading}
+            </h2>
+            {children}
+          </div>
+          {card}
+        </div>
+      ) : (
+        <>
+          <h2
+            id={`${id}-heading`}
+            className="font-display font-semibold text-[clamp(1.5rem,3vw,2rem)] text-text-primary leading-tight tracking-[-0.02em] mb-6"
+          >
+            {heading}
+          </h2>
+          {children}
+        </>
+      )}
     </m.section>
   )
 }
@@ -203,15 +221,8 @@ export default function About() {
           <h1 className="sr-only">About Nick Shaw</h1>
 
           {/* ── I'm Nick ──────────────────────────────────── */}
-          <SectionBlock id="im-nick" label="About me" heading="I'm Nick." reduced={reduced} noYOffset>
-            <div className="flex flex-col sm:flex-row gap-8 sm:gap-6 items-start">
-              <div className="flex-1 min-w-0">
-                {meta.aboutSections.imNick.split('\n\n').map((para, i) => (
-                  <p key={i} className="text-text-secondary text-[15px] leading-[1.85] mb-4 last:mb-0">
-                    {para}
-                  </p>
-                ))}
-              </div>
+          <SectionBlock id="im-nick" label="About me" heading="I'm Nick." reduced={reduced} noYOffset
+            card={
               <ProfileCard
                 src={nickImg}
                 alt="Nick Shaw"
@@ -221,7 +232,13 @@ export default function About() {
                 imgClass="object-cover object-[center_10%]"
                 rows={[['Field', 'QA & Delivery'], ['Based', 'County Down'], ['Experience', '12 years']]}
               />
-            </div>
+            }
+          >
+            {meta.aboutSections.imNick.split('\n\n').map((para, i) => (
+              <p key={i} className="text-text-secondary text-[15px] leading-[1.85] mb-4 last:mb-0">
+                {para}
+              </p>
+            ))}
           </SectionBlock>
 
           <Divider />
@@ -366,15 +383,8 @@ export default function About() {
           <Divider />
 
           {/* ── Outside Work ──────────────────────────────── */}
-          <SectionBlock id="outside-work" label="Outside Work" heading="Life outside the office." reduced={reduced}>
-            <div className="flex flex-col sm:flex-row gap-8 sm:gap-6 items-start">
-              <div className="flex-1 min-w-0">
-                {meta.aboutSections.outsideWork.split('\n\n').map((para, i) => (
-                  <p key={i} className="text-text-secondary text-[15px] leading-[1.85] mb-4 last:mb-0">
-                    {para}
-                  </p>
-                ))}
-              </div>
+          <SectionBlock id="outside-work" label="Outside Work" heading="Life outside the office." reduced={reduced}
+            card={
               <ProfileCard
                 src={pippinImg}
                 alt="Pippin"
@@ -384,7 +394,13 @@ export default function About() {
                 imgClass="object-cover object-[center_45%]"
                 rows={[['Breed', 'Cavapoo'], ['Age', '6 months'], ['Fav. food', 'Yoghurt'], ['Hobbies', 'Walks, Toys']]}
               />
-            </div>
+            }
+          >
+            {meta.aboutSections.outsideWork.split('\n\n').map((para, i) => (
+              <p key={i} className="text-text-secondary text-[15px] leading-[1.85] mb-4 last:mb-0">
+                {para}
+              </p>
+            ))}
           </SectionBlock>
 
           <Divider />
