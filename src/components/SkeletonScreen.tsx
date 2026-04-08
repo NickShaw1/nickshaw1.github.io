@@ -90,6 +90,37 @@ export function HomePageSkeleton() {
         </div>
       </div>
 
+      {/* Contact */}
+      <div className="bg-bg-surface border-t border-bg-border">
+        <div className="max-w-6xl mx-auto px-6 md:px-10 py-20">
+          <SkeletonBlock className="h-3 w-24 mb-3" />
+          <SkeletonBlock className="h-8 w-52 mb-10" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            {/* Left: bio + social links */}
+            <div>
+              <div className="space-y-2 mb-10">
+                <SkeletonBlock className="h-4 w-full" />
+                <SkeletonBlock className="h-4 w-5/6" />
+                <SkeletonBlock className="h-4 w-4/6" />
+              </div>
+              <SkeletonBlock className="h-2.5 w-16 mb-4" />
+              <div className="flex flex-col gap-1">
+                {[0, 1, 2].map((i) => (
+                  <SkeletonBlock key={i} className="h-10 w-32" />
+                ))}
+              </div>
+            </div>
+            {/* Right: form */}
+            <div className="space-y-4">
+              <SkeletonBlock className="h-10 w-full rounded-card" />
+              <SkeletonBlock className="h-10 w-full rounded-card" />
+              <SkeletonBlock className="h-28 w-full rounded-card" />
+              <SkeletonBlock className="h-10 w-32 rounded-pill" />
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   )
 }
@@ -325,12 +356,65 @@ export function CVPageSkeleton() {
           ))}
         </div>
       </div>
+      {/* Earlier Experience */}
+      <div className="mb-12">
+        <SkeletonBlock className="h-3 w-40 mb-5" />
+        <div className="flex flex-col gap-7">
+          {[2, 2, 2].map((bulletCount, ri) => (
+            <div key={ri}>
+              <SkeletonBlock className="h-4 w-44 mb-1" />
+              <SkeletonBlock className="h-3 w-32 mb-3" />
+              <div className="space-y-2">
+                {Array.from({ length: bulletCount }).map((_, i) => (
+                  <SkeletonBlock key={i} className="h-3" style={{ width: `${70 + (i * 13) % 25}%` }} />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* Projects */}
+      <div className="mb-12">
+        <SkeletonBlock className="h-3 w-24 mb-5" />
+        <div className="flex flex-col gap-8">
+          {[4, 0].map((bulletCount, ri) => (
+            <div key={ri}>
+              <SkeletonBlock className="h-4 w-40 mb-1" />
+              <SkeletonBlock className="h-3 w-56 mb-3" />
+              <div className="space-y-2 mb-2">
+                {Array.from({ length: bulletCount }).map((_, i) => (
+                  <SkeletonBlock key={i} className="h-3" style={{ width: `${65 + (i * 9) % 30}%` }} />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
       {/* Qualifications */}
-      <div>
+      <div className="mb-12">
         <SkeletonBlock className="h-3 w-52 mb-5" />
         <div className="flex flex-col gap-4">
-          {Array.from({ length: 6 }).map((_, i) => (
+          {Array.from({ length: 3 }).map((_, i) => (
             <SkeletonBlock key={i} className="h-3" style={{ width: `${50 + (i * 13) % 30}%` }} />
+          ))}
+        </div>
+      </div>
+      {/* Professional Development */}
+      <div className="mb-12">
+        <SkeletonBlock className="h-3 w-48 mb-5" />
+        <div className="flex flex-col gap-4">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <SkeletonBlock key={i} className="h-3" style={{ width: `${45 + (i * 11) % 30}%` }} />
+          ))}
+        </div>
+      </div>
+      {/* Education */}
+      <div>
+        <SkeletonBlock className="h-3 w-28 mb-5" />
+        <SkeletonBlock className="h-4 w-48 mb-3" />
+        <div className="flex flex-col gap-4">
+          {Array.from({ length: 2 }).map((_, i) => (
+            <SkeletonBlock key={i} className="h-3" style={{ width: `${40 + (i * 15) % 25}%` }} />
           ))}
         </div>
       </div>
