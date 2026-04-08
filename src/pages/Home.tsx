@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useEffect, useState, lazy, Suspense } from 'react'
 import { m } from 'framer-motion'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, User, FolderOpen } from 'lucide-react'
 import SEOHead from '../components/SEOHead'
 import TerminalStrip from '../components/TerminalStrip'
 import ProjectCard from '../components/ProjectCard'
@@ -121,28 +121,28 @@ export default function Home() {
                     inline-flex items-center justify-center gap-2
                     bg-accent text-bg-base
                     font-mono text-[12px] font-semibold tracking-widest uppercase
-                    px-6 py-3.5 rounded-pill
+                    w-full sm:w-auto whitespace-nowrap px-6 py-3.5 rounded-pill
                     shadow-[0_0_24px_rgba(10,255,157,0.25)]
                     hover:bg-accent/90 hover:shadow-[0_0_32px_rgba(10,255,157,0.35)]
                     transition-all duration-150
                     active:scale-100
                   "
                 >
-                  About me <ArrowRight size={14} />
+                  <User size={14} /> About me <ArrowRight size={14} />
                 </Link>
                 <Link
                   to="/projects"
                   className="
                     inline-flex items-center justify-center gap-2
-                    bg-white/5 border border-white/15 text-text-primary
+                    border border-accent text-text-primary bg-accent/10
                     font-mono text-[12px] tracking-widest uppercase
-                    px-6 py-3.5 rounded-pill
-                    hover:bg-white/10 hover:border-accent/40 hover:text-accent
-                    transition-all duration-150
+                    w-full sm:w-auto whitespace-nowrap px-6 py-3.5 rounded-pill
+                    hover:bg-accent/20
+                    transition-colors duration-150
                     active:scale-100
                   "
                 >
-                  Latest projects
+                  <FolderOpen size={14} /> Latest projects
                 </Link>
               </m.div>
 

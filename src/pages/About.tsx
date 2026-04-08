@@ -40,7 +40,7 @@ function renderInlineLinks(text: string): ReactNode {
 }
 
 const SECTIONS = [
-  { id: 'im-nick',      label: "I'm Nick"     },
+  { id: 'im-nick',      label: 'About me'     },
   { id: 'experience',   label: 'Experience'   },
   { id: 'learning',     label: 'Learning'     },
   { id: 'outside-work', label: 'Outside Work' },
@@ -68,18 +68,19 @@ interface SectionBlockProps {
   heading: string
   children: React.ReactNode
   reduced: boolean
+  noYOffset?: boolean
 }
 
-function SectionBlock({ id, label, heading, children, reduced }: SectionBlockProps) {
+function SectionBlock({ id, label, heading, children, reduced, noYOffset }: SectionBlockProps) {
   return (
     <m.section
       id={id}
       aria-labelledby={`${id}-heading`}
-      initial={reduced ? undefined : { opacity: 0, y: 24 }}
+      initial={reduced ? undefined : { opacity: 0, y: noYOffset ? 0 : 24 }}
       whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.08 }}
       transition={{ duration: 0.55, ease: 'easeOut' }}
-      className="scroll-mt-[88px]"
+      className="scroll-mt-[88px] m-0"
     >
       <SectionLabel>{label}</SectionLabel>
       <h2
@@ -103,7 +104,7 @@ function ProfileCard({ src, alt, name, icon, iconColour, rows, imgClass = 'objec
   imgClass?: string
 }) {
   return (
-    <div className="w-full sm:flex-shrink-0 sm:w-48 bg-accent/[0.03] border border-bg-border rounded-card overflow-hidden">
+    <div className="w-full sm:flex-shrink-0 sm:w-48 bg-accent/[0.06] border border-bg-border rounded-card overflow-hidden">
       <img src={src} alt={alt} loading="lazy" className={`w-full aspect-[4/3] sm:aspect-auto sm:h-32 ${imgClass}`} />
       <div className="px-3 py-3">
         <div className={`flex items-center gap-2 mb-2 pb-2 border-b border-bg-border ${iconColour}`}>
@@ -178,11 +179,11 @@ export default function About() {
           <nav className="sticky top-[92px]">
             <ul className="space-y-3 list-none p-0 m-0" role="list">
               {SECTIONS.map(({ id, label }) => (
-                <li key={id}>
+                <li key={id} className="flex">
                   <button
                     onClick={() => scrollTo(id)}
                     className={`
-                      text-left w-full font-mono text-[11px] tracking-wider uppercase
+                      text-left w-full font-mono text-[12px] tracking-wider uppercase
                       transition-colors duration-150 leading-snug
                       ${active === id ? 'text-accent' : 'text-text-muted hover:text-text-secondary'}
                     `}
@@ -198,11 +199,11 @@ export default function About() {
 
 
         {/* ── Main content ──────────────────────────────── */}
-        <article className="flex-1 min-w-0">
+        <article className="flex-1 min-w-0 m-0 p-0">
           <h1 className="sr-only">About Nick Shaw</h1>
 
           {/* ── I'm Nick ──────────────────────────────────── */}
-          <SectionBlock id="im-nick" label="I'm Nick" heading="Who I am." reduced={reduced}>
+          <SectionBlock id="im-nick" label="About me" heading="I'm Nick." reduced={reduced} noYOffset>
             <div className="flex flex-col sm:flex-row gap-8 sm:gap-6 items-start">
               <div className="flex-1 min-w-0">
                 {meta.aboutSections.imNick.split('\n\n').map((para, i) => (
@@ -389,7 +390,7 @@ export default function About() {
           <Divider />
 
           {/* ── Writing ───────────────────────────────────── */}
-          <SectionBlock id="writing" label="Writing" heading="How I write." reduced={reduced}>
+          <SectionBlock id="writing" label="Writing" heading="Creative writing." reduced={reduced}>
             {meta.aboutSections.writing.split('\n\n').map((para, i) =>
               para.startsWith('> ') ? (
                 <blockquote key={i} className="border-l-[3px] border-accent pl-4 my-5 text-text-secondary text-[15px] leading-[1.85] italic">

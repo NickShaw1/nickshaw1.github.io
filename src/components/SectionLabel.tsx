@@ -7,7 +7,7 @@ export default function SectionLabel({ children, className = '' }: SectionLabelP
   return (
     <p
       className={`
-        font-mono text-[11px] tracking-[0.18em] uppercase text-accent
+        font-mono text-[12px] tracking-[0.18em] uppercase text-accent
         mb-3 ${className}
       `}
     >
