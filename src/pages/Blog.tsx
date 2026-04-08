@@ -31,14 +31,14 @@ export default function Blog() {
         })}
       />
 
-      <div className="max-w-6xl mx-auto px-6 md:px-10 py-16">
+      <div className="max-w-6xl mx-auto px-6 md:px-10 py-10 md:py-16">
 
         {/* ── Header ──────────────────────────────────────── */}
         <m.div
           initial={reduced ? undefined : { opacity: 0, y: 20 }}
           animate={reduced ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: 'easeOut' }}
-          className="mb-12"
+          className="mb-8 md:mb-12"
         >
           <SectionLabel>Writing</SectionLabel>
           <h1 className="font-display font-bold text-[clamp(2rem,5vw,3rem)] text-text-primary leading-tight tracking-[-0.02em] mb-4">

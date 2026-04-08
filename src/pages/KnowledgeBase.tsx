@@ -140,7 +140,7 @@ export default function KnowledgeBase() {
         })}
       />
 
-      <div className="max-w-6xl mx-auto px-6 md:px-10 py-16">
+      <div className="max-w-6xl mx-auto px-6 md:px-10 py-10 md:py-16">
 
         {/* ── Header ──────────────────────────────────────── */}
         <m.div

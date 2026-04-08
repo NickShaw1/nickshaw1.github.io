@@ -240,7 +240,7 @@ export default function KBGlossaryPage() {
         })}
       />
 
-      <div className="max-w-6xl mx-auto px-6 md:px-10 py-12">
+      <div className="max-w-6xl mx-auto px-6 md:px-10 py-8 md:py-12">
 
         {/* ── Back link ────────────────────────────── */}
         <div className="mb-6">
@@ -320,7 +320,7 @@ export default function KBGlossaryPage() {
         </m.nav>
 
         {/* ── Glossary sections ────────────────────── */}
-        <div className="space-y-10">
+        <div className="space-y-6 md:space-y-10">
           {GLOSSARY.map((section, _si) => (
             <m.section
               key={section.letter}
@@ -358,7 +358,7 @@ export default function KBGlossaryPage() {
         </div>
 
         {/* ── Footer link ──────────────────────────── */}
-        <div className="mt-16 pt-8 border-t border-bg-border">
+        <div className="mt-10 md:mt-16 pt-6 md:pt-8 border-t border-bg-border">
           <Link
             to="/knowledge-base"
             className="inline-flex items-center gap-1.5 font-mono text-[11px] tracking-wider text-text-muted hover:text-link transition-colors duration-150"

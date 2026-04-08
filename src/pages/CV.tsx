@@ -189,7 +189,7 @@ export default function CV() {
         jsonLd={profilePageSchema()}
       />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-10 py-12 sm:py-16">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-10 py-8 sm:py-12 md:py-16">
 
         {/* ── Back link ─────────────────────────────────── */}
         <m.div
@@ -211,7 +211,7 @@ export default function CV() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: 'easeOut' }}
-          className="mb-14"
+          className="mb-10 md:mb-14"
         >
           <h1 className="font-display font-bold text-[clamp(2rem,5vw,3rem)] text-text-primary leading-tight tracking-[-0.02em]">
             Nick Shaw
@@ -240,7 +240,7 @@ export default function CV() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
-          className="mb-12"
+          className="mb-8 md:mb-12"
         >
           <SectionHeading icon={User} color={C.summary}>Professional Summary</SectionHeading>
           <p className="text-text-secondary text-[15px] leading-[1.85]">
@@ -253,7 +253,7 @@ export default function CV() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: 'easeOut', delay: 0.15 }}
-          className="mb-12"
+          className="mb-8 md:mb-12"
         >
           <SectionHeading icon={Zap} color={C.competencies}>Core Competencies</SectionHeading>
           <div className="flex flex-col gap-2">
@@ -271,7 +271,7 @@ export default function CV() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: 'easeOut', delay: 0.2 }}
-          className="mb-12"
+          className="mb-8 md:mb-12"
         >
           <SectionHeading icon={Briefcase} color={C.experience}>Professional Experience</SectionHeading>
           <div className="flex flex-col gap-10">
@@ -321,7 +321,7 @@ export default function CV() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="mb-12"
+          className="mb-8 md:mb-12"
         >
           <SectionHeading icon={Clock} color={C.earlier}>Earlier Experience</SectionHeading>
           <div className="flex flex-col gap-7">
@@ -363,7 +363,7 @@ export default function CV() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="mb-12"
+          className="mb-8 md:mb-12"
         >
           <SectionHeading icon={Code2} color={C.projects}>Projects</SectionHeading>
           <div className="flex flex-col gap-8">
@@ -404,7 +404,7 @@ export default function CV() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="mb-12"
+          className="mb-8 md:mb-12"
         >
           <SectionHeading icon={Award} color={C.certs}>
             <span className="sm:hidden">Qualifications</span>
@@ -429,7 +429,7 @@ export default function CV() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="mb-12"
+          className="mb-8 md:mb-12"
         >
           <SectionHeading icon={BookOpen} color={C.profdev}>Professional Development</SectionHeading>
           <div className="flex flex-col">
@@ -454,7 +454,7 @@ export default function CV() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="mb-12"
+          className="mb-8 md:mb-12"
         >
           <SectionHeading icon={GraduationCap} color={C.education}>Education</SectionHeading>
           <div className="mb-2">

@@ -20,9 +20,9 @@ const config: Config = {
         },
         link: '#F5A623',
         text: {
-          primary:   '#F0EDE6',
-          secondary: '#c8c4bc',
-          muted:     '#888880',
+          primary:   '#F0F0F0',
+          secondary: '#C8C8C8',
+          muted:     '#888888',
         },
       },
       fontFamily: {

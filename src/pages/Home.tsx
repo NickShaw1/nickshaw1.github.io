@@ -57,7 +57,7 @@ export default function Home() {
         aria-label="Introduction"
       >
 
-        <div className="relative z-10 w-full max-w-6xl mx-auto px-6 md:px-10 py-14">
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-6 md:px-10 pt-8 pb-8 md:py-14">
           <div className="flex flex-col lg:flex-row lg:items-center lg:gap-16 xl:gap-24">
 
             {/* ── Left: text ── */}
@@ -95,7 +95,7 @@ export default function Home() {
               </m.h1>
 
               {/* Subheading with inline photo */}
-              <m.div {...anim(0.2)} className="flex items-center gap-5 max-w-xl mb-10">
+              <m.div {...anim(0.2)} className="flex items-center gap-5 max-w-xl mb-8">
                 <img
                   src={nickShawImg}
                   alt="Nick Shaw"
@@ -119,12 +119,13 @@ export default function Home() {
                   to="/about"
                   className="
                     inline-flex items-center justify-center gap-2
-                    border border-accent text-text-primary bg-accent/10
-                    font-mono text-[12px] tracking-widest uppercase
+                    bg-accent text-bg-base
+                    font-mono text-[12px] font-semibold tracking-widest uppercase
                     px-6 py-3.5 rounded-pill
-                    hover:bg-accent/20
-                    transition-colors duration-150
-                    active:scale-[0.97]
+                    shadow-[0_0_24px_rgba(10,255,157,0.25)]
+                    hover:bg-accent/90 hover:shadow-[0_0_32px_rgba(10,255,157,0.35)]
+                    transition-all duration-150
+                    active:scale-100
                   "
                 >
                   About me <ArrowRight size={14} />
@@ -133,12 +134,12 @@ export default function Home() {
                   to="/projects"
                   className="
                     inline-flex items-center justify-center gap-2
-                    border border-text-secondary/40 text-text-primary
+                    bg-white/5 border border-white/15 text-text-primary
                     font-mono text-[12px] tracking-widest uppercase
                     px-6 py-3.5 rounded-pill
-                    hover:border-accent/60 hover:text-accent
-                    transition-colors duration-150
-                    active:scale-[0.97]
+                    hover:bg-white/10 hover:border-accent/40 hover:text-accent
+                    transition-all duration-150
+                    active:scale-100
                   "
                 >
                   Latest projects
@@ -175,7 +176,7 @@ export default function Home() {
             </div>
 
             {/* ── Right: certifications ── */}
-            <div className="mt-14 lg:mt-0 flex-shrink-0 flex flex-col justify-center w-full lg:w-72">
+            <div className="mt-10 lg:mt-0 flex-shrink-0 flex flex-col justify-center w-full lg:w-72">
               {[
                 {
                   abbr: 'ISTQB',
@@ -233,18 +234,18 @@ export default function Home() {
 
       {/* ── Featured projects ─────────────────────────────── */}
       <section
-        className="px-6 md:px-10 pt-16 pb-8 max-w-6xl mx-auto"
+        className="px-6 md:px-10 pt-12 md:pt-16 pb-6 max-w-6xl mx-auto"
         aria-labelledby="featured-heading"
       >
         <SectionLabel>Featured projects</SectionLabel>
         <h2
           id="featured-heading"
-          className="font-display font-semibold text-[clamp(1.5rem,3vw,2rem)] text-text-primary mb-10"
+          className="font-display font-semibold text-[clamp(1.5rem,3vw,2rem)] text-text-primary mb-6"
         >
           Things I've built.
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-6">
           {featuredProjects.slice(0, 3).map((project, i) => (
             <ProjectCard
               key={project.id}
@@ -272,7 +273,7 @@ export default function Home() {
 
       {/* ── Knowledge Base ───────────────────────────────── */}
       <section
-        className="px-6 md:px-10 pt-8 pb-8 max-w-6xl mx-auto"
+        className="px-6 md:px-10 pt-6 pb-8 max-w-6xl mx-auto"
         aria-labelledby="wiki-heading"
       >
         {/* Compact header row */}
@@ -281,7 +282,7 @@ export default function Home() {
           whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="mb-10"
+          className="mb-6"
         >
           <div>
             <SectionLabel>Knowledge Base</SectionLabel>
@@ -295,7 +296,7 @@ export default function Home() {
         </m.div>
 
         {/* 3×3 section card grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
           {([
             { label: 'Foundations',        slug: 'foundations',           article: 'what-is-software-testing',          count: 10, blurb: 'Theory, history and core principles of software testing.' },
             { label: 'Manual Testing',     slug: 'manual-testing',        article: 'introduction-to-manual-testing',    count: 7,  blurb: 'Exploratory testing, bug reporting and defect management.' },
@@ -327,7 +328,7 @@ export default function Home() {
                     {count} art.
                   </span>
                 </div>
-                <p className="font-mono text-[11px] text-text-muted leading-relaxed">
+                <p className="font-mono text-[12px] text-text-secondary leading-relaxed">
                   {blurb}
                 </p>
               </Link>
@@ -346,13 +347,13 @@ export default function Home() {
 
       {/* ── Experience ───────────────────────────────────── */}
       <section
-        className="px-6 md:px-10 pt-8 pb-16 max-w-6xl mx-auto"
+        className="px-6 md:px-10 pt-6 pb-8 max-w-6xl mx-auto"
         aria-labelledby="experience-heading"
       >
         <SectionLabel>Experience</SectionLabel>
         <h2
           id="experience-heading"
-          className="font-display font-semibold text-[clamp(1.5rem,3vw,2rem)] text-text-primary mb-10"
+          className="font-display font-semibold text-[clamp(1.5rem,3vw,2rem)] text-text-primary mb-6"
         >
           Where I've worked.
         </h2>
@@ -406,7 +407,7 @@ export default function Home() {
         className="bg-bg-surface border-t border-bg-border"
         aria-labelledby="contact-heading"
       >
-        <div className="max-w-6xl mx-auto px-6 md:px-10 py-20">
+        <div className="max-w-6xl mx-auto px-6 md:px-10 py-8 md:py-20">
 
           <SectionLabel>Get in touch</SectionLabel>
           <h2
@@ -416,7 +417,7 @@ export default function Home() {
             Let's work together.
           </h2>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 xl:gap-24 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 xl:gap-24 items-start">
 
             {/* ── Left ── */}
             <div>

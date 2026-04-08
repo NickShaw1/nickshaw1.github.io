@@ -74,7 +74,7 @@ export default function BlogPost() {
         })}
       />
 
-      <div className="max-w-3xl mx-auto px-6 md:px-10 py-16">
+      <div className="max-w-3xl mx-auto px-6 md:px-10 py-10 md:py-16">
 
         {/* ── Back link ──────────────────────────────────── */}
         <m.div
@@ -100,7 +100,7 @@ export default function BlogPost() {
           initial={reduced ? undefined : { opacity: 0, y: 20 }}
           animate={reduced ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: 'easeOut', delay: 0.05 }}
-          className="mb-12"
+          className="mb-8 md:mb-12"
         >
           <div className="flex items-center gap-3 mb-4">
             <span className="
@@ -156,7 +156,7 @@ export default function BlogPost() {
           <nav
             aria-label="Post navigation"
             className="
-              mt-16 pt-8 border-t border-bg-border
+              mt-10 md:mt-16 pt-6 md:pt-8 border-t border-bg-border
               grid grid-cols-1 sm:grid-cols-2 gap-4
             "
           >

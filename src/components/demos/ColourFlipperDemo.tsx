@@ -24,7 +24,7 @@ export default function ColourFlipperDemo() {
               className="w-7 h-7 rounded-full border-2 transition-all duration-150"
               style={{
                 background: c,
-                borderColor: i === index ? '#F0EDE6' : 'transparent',
+                borderColor: i === index ? '#F0F0F0' : 'transparent',
               }}
             />
           ))}

@@ -65,11 +65,12 @@ function Divider() {
 interface SectionBlockProps {
   id: SectionId
   label: string
+  heading: string
   children: React.ReactNode
   reduced: boolean
 }
 
-function SectionBlock({ id, label, children, reduced }: SectionBlockProps) {
+function SectionBlock({ id, label, heading, children, reduced }: SectionBlockProps) {
   return (
     <m.section
       id={id}
@@ -81,7 +82,12 @@ function SectionBlock({ id, label, children, reduced }: SectionBlockProps) {
       className="scroll-mt-[88px]"
     >
       <SectionLabel>{label}</SectionLabel>
-      <div id={`${id}-heading`} className="sr-only">{label}</div>
+      <h2
+        id={`${id}-heading`}
+        className="font-display font-semibold text-[clamp(1.5rem,3vw,2rem)] text-text-primary leading-tight tracking-[-0.02em] mb-6"
+      >
+        {heading}
+      </h2>
       {children}
     </m.section>
   )
@@ -165,7 +171,7 @@ export default function About() {
         })}
       />
 
-      <div className="max-w-6xl mx-auto px-6 md:px-10 py-16 lg:flex lg:gap-16">
+      <div className="max-w-6xl mx-auto px-6 md:px-10 py-10 md:py-16 lg:flex lg:gap-16">
 
         {/* ── Sidebar nav (desktop) ─────────────────────── */}
         <aside className="hidden lg:block w-36 flex-shrink-0" aria-label="Page sections">
@@ -196,7 +202,7 @@ export default function About() {
           <h1 className="sr-only">About Nick Shaw</h1>
 
           {/* ── I'm Nick ──────────────────────────────────── */}
-          <SectionBlock id="im-nick" label="I'm Nick" reduced={reduced}>
+          <SectionBlock id="im-nick" label="I'm Nick" heading="Who I am." reduced={reduced}>
             <div className="flex flex-col sm:flex-row gap-8 sm:gap-6 items-start">
               <div className="flex-1 min-w-0">
                 {meta.aboutSections.imNick.split('\n\n').map((para, i) => (
@@ -220,7 +226,7 @@ export default function About() {
           <Divider />
 
           {/* ── Experience ────────────────────────────────── */}
-          <SectionBlock id="experience" label="Experience" reduced={reduced}>
+          <SectionBlock id="experience" label="Experience" heading="Where I've worked." reduced={reduced}>
             <div className="bg-bg-surface border border-bg-border rounded-card p-5 sm:p-6">
 
               {/* Top: career history + certs/courses */}
@@ -348,7 +354,7 @@ export default function About() {
           <Divider />
 
           {/* ── Learning ──────────────────────────────────── */}
-          <SectionBlock id="learning" label="Learning" reduced={reduced}>
+          <SectionBlock id="learning" label="Learning" heading="What I'm learning." reduced={reduced}>
             {meta.aboutSections.learning.split('\n\n').map((para, i) => (
               <p key={i} className="text-text-secondary text-[15px] leading-[1.85] mb-4 last:mb-0">
                 {renderInlineLinks(para)}
@@ -359,7 +365,7 @@ export default function About() {
           <Divider />
 
           {/* ── Outside Work ──────────────────────────────── */}
-          <SectionBlock id="outside-work" label="Outside Work" reduced={reduced}>
+          <SectionBlock id="outside-work" label="Outside Work" heading="Life outside the office." reduced={reduced}>
             <div className="flex flex-col sm:flex-row gap-8 sm:gap-6 items-start">
               <div className="flex-1 min-w-0">
                 {meta.aboutSections.outsideWork.split('\n\n').map((para, i) => (
@@ -383,7 +389,7 @@ export default function About() {
           <Divider />
 
           {/* ── Writing ───────────────────────────────────── */}
-          <SectionBlock id="writing" label="Writing" reduced={reduced}>
+          <SectionBlock id="writing" label="Writing" heading="How I write." reduced={reduced}>
             {meta.aboutSections.writing.split('\n\n').map((para, i) =>
               para.startsWith('> ') ? (
                 <blockquote key={i} className="border-l-[3px] border-accent pl-4 my-5 text-text-secondary text-[15px] leading-[1.85] italic">
@@ -400,7 +406,7 @@ export default function About() {
           <Divider />
 
           {/* ── Adventures ────────────────────────────────── */}
-          <SectionBlock id="adventures" label="Adventures" reduced={reduced}>
+          <SectionBlock id="adventures" label="Adventures" heading="Where I've been." reduced={reduced}>
             {meta.aboutSections.adventures.split('\n\n').map((para, i) => (
               <p key={i} className="text-text-secondary text-[15px] leading-[1.85] mb-4 last:mb-0">
                 {para}

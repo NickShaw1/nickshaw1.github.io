@@ -36,7 +36,7 @@ html {
 
 body {
   background-color: #0a0a0a;
-  color: #F0EDE6;
+  color: #F0F0F0;
   font-family: 'Space Grotesk', sans-serif;
   font-size: 1rem;
   -webkit-font-smoothing: antialiased;
@@ -188,7 +188,7 @@ body {
 
 /* ─── Blog prose styles ──────────────────────────────────── */
 .prose-blog {
-  color: #c8c4bc;
+  color: #C8C8C8;
   font-size: 1rem;
   line-height: 1.85;
 }
@@ -199,7 +199,7 @@ body {
   font-size: 1.375rem;
   line-height: 1.25;
   letter-spacing: -0.02em;
-  color: #F0EDE6;
+  color: #F0F0F0;
   margin-top: 2.5rem;
   margin-bottom: 1rem;
 }
@@ -209,7 +209,7 @@ body {
   font-weight: 600;
   font-size: 1.125rem;
   line-height: 1.35;
-  color: #F0EDE6;
+  color: #F0F0F0;
   margin-top: 2rem;
   margin-bottom: 0.75rem;
 }
@@ -308,7 +308,7 @@ article code:not(pre code),
 
 .prose-blog strong {
   font-weight: 600;
-  color: #F0EDE6;
+  color: #F0F0F0;
 }
 
 .prose-blog em {
@@ -336,7 +336,7 @@ article code:not(pre code),
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #c8c4bc;
+  color: #C8C8C8;
 }
 
 /* ─── Hide scrollbar utility ─────────────────────────────── */

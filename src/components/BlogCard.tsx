@@ -54,7 +54,7 @@ export default function BlogCard({ post, delay = 0, reduced = false }: BlogCardP
 
       {/* Excerpt + read link row */}
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 sm:gap-6">
-        <p className="text-text-secondary text-sm leading-relaxed max-w-2xl line-clamp-1 sm:line-clamp-2">
+        <p className="text-text-secondary text-sm leading-relaxed">
           {post.excerpt}
         </p>
         <Link

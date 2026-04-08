@@ -47,7 +47,7 @@ export default function Projects() {
         })}
       />
 
-      <div className="max-w-6xl mx-auto px-6 md:px-10 py-16">
+      <div className="max-w-6xl mx-auto px-6 md:px-10 py-10 md:py-16">
 
         {/* ── Header ──────────────────────────────────────── */}
         <m.div
@@ -109,7 +109,7 @@ export default function Projects() {
           return (
             <section
               key={cat}
-              className="mb-16 last:mb-0"
+              className="mb-10 md:mb-16 last:mb-0"
               aria-labelledby={`cat-${cat.toLowerCase().replace(/\s+/g, '-')}`}
             >
               <m.div
