@@ -27,7 +27,7 @@ const ROLES = [
     company:  'Cloudbooking',
     location: 'London, UK (Remote)',
     period:   'Mar 2025 – Dec 2025',
-    summary:  'Directed QA strategy, delivery operations and performance across a 17-person SaaS team spanning web, mobile and tablet platforms. Member of the senior management team, collaborating with the C-suite on product and programme strategy.',
+    summary:  'Directed QA strategy, delivery operations and performance across a 17-person SaaS team spanning web, mobile and tablet platforms on cloud-native applications hosted on AWS. Member of the senior management team, collaborating with the C-suite on product and programme strategy.',
     achievements: [
       'Doubled test coverage from 45% to 90% within six months through structured test case development, AI-assisted test generation, shift-left practices and embedding QA in backlog refinement',
       'Reduced manual regression effort by 50% through targeted automation and tightened sprint scope',
