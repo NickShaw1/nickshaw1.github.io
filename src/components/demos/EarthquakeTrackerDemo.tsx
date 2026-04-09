@@ -137,6 +137,7 @@ export default function EarthquakeTrackerDemo() {
   const lerpDistTarget   = useRef<number | null>(null)
   const mostRecentQuake  = useRef<QuakeProps | null>(null)
   const hitMeshRef       = useRef<THREE.InstancedMesh | null>(null)
+  const crownMeshRef     = useRef<THREE.Mesh | null>(null)
   const tooltipRef       = useRef<HTMLDivElement>(null)
   const selLocalPos      = useRef<THREE.Vector3 | null>(null)
   const projVec          = useRef(new THREE.Vector3())
@@ -608,6 +609,11 @@ export default function EarthquakeTrackerDemo() {
     }
 
     // Crown marker for the single most recent quake — white ring + larger hit area so it's always on top in clusters
+    // Remove previous crown before recreating (filter changes cause this effect to re-run)
+    if (crownMeshRef.current) {
+      earth.remove(crownMeshRef.current)
+      crownMeshRef.current = null
+    }
     const newest = quakes.reduce<QuakeProps | null>((b, q) => (!b || q.time > b.time ? q : b), null)
     if (newest) {
       const crownGeo = new THREE.RingGeometry(0.85, 1.15, 48)
@@ -618,6 +624,7 @@ export default function EarthquakeTrackerDemo() {
       crownMesh.lookAt(0, 0, 0)
       crownMesh.scale.setScalar(quakeRadius(newest.mag) * 1.1)
       crownMesh.renderOrder = 5
+      crownMeshRef.current = crownMesh
       earth.add(crownMesh)
 
       // Bump the hit mesh for the most recent quake so it wins raycasts in clusters
