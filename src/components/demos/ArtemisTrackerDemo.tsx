@@ -621,9 +621,10 @@ export default function ArtemisTrackerDemo() {
   useEffect(() => {
     const scene = sceneRef.current
     if (!scene) return
-    if (!fullTrajPts.length) return
+    if (!fullTrajPts.length) { console.warn('[Artemis] full traj empty'); return }
+    console.log('[Artemis] full traj pts:', fullTrajPts.length, 'first:', fullTrajPts[0]?.x, fullTrajPts[0]?.y)
     if (fullPathRef.current) { scene.remove(fullPathRef.current); fullPathRef.current = null }
-    fullPathRef.current = buildLine(scene, fullTrajPts, 0x4488ff, 0.55) as unknown as THREE.Mesh
+    fullPathRef.current = buildLine(scene, fullTrajPts, 0xffffff, 1.0) as unknown as THREE.Mesh
   }, [fullTrajPts])
 
   useEffect(() => {
