@@ -298,7 +298,10 @@ export function ArtemisDemoSkeleton() {
         {/* Body grid — 1 col mobile, 2 col desktop */}
         <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-bg-border">
           <div className="px-4 pt-4 pb-2 sm:py-4 border-b sm:border-b-0 sm:border-r border-bg-border">
-            <SkeletonBlock className="h-3 w-12 mb-3" />
+            <div className="flex items-center gap-2 mb-2.5">
+              <SkeletonBlock className="w-3.5 h-3.5 rounded flex-shrink-0" />
+              <SkeletonBlock className="h-3 w-10" />
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {[0, 1, 2, 3].map((i) => (
                 <div key={i} className="flex items-center gap-2.5">

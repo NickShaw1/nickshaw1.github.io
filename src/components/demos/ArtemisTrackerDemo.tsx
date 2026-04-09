@@ -814,7 +814,7 @@ export default function ArtemisTrackerDemo() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-0 sm:gap-y-1">
               {crew.map((m) => (
                 <div key={m.name} className="flex items-center gap-2.5">
-                  <div className="relative w-14 h-14 flex-shrink-0 flex items-center justify-center">
+                  <div className="relative w-14 h-14 flex-shrink-0 flex items-center justify-start sm:justify-center">
                     <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/70 flex-shrink-0">
                       <img
                         src={m.photo}
