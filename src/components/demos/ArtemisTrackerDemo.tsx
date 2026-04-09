@@ -945,7 +945,7 @@ export default function ArtemisTrackerDemo() {
         <div className="relative w-full" style={{ height: 'clamp(260px, 56vw, 520px)' }}>
           <div
             ref={mountRef}
-            className="absolute inset-0 bg-[#000306]"
+            className="absolute inset-0 bg-[#000306] sm:brightness-100 brightness-125"
             style={{ cursor: isDragging.current ? 'grabbing' : 'grab', touchAction: 'pan-y' }}
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
