@@ -33,10 +33,12 @@ export default function Home() {
   const [activeProject, setActiveProject] = useState<ProjectItem | null>(null)
 
   useEffect(() => {
-    if (location.hash) {
-      const el = document.getElementById(location.hash.slice(1))
-      if (el) el.scrollIntoView({ behavior: 'smooth' })
-    }
+    if (!location.hash) return
+    const id = location.hash.slice(1)
+    const timer = setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+    }, 100)
+    return () => clearTimeout(timer)
   }, [location.hash])
 
   const anim = (delay: number) =>
@@ -456,7 +458,7 @@ export default function Home() {
 
             {/* ── Right: form ── */}
             <div>
-              <Suspense fallback={null}>
+              <Suspense fallback={<div className="h-64 flex items-center justify-center font-mono text-[11px] text-text-muted animate-pulse">Loading…</div>}>
                 <ContactForm />
               </Suspense>
             </div>

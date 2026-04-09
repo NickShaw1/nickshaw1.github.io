@@ -199,6 +199,7 @@ export default function Projects() {
                       delay={reduced ? 0 : i * 70}
                       reduced={reduced}
                       onDetailClick={openModal}
+                      disableHighlight
                     />
                   ))}
                 </div>

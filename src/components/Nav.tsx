@@ -164,11 +164,12 @@ export default function Nav() {
           <a
             href="/#contact"
             className="
-              font-mono text-[12px] tracking-widest uppercase
-              border border-accent text-text-primary bg-accent/10
+              font-mono text-[12px] font-semibold tracking-widest uppercase
+              bg-accent text-bg-base
               px-4 py-2 rounded-pill
-              hover:bg-accent/20
-              transition-colors duration-150
+              shadow-[0_0_24px_rgba(10,255,157,0.25)]
+              hover:bg-accent/90 hover:shadow-[0_0_32px_rgba(10,255,157,0.35)]
+              transition-all duration-150
               focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2
             "
           >

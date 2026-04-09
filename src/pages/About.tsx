@@ -58,6 +58,24 @@ const ROLES = [
 
 type SectionId = typeof SECTIONS[number]['id']
 
+function getPippinAge(): string {
+  const birth = new Date(2025, 8, 20) // Sept 20 2025 (month is 0-indexed)
+  const now = new Date()
+  if (now < birth) return 'Not born yet!'
+  let years = now.getFullYear() - birth.getFullYear()
+  let months = now.getMonth() - birth.getMonth()
+  let days = now.getDate() - birth.getDate()
+  if (days < 0) {
+    months--
+    const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0)
+    days += prevMonth.getDate()
+  }
+  if (months < 0) { years--; months += 12 }
+  const totalMonths = years * 12 + months
+  if (totalMonths < 24) return `${totalMonths} months, ${days} days`
+  return months > 0 ? `${years} years ${months} months` : `${years} years`
+}
+
 function Divider() {
   return <hr className="border-0 border-t border-bg-border my-8 sm:my-12" />
 }
@@ -392,7 +410,7 @@ export default function About() {
                 icon={<Dog size={16} />}
                 iconColour="text-[#fbbf24]"
                 imgClass="object-cover object-[center_45%]"
-                rows={[['Breed', 'Cavapoo'], ['Age', '6 months'], ['Fav. food', 'Yoghurt'], ['Hobbies', 'Walks, Toys']]}
+                rows={[['Breed', 'Cavapoo'], ['Age', getPippinAge()], ['Fav. food', 'Yoghurt'], ['Hobbies', 'Walks, Toys']]}
               />
             }
           >

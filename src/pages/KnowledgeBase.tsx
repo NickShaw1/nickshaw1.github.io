@@ -6,7 +6,7 @@ import {
   Sparkles, Wrench, Lightbulb,
   Play, Globe,
   BookMarked, CheckSquare, HelpCircle,
-  Construction, ArrowUpRight, Clock, Cpu,
+  Construction, ArrowUpRight, Clock, Cpu, FileText,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
@@ -21,6 +21,7 @@ interface KBCard {
   icon: ComponentType<{ size?: number; className?: string }>
   href?: string
   readingMins?: number
+  articleCount?: number
 }
 
 // ── Icon colours per section type ─────────────────────────
@@ -29,21 +30,21 @@ const GUIDES_COLOUR  = 'text-[#E2574C]'
 const REF_COLOUR     = 'text-[#f59e0b]'
 
 const THEORY: KBCard[] = [
-  { title: 'Foundations',         icon: BookOpen,      blurb: 'The theory, history and core principles of software testing.',                   href: '/knowledge-base/foundations/what-is-software-testing',              readingMins: 49 },
-  { title: 'Manual Testing',      icon: Hand,          blurb: 'Exploratory testing, bug reporting, defect management and usability testing.',    href: '/knowledge-base/manual-testing/introduction-to-manual-testing',     readingMins: 37 },
-  { title: 'Test Management',     icon: ClipboardList, blurb: 'Test planning, risk prioritisation, compliance and stakeholder communication.',   href: '/knowledge-base/test-management/test-planning-and-strategy',        readingMins: 37 },
-  { title: 'Automation',          icon: Bot,           blurb: 'Test automation concepts, patterns and practices across the full pyramid.',       href: '/knowledge-base/automation/introduction-to-test-automation',        readingMins: 64 },
-  { title: 'Specialist Testing',  icon: FlaskConical,  blurb: 'In-depth coverage of API, performance, security, mobile and beyond.',            href: '/knowledge-base/specialist-testing/api-testing',                    readingMins: 67 },
-  { title: 'Observability',       icon: Activity,      blurb: 'Monitoring, alerting, feature flags and production quality signals.',             href: '/knowledge-base/observability/logs-metrics-and-traces',             readingMins: 25 },
-  { title: 'AI & Modern Testing', icon: Sparkles,      blurb: 'How AI changes testing and how to test AI systems.',                             href: '/knowledge-base/ai-and-modern-testing/software-testing-in-the-age-of-ai', readingMins: 44 },
-  { title: 'Tooling',             icon: Wrench,        blurb: 'Practical guides to the tools powering modern testing workflows.',               href: '/knowledge-base/tooling/browser-and-e2e-tools',                     readingMins: 49 },
-  { title: 'Concepts',            icon: Lightbulb,     blurb: 'Strategy, good tests, legacy codebases and setting up CI/CD.',                  href: '/knowledge-base/concepts/writing-good-tests',                       readingMins: 21 },
+  { title: 'Foundations',         icon: BookOpen,      blurb: 'The theory, history and core principles of software testing.',                   href: '/knowledge-base/foundations/what-is-software-testing',              readingMins: 49,  articleCount: 10 },
+  { title: 'Manual Testing',      icon: Hand,          blurb: 'Exploratory testing, bug reporting, defect management and usability testing.',    href: '/knowledge-base/manual-testing/introduction-to-manual-testing',     readingMins: 37,  articleCount: 7  },
+  { title: 'Test Management',     icon: ClipboardList, blurb: 'Test planning, risk prioritisation, compliance and stakeholder communication.',   href: '/knowledge-base/test-management/test-planning-and-strategy',        readingMins: 37,  articleCount: 9  },
+  { title: 'Automation',          icon: Bot,           blurb: 'Test automation concepts, patterns and practices across the full pyramid.',       href: '/knowledge-base/automation/introduction-to-test-automation',        readingMins: 64,  articleCount: 14 },
+  { title: 'Specialist Testing',  icon: FlaskConical,  blurb: 'In-depth coverage of API, performance, security, mobile and beyond.',            href: '/knowledge-base/specialist-testing/api-testing',                    readingMins: 67,  articleCount: 14 },
+  { title: 'Observability',       icon: Activity,      blurb: 'Monitoring, alerting, feature flags and production quality signals.',             href: '/knowledge-base/observability/logs-metrics-and-traces',             readingMins: 25,  articleCount: 5  },
+  { title: 'AI & Modern Testing', icon: Sparkles,      blurb: 'How AI changes testing and how to test AI systems.',                             href: '/knowledge-base/ai-and-modern-testing/software-testing-in-the-age-of-ai', readingMins: 44, articleCount: 7 },
+  { title: 'Tooling',             icon: Wrench,        blurb: 'Practical guides to the tools powering modern testing workflows.',               href: '/knowledge-base/tooling/browser-and-e2e-tools',                     readingMins: 49,  articleCount: 9  },
+  { title: 'Concepts',            icon: Lightbulb,     blurb: 'Strategy, good tests, legacy codebases and setting up CI/CD.',                  href: '/knowledge-base/concepts/writing-good-tests',                       readingMins: 21,  articleCount: 4  },
 ]
 
 const GUIDES: KBCard[] = [
-  { title: 'Playwright Guide',           icon: Play,   blurb: 'From zero to a production-ready test suite using the Playwright framework.',                          href: '/knowledge-base/playwright/introduction',                              readingMins: 137 },
-  { title: 'Playwright API Testing',    icon: Globe,  blurb: 'Test REST APIs, mock network calls and seed test data.',      href: '/knowledge-base/playwright-api-testing/what-is-api-testing', readingMins: 75  },
-  { title: 'Playwright MCP & AI',       icon: Cpu,    blurb: 'Generate, debug and maintain tests using AI and MCP.',        href: '/knowledge-base/playwright-mcp/what-is-mcp',                  readingMins: 100 },
+  { title: 'Playwright Guide',        icon: Play,  blurb: 'From zero to a production-ready test suite using the Playwright framework.',  href: '/knowledge-base/playwright/introduction',                              readingMins: 137, articleCount: 10 },
+  { title: 'Playwright API Testing',  icon: Globe, blurb: 'Test REST APIs, mock network calls and seed test data.',                      href: '/knowledge-base/playwright-api-testing/what-is-api-testing',          readingMins: 75,  articleCount: 6  },
+  { title: 'Playwright MCP & AI',     icon: Cpu,   blurb: 'Generate, debug and maintain tests using AI and MCP.',                       href: '/knowledge-base/playwright-mcp/what-is-mcp',                          readingMins: 100, articleCount: 9  },
 ]
 
 const REFERENCE: KBCard[] = [
@@ -86,9 +87,20 @@ function KBCard({ card, iconColour, section, delay, reduced }: { card: KBCard; i
 
       <div className="border-t border-bg-border pt-3 mt-4 flex items-center justify-between">
         {card.readingMins ? (
-          <span className="flex items-center gap-1 font-mono text-[10px] text-text-muted">
-            <Clock size={10} aria-hidden="true" />
-            {card.readingMins} min read
+          <span className="flex items-center gap-2 font-mono text-[10px] text-text-muted">
+            <span className="flex items-center gap-1">
+              <Clock size={10} aria-hidden="true" />
+              {card.readingMins} min read
+            </span>
+            {card.articleCount != null && (
+              <>
+                <span className="text-text-muted/30">·</span>
+                <span className="flex items-center gap-1">
+                  <FileText size={10} aria-hidden="true" />
+                  {card.articleCount} art.
+                </span>
+              </>
+            )}
           </span>
         ) : (
           <span />

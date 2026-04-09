@@ -17,6 +17,7 @@ export interface ProjectItem {
   liveUrl?: string
   internalUrl?: string
   featured?: boolean
+  highlighted?: boolean
   modalSize?: ModalSize
   icon?: string
   detail?: ProjectDetail
@@ -31,6 +32,7 @@ export const projects: ProjectItem[] = [
     stack: ['TypeScript', 'Three.js', 'NASA API'],
     category: 'Exercises',
     featured: true,
+    highlighted: true,
     modalSize: 'expanded',
     icon: 'Rocket',
     detail: {
@@ -75,6 +77,41 @@ function parseHorizons(text: string): HorizonsPoint[] {
     },
   },
   {
+    id: 'earthquake-tracker',
+    title: 'Earthquake Tracker',
+    description: 'Real-time global earthquake map with tectonic plate boundaries on a 3D globe.',
+    stack: ['TypeScript', 'Three.js', 'USGS API'],
+    category: 'Exercises',
+    featured: true,
+    modalSize: 'expanded',
+    icon: 'Activity',
+    detail: {
+      body: 'A live earthquake tracker powered by the USGS real-time GeoJSON feeds, rendered on a rotating Three.js globe. Filter by time window and minimum magnitude. Quake markers are sized and coloured by magnitude, with tectonic plate boundaries overlaid from Peter Bird\'s PB2002 dataset. Click any marker to inspect its details.',
+      highlights: [
+        'Fetching and parsing [USGS GeoJSON](https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php) feeds with configurable time range (hour / day / week / month) and magnitude threshold (M2.5+, M4.5+, significant)',
+        'Batching earthquake markers into InstancedMeshes (glow ring, core dot and invisible hit target per quake) to keep draw calls constant regardless of event count',
+        'Mapping magnitude to both marker size (logarithmic-like scale) and colour band: cyan for minor, violet for light, orange for strong and red for major events',
+        'Projecting tectonic plate boundary LineStrings from the PB2002 GeoJSON dataset onto the globe surface as Three.js Lines with a small radial offset to avoid z-fighting',
+        'Raycasting against the InstancedMesh on click to identify and surface the selected earthquake\'s details',
+        'Globe auto-orbits on load and resumes after 10 seconds of no interaction',
+      ],
+      codeSnippet: `// Flat disc markers — CircleGeometry keeps overdraw minimal at scale
+const geo  = new THREE.CircleGeometry(1, 24)
+const mat  = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, depthWrite: false })
+const mesh = new THREE.InstancedMesh(geo, mat, quakes.length)
+
+quakes.forEach((q, i) => {
+  const pos = latLonToVec3(q.lat, q.lon, EARTH_R * 1.011)
+  dummy.position.copy(pos)
+  dummy.lookAt(0, 0, 0)                        // orient disc tangent to the globe surface
+  dummy.scale.setScalar(quakeRadius(q.mag))    // magnitude → size
+  dummy.updateMatrix()
+  mesh.setMatrixAt(i, dummy.matrix)
+  mesh.setColorAt(i, magColor(q.mag))          // magnitude → colour band
+})`,
+    },
+  },
+  {
     id: 'iss-tracker',
     title: 'ISS Tracker',
     description: 'Live ISS tracker on a 3D Earth with real-time telemetry.',
@@ -112,7 +149,6 @@ camera.position.lerp(
   {
     id: 'piano',
     title: 'Synthesizer',
-    featured: true,
     description: 'A polyphonic synthesizer with ADSR envelope, filter, distortion, reverb and LFO.',
     stack: ['TypeScript', 'React', 'Web Audio API'],
     category: 'Exercises',
@@ -498,7 +534,6 @@ btns.forEach(btn => {
     stack: ['React', 'TypeScript', 'Vite'],
     category: 'Sites',
     liveUrl: 'https://www.asaware.org',
-    featured: true,
     icon: 'Monitor',
   },
 

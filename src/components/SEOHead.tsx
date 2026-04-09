@@ -28,7 +28,7 @@ export default function SEOHead({
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: https:",
     "font-src 'self'",
-    `connect-src 'self' https://formspree.io https://api.frankfurter.dev https://api.open-meteo.com https://api.wheretheiss.at https://corquaid.github.io https://ssd.jpl.nasa.gov https://horizons-proxy.culturebombadil.workers.dev`,
+    `connect-src 'self' https://formspree.io https://api.frankfurter.dev https://api.open-meteo.com https://api.wheretheiss.at https://corquaid.github.io https://ssd.jpl.nasa.gov https://horizons-proxy.culturebombadil.workers.dev https://earthquake.usgs.gov`,
     "frame-src https://www.youtube.com",
   ].join('; ')
 

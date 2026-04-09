@@ -4,6 +4,22 @@ import { X } from 'lucide-react'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import type { ProjectItem } from '../data/projects'
 
+function renderHighlight(text: string) {
+  const parts = text.split(/(\[[^\]]+\]\([^)]+\))/)
+  return parts.map((part, i) => {
+    const match = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/)
+    if (match) {
+      return (
+        <a key={i} href={match[2]} target="_blank" rel="noopener noreferrer"
+          className="text-[#F5A623] hover:opacity-75 transition-opacity duration-150">
+          {match[1]}
+        </a>
+      )
+    }
+    return part
+  })
+}
+
 interface ProjectModalProps {
   project: ProjectItem | null
   onClose: () => void
@@ -21,6 +37,7 @@ const DEMO_COMPONENTS: Partial<Record<string, React.LazyExoticComponent<() => Re
   'weather-app':        lazy(() => import('./demos/WeatherDemo')),
   'piano':              lazy(() => import('./demos/SynthDemo')),
   'artemis-tracker':    lazy(() => import('./demos/ArtemisTrackerDemo')),
+  'earthquake-tracker': lazy(() => import('./demos/EarthquakeTrackerDemo')),
   'iss-tracker':        lazy(() => import('./demos/ISSTrackerDemo')),
   'holiday-planner':    lazy(() => import('./demos/HolidayPlannerDemo')),
 }
@@ -32,9 +49,16 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
   useEffect(() => {
     if (project) {
       closeRef.current?.focus()
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+      document.body.style.paddingRight = `${scrollbarWidth}px`
       document.body.style.overflow = 'hidden'
+      document.documentElement.style.overflow = 'hidden'
     }
-    return () => { document.body.style.overflow = '' }
+    return () => {
+      document.body.style.paddingRight = ''
+      document.body.style.overflow = ''
+      document.documentElement.style.overflow = ''
+    }
   }, [project])
 
   useEffect(() => {
@@ -94,7 +118,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 ref={closeRef}
                 onClick={onClose}
                 aria-label="Close"
-                className="flex-shrink-0 text-text-muted hover:text-text-primary transition-colors duration-150"
+                className="flex-shrink-0 text-text-muted hover:text-text-primary transition-colors duration-150 focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/50 rounded-sm"
               >
                 <X size={16} />
               </button>
@@ -128,7 +152,13 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 </p>
 
                 {DemoComponent && (
-                  <Suspense fallback={<div className="mb-5 h-24" />}>
+                  <Suspense fallback={
+                    <div className="mb-5 h-24 flex items-center justify-center">
+                      <span className="font-mono text-[11px] tracking-widest uppercase text-accent animate-pulse">
+                        Loading demo…
+                      </span>
+                    </div>
+                  }>
                     <DemoComponent />
                   </Suspense>
                 )}
@@ -141,7 +171,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     {project.detail.highlights.map((h, i) => (
                       <li key={i} className="flex items-start gap-2.5 text-[13px] text-text-secondary">
                         <span className="mt-1.5 w-1 h-1 rounded-full bg-accent flex-shrink-0" aria-hidden="true" />
-                        {h}
+                        <span>{renderHighlight(h)}</span>
                       </li>
                     ))}
                   </ul>
@@ -154,9 +184,9 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     </p>
                     <pre className="
                       bg-bg-surface border border-bg-border rounded-card
-                      p-4 overflow-x-hidden
+                      p-4 overflow-x-auto
                       font-mono text-[11px] leading-[1.7] text-text-secondary
-                      whitespace-pre-wrap break-words
+                      whitespace-pre
                     ">
                       <code>{project.detail.codeSnippet}</code>
                     </pre>

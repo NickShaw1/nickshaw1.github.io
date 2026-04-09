@@ -150,17 +150,16 @@ export default function SynthDemo() {
     const pct = ((value - min) / (max - min)) * 100
     return (
       <div className="flex flex-col items-center gap-1">
-        <span className="font-mono text-[8px] tracking-widest uppercase" style={{ color: '#7a9fad' }}>{label}</span>
+        <span className="font-mono text-[8px] tracking-widest uppercase text-[#7a9fad]">{label}</span>
         <div className="relative w-10 h-10 flex items-center justify-center">
-          <svg viewBox="0 0 40 40" className="absolute inset-0 w-full h-full" style={{ transform: 'rotate(-220deg)' }}>
+          <svg viewBox="0 0 40 40" className="absolute inset-0 w-full h-full -rotate-[220deg]">
             <circle cx="20" cy="20" r="14" fill="none" stroke="#3d5260" strokeWidth="3" strokeLinecap="round"
               strokeDasharray={`${0.72 * 2 * Math.PI * 14} ${2 * Math.PI * 14}`} />
             <circle cx="20" cy="20" r="14" fill="none" stroke="#0AFF9D" strokeWidth="3" strokeLinecap="round"
               strokeDasharray={`${(pct / 100) * 0.72 * 2 * Math.PI * 14} ${2 * Math.PI * 14}`} />
           </svg>
-          <div className="absolute inset-[10px] rounded-full" style={{ background: '#111416', border: '1px solid #7a9fad' }} />
-          <div className="absolute w-1 h-1 rounded-full" style={{
-            background: '#0AFF9D',
+          <div className="absolute inset-[10px] rounded-full bg-[#111416] border border-[#7a9fad]" />
+          <div className="absolute w-1 h-1 rounded-full bg-accent" style={{
             top: '50%', left: '50%',
             transform: `rotate(${-135 + pct * 2.7}deg) translateY(-10px) translate(-50%, -50%)`,
             transformOrigin: '0 0',
@@ -172,7 +171,7 @@ export default function SynthDemo() {
             aria-label={label}
           />
         </div>
-        <span className="font-mono text-[8px] tabular-nums" style={{ color: '#0AFF9D' }}>{fmt ? fmt(value) : value}</span>
+        <span className="font-mono text-[8px] tabular-nums text-accent">{fmt ? fmt(value) : value}</span>
       </div>
     )
   }
@@ -183,63 +182,51 @@ export default function SynthDemo() {
     <div className="mb-5 select-none">
       <p className="font-mono text-[10px] tracking-widest uppercase text-text-muted mb-3">Live demo</p>
 
-      <div className="rounded-xl overflow-hidden" style={{ background: '#0d0f11', border: '1px solid #3d5260' }}>
+      <div className="rounded-xl overflow-hidden bg-[#0d0f11] border border-[#3d5260]">
 
-        <div className="px-4 py-2.5 flex items-center justify-between" style={{ background: '#111316', borderBottom: '1px solid #3d5260' }}>
+        <div className="px-4 py-2.5 flex items-center justify-between bg-[#111316] border-b border-[#3d5260]">
           <div className="flex items-baseline gap-2">
-            <span className="font-mono font-bold text-[13px] tracking-[0.15em] uppercase" style={{ color: '#0AFF9D' }}>PRISM</span>
-            <span className="font-mono text-[8px] tracking-widest uppercase" style={{ color: '#1e3a50' }}>Polyphonic Synthesizer</span>
+            <span className="font-mono font-bold text-[13px] tracking-[0.15em] uppercase text-accent">PRISM</span>
+            <span className="font-mono text-[8px] tracking-widest uppercase text-[#1e3a50]">Polyphonic Synthesizer</span>
           </div>
           <div className="flex items-center gap-3">
             <button onClick={resetSynth}
-              className="font-mono text-[8px] tracking-widest uppercase px-2.5 py-1 rounded transition-colors duration-150"
-              style={{ color: '#94b8c4', border: '1px solid #3d5260', background: 'transparent' }}
-              onMouseEnter={e => { const el = e.currentTarget; el.style.color='#0AFF9D'; el.style.borderColor='#0AFF9D' }}
-              onMouseLeave={e => { const el = e.currentTarget; el.style.color='#94b8c4'; el.style.borderColor='#3d5260' }}
+              className="font-mono text-[8px] tracking-widest uppercase px-2.5 py-1 rounded border border-[#3d5260] bg-transparent text-[#94b8c4] transition-colors duration-150 hover:text-accent hover:border-accent"
             >Reset</button>
             <div
               title="Power"
-              className="flex items-center justify-center rounded-full"
-              style={{
-                width: 22, height: 22,
-                background: '#1a0000',
-                border: '1px solid #ff220055',
-                boxShadow: '0 0 8px #ff220055, 0 0 18px #ff220033',
-                color: '#ff3300',
-                fontSize: 11,
-                lineHeight: 1,
-              }}
+              className="flex items-center justify-center rounded-full w-[22px] h-[22px] text-[11px] leading-none text-[#ff3300] bg-[#1a0000] border border-[#ff220055]"
+              style={{ boxShadow: '0 0 8px #ff220055, 0 0 18px #ff220033' }}
             >⏻</div>
           </div>
         </div>
 
-        <div className="px-4 py-3 flex items-center gap-3" style={{ borderBottom: '1px solid #3d5260', background: '#0d0f11' }}>
-          <span className="font-mono text-[8px] tracking-widest uppercase flex-shrink-0" style={{ color: '#7a9fad' }}>OSC</span>
-          <div className="flex rounded-md overflow-hidden flex-shrink-0" style={{ border: '1px solid #3d5260' }}>
+        <div className="px-4 py-3 flex items-center gap-3 border-b border-[#3d5260] bg-[#0d0f11]">
+          <span className="font-mono text-[8px] tracking-widest uppercase flex-shrink-0 text-[#7a9fad]">OSC</span>
+          <div className="flex rounded-md overflow-hidden flex-shrink-0 border border-[#3d5260]">
             {WAVE_LABELS.map(([w, label]) => (
               <button key={w} onClick={() => setWave(w)}
-                className="font-mono text-[8px] tracking-wider uppercase px-3 py-1.5 transition-all duration-100"
+                className="font-mono text-[8px] tracking-wider uppercase px-3 py-1.5 transition-all duration-100 border-r border-[#3d5260]"
                 style={{
                   background: wave === w ? '#002d1f' : 'transparent',
                   color: wave === w ? '#0AFF9D' : '#7a9fad',
-                  borderRight: '1px solid #3d5260',
                 }}>
                 {label}
               </button>
             ))}
           </div>
           <div className="ml-auto flex items-center gap-2 flex-shrink-0">
-            <span className="font-mono text-[8px] uppercase" style={{ color: '#7a9fad' }}>VOL</span>
+            <span className="font-mono text-[8px] uppercase text-[#7a9fad]">VOL</span>
             <input type="range" min={0} max={1} step={0.01} value={vol}
               onChange={e => setVol(parseFloat(e.target.value))}
               className="w-16 sm:w-24 cursor-pointer" style={{ accentColor: '#0AFF9D' }} aria-label="Volume" />
-            <span className="hidden sm:inline font-mono text-[8px] tabular-nums w-7 text-right" style={{ color: '#0AFF9D' }}>{Math.round(vol * 100)}%</span>
+            <span className="hidden sm:inline font-mono text-[8px] tabular-nums w-7 text-right text-accent">{Math.round(vol * 100)}%</span>
           </div>
         </div>
 
-        <div className="hidden sm:flex" style={{ borderBottom: '1px solid #3d5260' }}>
-          <div className="flex-1 px-3 py-3 flex flex-col gap-2" style={{ borderRight: '1px solid #3d5260' }}>
-            <span className="font-mono text-[8px] tracking-widest uppercase text-center" style={{ color: '#7a9fad' }}>Envelope</span>
+        <div className="hidden sm:flex border-b border-[#3d5260]">
+          <div className="flex-1 px-3 py-3 flex flex-col gap-2 border-r border-[#3d5260]">
+            <span className="font-mono text-[8px] tracking-widest uppercase text-center text-[#7a9fad]">Envelope</span>
             <div className="flex justify-around">
               {knob('ATK', attack, 0.001, 2, 0.001, setAttack, v => `${v.toFixed(2)}s`)}
               {knob('DEC', decay, 0.01, 2, 0.01, setDecay, v => `${v.toFixed(2)}s`)}
@@ -247,22 +234,22 @@ export default function SynthDemo() {
               {knob('REL', release, 0.01, 3, 0.01, setRelease, v => `${v.toFixed(2)}s`)}
             </div>
           </div>
-          <div className="flex-none px-3 py-3 flex flex-col gap-2" style={{ borderRight: '1px solid #3d5260' }}>
-            <span className="font-mono text-[8px] tracking-widest uppercase text-center" style={{ color: '#7a9fad' }}>Filter</span>
+          <div className="flex-none px-3 py-3 flex flex-col gap-2 border-r border-[#3d5260]">
+            <span className="font-mono text-[8px] tracking-widest uppercase text-center text-[#7a9fad]">Filter</span>
             <div className="flex justify-around gap-2">
               {knob('FREQ', cutoff, 80, 18000, 10, setCutoff, v => v >= 1000 ? `${(v/1000).toFixed(1)}k` : `${Math.round(v)}`)}
               {knob('RES', res, 0.01, 20, 0.1, setRes, v => v.toFixed(1))}
             </div>
           </div>
-          <div className="flex-none px-3 py-3 flex flex-col gap-2" style={{ borderRight: '1px solid #3d5260' }}>
-            <span className="font-mono text-[8px] tracking-widest uppercase text-center" style={{ color: '#7a9fad' }}>FX</span>
+          <div className="flex-none px-3 py-3 flex flex-col gap-2 border-r border-[#3d5260]">
+            <span className="font-mono text-[8px] tracking-widest uppercase text-center text-[#7a9fad]">FX</span>
             <div className="flex justify-around gap-2">
               {knob('DIST', dist, 0, 1, 0.01, setDist, v => v.toFixed(2))}
               {knob('REVB', revMix, 0, 1, 0.01, setRevMix, v => v.toFixed(2))}
             </div>
           </div>
           <div className="flex-none px-3 py-3 flex flex-col gap-2">
-            <span className="font-mono text-[8px] tracking-widest uppercase text-center" style={{ color: '#7a9fad' }}>LFO</span>
+            <span className="font-mono text-[8px] tracking-widest uppercase text-center text-[#7a9fad]">LFO</span>
             <div className="flex justify-around gap-2">
               {knob('RATE', lfoRate, 0.1, 20, 0.1, setLfoRate, v => `${v.toFixed(1)}hz`)}
               {knob('DPTH', lfoDepth, 0, 30, 0.5, setLfoDepth, v => v.toFixed(1))}
@@ -270,7 +257,7 @@ export default function SynthDemo() {
           </div>
         </div>
 
-        <div className="px-4 py-3" style={{ background: '#0a0c0e' }}>
+        <div className="px-4 py-3 bg-[#0a0c0e]">
           {(['sm', 'full'] as const).map(variant => {
             const whiteKeys = variant === 'sm'
               ? ['C4','D4','E4','F4','G4','A4','B4']
@@ -300,7 +287,7 @@ export default function SynthDemo() {
                 ]
             return (
               <div key={variant} className={variant === 'sm' ? 'block sm:hidden' : 'hidden sm:block'}>
-                <div className="relative w-full" style={{ height: 90 }}>
+                <div className="relative w-full h-[90px]">
                   {whiteKeys.map((note, i) => (
                     <div key={note}
                       onMouseDown={() => noteOn(note)} onMouseUp={() => noteOff(note)} onMouseLeave={() => noteOff(note)}
@@ -341,7 +328,7 @@ export default function SynthDemo() {
               </div>
             )
           })}
-          <p className="font-mono text-[7px] text-center mt-2.5 tracking-widest" style={{ color: '#3d5260' }}>
+          <p className="font-mono text-[7px] text-center mt-2.5 tracking-widest text-[#3d5260]">
             Z – M &nbsp;·&nbsp; Q – U &nbsp;·&nbsp; keyboard playable
           </p>
         </div>

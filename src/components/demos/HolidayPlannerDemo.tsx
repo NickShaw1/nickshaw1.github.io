@@ -70,25 +70,22 @@ export default function HolidayPlannerDemo() {
     <div className="mb-5">
       <p className="font-mono text-[10px] tracking-widest uppercase text-text-muted mb-3">Live demo</p>
 
-      <div className="rounded-xl overflow-hidden" style={{ background: '#0d0f11', border: '1px solid #3d5260' }}>
+      <div className="rounded-xl overflow-hidden bg-[#0d0f11] border border-[#3d5260]">
 
-        <div className="px-4 py-2.5 flex items-center justify-between" style={{ background: '#111316', borderBottom: '1px solid #3d5260' }}>
+        <div className="px-4 py-2.5 flex items-center justify-between bg-[#111316] border-b border-[#3d5260]">
           <div className="flex items-baseline gap-2">
-            <span className="font-mono font-bold text-[13px] tracking-[0.15em] uppercase" style={{ color: '#0AFF9D' }}>
+            <span className="font-mono font-bold text-[13px] tracking-[0.15em] uppercase text-accent">
               {destination || 'Holiday Planner'}
             </span>
             {nights !== null && nights > 0 && (
-              <span className="font-mono text-[8px] tracking-widest uppercase" style={{ color: '#7a9fad' }}>
+              <span className="font-mono text-[8px] tracking-widest uppercase text-[#7a9fad]">
                 {nights} night{nights !== 1 ? 's' : ''}
               </span>
             )}
           </div>
           <button
             onClick={() => { setDestination(''); setStartDate(''); setEndDate(''); setCurrency('GBP'); setItems([{ label: '', cost: '' }]) }}
-            className="font-mono text-[8px] tracking-widest uppercase px-2.5 py-1 rounded transition-colors duration-150"
-            style={{ color: '#94b8c4', border: '1px solid #3d5260', background: 'transparent' }}
-            onMouseEnter={e => { const el = e.currentTarget; el.style.color='#ff4444'; el.style.borderColor='#ff4444' }}
-            onMouseLeave={e => { const el = e.currentTarget; el.style.color='#94b8c4'; el.style.borderColor='#3d5260' }}
+            className="font-mono text-[8px] tracking-widest uppercase px-2.5 py-1 rounded border border-[#3d5260] bg-transparent text-[#94b8c4] transition-colors duration-150 hover:text-red-400 hover:border-red-400"
           >Reset</button>
         </div>
 
@@ -144,15 +141,15 @@ export default function HolidayPlannerDemo() {
             </div>
           </div>
 
-          <div style={{ borderTop: '1px solid #3d5260', paddingTop: '1rem' }}>
+          <div className="border-t border-[#3d5260] pt-4">
             <div className="flex items-center justify-between mb-2">
               <p className={labelClass}>Itinerary &amp; costs</p>
-              <span className={`${labelClass} mb-0`} style={{ color: items.length >= 10 ? '#0AFF9D' : undefined }}>{items.length}/10</span>
+              <span className={`${labelClass} mb-0 ${items.length >= 10 ? 'text-accent' : ''}`}>{items.length}/10</span>
             </div>
 
             <div className="flex gap-2 mb-1 px-0.5">
-              <span className="flex-[4] font-mono text-[9px] tracking-widest uppercase" style={{ color: '#2a3a40' }}>Item</span>
-              <span className="flex-[1] font-mono text-[9px] tracking-widest uppercase text-right" style={{ color: '#2a3a40' }}>Cost ({symbol})</span>
+              <span className="flex-[4] font-mono text-[9px] tracking-widest uppercase text-[#2a3a40]">Item</span>
+              <span className="flex-[1] font-mono text-[9px] tracking-widest uppercase text-right text-[#2a3a40]">Cost ({symbol})</span>
               <span className="w-5" />
             </div>
 
@@ -200,9 +197,9 @@ export default function HolidayPlannerDemo() {
             )}
           </div>
 
-          <div className="flex items-center justify-between rounded-lg px-4 py-3" style={{ background: '#111316', border: '1px solid #3d5260' }}>
-            <span className="font-mono text-[10px] tracking-widest uppercase" style={{ color: '#7a9fad' }}>Total</span>
-            <span className="font-display font-bold text-[1.5rem] tabular-nums" style={{ color: total > 0 ? '#0AFF9D' : '#94b8c4' }}>
+          <div className="flex items-center justify-between rounded-lg px-4 py-3 bg-[#111316] border border-[#3d5260]">
+            <span className="font-mono text-[10px] tracking-widest uppercase text-[#7a9fad]">Total</span>
+            <span className={`font-display font-bold text-[1.5rem] tabular-nums ${total > 0 ? 'text-accent' : 'text-[#94b8c4]'}`}>
               {symbol}{total.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </span>
           </div>

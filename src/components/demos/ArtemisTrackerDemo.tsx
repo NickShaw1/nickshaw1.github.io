@@ -149,12 +149,13 @@ export default function ArtemisTrackerDemo() {
   const [loading,       setLoading]       = useState(true)
   const [sceneReady,    setSceneReady]    = useState(false)
   const [fetchError,    setFetchError]    = useState<string | null>(null)
+  const [hoveredCrew,   setHoveredCrew]   = useState<string | null>(null)
 
   const FALLBACK_CREW = [
-    { role: 'Commander',          name: 'Reid Wiseman' },
-    { role: 'Pilot',              name: 'Victor Glover' },
-    { role: 'Mission Specialist', name: 'Christina Koch' },
-    { role: 'Mission Specialist', name: 'Jeremy Hansen' },
+    { role: 'Commander',          name: 'Reid Wiseman',   photo: '/astronauts/wiseman1.png', wiki: 'https://en.wikipedia.org/wiki/Reid_Wiseman'    },
+    { role: 'Pilot',              name: 'Victor Glover',  photo: '/astronauts/glover1.png',  wiki: 'https://en.wikipedia.org/wiki/Victor_Glover'   },
+    { role: 'Mission Spec.', name: 'Christina Koch', photo: '/astronauts/koch1.png',    wiki: 'https://en.wikipedia.org/wiki/Christina_Koch'  },
+    { role: 'Mission Spec.', name: 'Jeremy Hansen',  photo: '/astronauts/hansen1.png',  wiki: 'https://en.wikipedia.org/wiki/Jeremy_Hansen'   },
   ]
   const crew = FALLBACK_CREW
 
@@ -381,6 +382,28 @@ export default function ArtemisTrackerDemo() {
     ringRef.current    = ring
     ringMatRef.current = ringMat
 
+    // Bracket corners (4 L-shaped corners around the marker)
+    const bracketMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.75 })
+    const BRACKET_OUTER = 2.8  // distance from centre to bracket tip
+    const BRACKET_LEN   = 0.9  // length of each bracket arm
+    const bracketGroup  = new THREE.Group()
+    ;[
+      [1, 1], [1, -1], [-1, 1], [-1, -1]  // four corners
+    ].forEach(([sx, sy]) => {
+      const geo = new THREE.BufferGeometry()
+      const x = sx * BRACKET_OUTER, y = sy * BRACKET_OUTER
+      const xl = sx * (BRACKET_OUTER - BRACKET_LEN), yl = sy * (BRACKET_OUTER - BRACKET_LEN)
+      geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array([
+        xl, y, 0,   // horizontal arm start
+        x,  y, 0,   // corner
+        x, yl, 0,   // vertical arm end
+      ]), 3))
+      bracketGroup.add(new THREE.Line(geo, bracketMat))
+    })
+    scene.add(bracketGroup)
+    // Store ref so we can billboard it each frame
+    ;(marker as THREE.Mesh & { bracketGroup?: THREE.Group }).bracketGroup = bracketGroup
+
     // Lighting: sun positioned from real solar direction (updated each frame)
     const sun = new THREE.DirectionalLight(0xfff8e7, 2.2)
     scene.add(sun)
@@ -435,6 +458,13 @@ export default function ArtemisTrackerDemo() {
       ring.position.copy(marker.position)
       ring.lookAt(camera.position)
 
+      // Bracket corners — billboard to always face camera
+      const bg = (marker as THREE.Mesh & { bracketGroup?: THREE.Group }).bracketGroup
+      if (bg) {
+        bg.position.copy(marker.position)
+        bg.quaternion.copy(camera.quaternion)
+      }
+
       // Auto-orbit until user has dragged
       if (!isDragging.current && !userDragged.current && sceneReadyRef.current) spherical.current.theta += 0.0015
 
@@ -481,6 +511,8 @@ export default function ArtemisTrackerDemo() {
     return () => {
       cancelAnimationFrame(frameRef.current)
       ro.disconnect()
+      if (earthMat.map) earthMat.map.dispose()
+      if (moonMat.map)  moonMat.map.dispose()
       renderer.dispose()
       if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement)
     }
@@ -599,14 +631,11 @@ export default function ArtemisTrackerDemo() {
   const mi    = (km: number) => Math.round(km * KM_TO_MI).toLocaleString()
   const mph   = (kms: number) => Math.round(kms * 3600 * KM_TO_MI).toLocaleString()
 
-  const dim: React.CSSProperties = { fontSize: 9, color: '#3d5060' }
-
-
   return (
     <div className="mb-5 flex flex-col">
-      <div className="order-2 sm:order-1 mb-2 rounded-lg overflow-hidden" style={{ background: '#070c11', border: '1px solid rgba(10,255,157,0.1)' }}>
+      <div className="order-2 sm:order-1 mb-2 rounded-lg overflow-hidden bg-[#070c11] border border-accent/10">
         {/* Title row */}
-        <div className="px-4 py-3" style={{ borderBottom: '1px solid rgba(10,255,157,0.07)' }}>
+        <div className="px-4 py-3 border-b border-accent/[7%]">
           {/* Mobile: title only */}
           <div className="sm:hidden flex items-center gap-2">
             <Orbit size={15} className="text-text-primary flex-shrink-0" />
@@ -618,9 +647,9 @@ export default function ArtemisTrackerDemo() {
               <Orbit size={18} className="text-text-primary flex-shrink-0" />
               <span className="font-mono text-[15px] tracking-wide truncate text-text-primary">Artemis II: Lunar Flyby Mission</span>
             </div>
-            <div className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full flex-shrink-0" style={{ background: 'rgba(10,255,157,0.06)', border: '1px solid rgba(10,255,157,0.15)' }}>
-              <span className="pulse-dot w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#0AFF9D', boxShadow: '0 0 6px #0AFF9D' }} />
-              <span className="font-mono text-[10px] tracking-widest uppercase" style={{ color: '#0AFF9D' }}>Live</span>
+            <div className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full flex-shrink-0 bg-accent/[6%] border border-accent/[15%]">
+              <span className="pulse-dot w-1.5 h-1.5 rounded-full flex-shrink-0 bg-accent" style={{ boxShadow: '0 0 6px #0AFF9D' }} />
+              <span className="font-mono text-[10px] tracking-widest uppercase text-accent">Live</span>
             </div>
           </div>
         </div>
@@ -632,40 +661,30 @@ export default function ArtemisTrackerDemo() {
             ? Math.min(1, Math.max(0, (closestApproach.t.getTime() - LAUNCH_TIME.getTime()) / MISSION_DURATION))
             : null
           return (
-            <div className="px-4 py-4" style={{ borderBottom: '1px solid rgba(10,255,157,0.07)' }}>
+            <div className="px-4 py-4 border-b border-accent/[7%]">
               <div className="flex items-center justify-between mb-2.5">
                 <div className="flex items-center gap-2">
-                  <Timer size={13} style={{ color: '#f59e0b', flexShrink: 0 }} />
-                  <span className="font-mono text-[11px] tracking-wide" style={{ color: '#0AFF9D' }}>Mission progress</span>
+                  <Timer size={13} className="text-amber-400 flex-shrink-0" />
+                  <span className="font-mono text-[11px] tracking-wide text-accent text-[13px]">Mission progress</span>
                 </div>
-                <span
-                  className="font-mono sm:font-bold text-[11px] tracking-widest"
-                  style={{
-                    color: '#38bdf8',
-                    background: 'rgba(56,189,248,0.1)',
-                    border: '1px solid rgba(56,189,248,0.2)',
-                    borderRadius: '4px',
-                    padding: '2px 7px',
-                    letterSpacing: '0.08em',
-                  }}
-                >
+                <span className="font-mono sm:font-bold text-[11px] tracking-[0.08em] text-[#38bdf8] bg-[rgba(56,189,248,0.1)] border border-[rgba(56,189,248,0.2)] rounded px-[7px] py-[2px]">
                   {(progress * 100).toFixed(1)}%
                 </span>
               </div>
               <div className="relative w-full flex items-center gap-1.5">
-                <div className="w-1 h-3 rounded-sm flex-shrink-0" style={{ background: 'rgba(56,189,248,0.4)' }} />
-                <div className="relative flex-1 rounded-full overflow-hidden" style={{ height: 5, background: 'rgba(56,189,248,0.12)', border: '1px solid rgba(56,189,248,0.15)' }}>
+                <div className="w-1 h-3 rounded-sm flex-shrink-0 bg-[rgba(56,189,248,0.4)]" />
+                <div className="relative flex-1 rounded-full overflow-hidden h-[5px] bg-[rgba(56,189,248,0.12)] border border-[rgba(56,189,248,0.15)]">
                   <div className="absolute inset-y-0 left-0 rounded-full" style={{ width: `${progress * 100}%`, background: 'linear-gradient(90deg, #1d4ed8, #38bdf8)' }} />
                   {flybyPct !== null && (
                     <div className="absolute top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white" style={{ left: `calc(${flybyPct * 100}% - 3px)` }} />
                   )}
                 </div>
-                <div className="w-1 h-3 rounded-sm flex-shrink-0" style={{ background: 'rgba(56,189,248,0.4)' }} />
+                <div className="w-1 h-3 rounded-sm flex-shrink-0 bg-[rgba(56,189,248,0.4)]" />
               </div>
               <div className="relative flex items-center justify-between mt-2">
                 <span className="font-mono text-[10px] text-text-muted">Launch</span>
                 {flybyPct !== null && (
-                  <span className="font-mono text-[10px] text-text-muted" style={{ position: 'absolute', left: `calc(${flybyPct * 100}%)`, transform: 'translateX(-50%)' }}>Flyby</span>
+                  <span className="font-mono text-[10px] text-text-muted absolute -translate-x-1/2" style={{ left: `calc(${flybyPct * 100}%)` }}>Flyby</span>
                 )}
                 <span className="font-mono text-[10px] text-text-muted">Splashdown</span>
               </div>
@@ -674,13 +693,13 @@ export default function ArtemisTrackerDemo() {
         })()}
 
         {/* Desktop: mission time + NASA broadcast row */}
-        <div className="hidden sm:flex items-center justify-between px-4 py-4" style={{ borderBottom: '1px solid rgba(10,255,157,0.07)' }}>
+        <div className="hidden sm:flex items-center justify-between px-4 py-4 border-b border-accent/[7%]">
           <div>
             <div className="flex items-center gap-2 mb-2.5">
-              <Clock size={13} style={{ color: '#f59e0b', flexShrink: 0 }} />
-              <span className="font-mono text-[11px] tracking-wide" style={{ color: '#0AFF9D' }}>Mission time</span>
+              <Clock size={13} className="text-amber-400 flex-shrink-0" />
+              <span className="font-mono text-[11px] tracking-wide text-accent text-[13px]">Mission time</span>
             </div>
-            <span className="font-mono text-[18px] font-bold text-text-primary" style={{ fontVariantNumeric: 'tabular-nums' }}>{met || '—'}</span>
+            <span className="font-mono text-[18px] font-bold text-text-primary tabular-nums">{met || '—'}</span>
           </div>
           <a
             href="https://www.youtube.com/watch?v=m3kR2KK8TEs"
@@ -694,20 +713,48 @@ export default function ArtemisTrackerDemo() {
         </div>
 
         {/* Body: crew + right column */}
-        <div className="grid grid-cols-1 sm:grid-cols-2" style={{ borderBottom: '1px solid rgba(10,255,157,0.07)' }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-accent/[7%]">
 
           {/* Crew */}
-          <div className="px-4 py-4" style={{ borderRight: '1px solid rgba(10,255,157,0.07)' }}>
+          <div className="px-4 pt-4 pb-2 sm:py-4 border-b sm:border-b-0 sm:border-r border-accent/[7%]">
             <div className="flex items-center gap-2 mb-2.5">
-              <Rocket size={13} style={{ color: '#f59e0b', flexShrink: 0 }} />
-              <span className="font-mono text-[11px] tracking-wide" style={{ color: '#0AFF9D' }}>Crew</span>
+              <Rocket size={13} className="text-amber-400 flex-shrink-0" />
+              <span className="font-mono text-[11px] tracking-wide text-accent text-[13px]">Crew</span>
             </div>
-            <div className="flex flex-col gap-2.5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-0 sm:gap-y-1">
               {crew.map((m) => (
-                <div key={m.name} className="flex items-center gap-2">
-                  <span className="font-mono text-[12px] text-text-muted shrink-0">{m.role}</span>
-                  <span className="font-mono text-[12px] text-text-muted">·</span>
-                  <span className="font-mono text-[12px] font-semibold text-text-primary">{m.name}</span>
+                <div key={m.name} className="flex items-center gap-2.5">
+                  <div className="relative w-14 h-14 flex-shrink-0 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/70 flex-shrink-0">
+                      <img
+                        src={m.photo}
+                        alt={m.name}
+                        className="w-full h-full object-cover object-[center_10%] scale-125 transform"
+                      />
+                    </div>
+                    <svg className="hidden sm:block absolute inset-0 w-full h-full -rotate-90 pointer-events-none" viewBox="0 0 56 56">
+                      <circle
+                        cx="28" cy="28" r="26"
+                        fill="none"
+                        stroke="#38bdf8"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeDasharray="163.36"
+                        style={{ strokeDashoffset: hoveredCrew === m.name ? 0 : 163.36, transition: 'stroke-dashoffset 1050ms ease-in-out' }}
+                      />
+                    </svg>
+                  </div>
+                  <div className="flex flex-col min-w-0">
+                    <a
+                      href={m.wiki}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-mono text-[13px] font-semibold text-text-primary leading-snug hover:text-[#38bdf8] transition-colors duration-150 truncate"
+                      onMouseEnter={() => setHoveredCrew(m.name)}
+                      onMouseLeave={() => setHoveredCrew(null)}
+                    >{m.name}</a>
+                    <span className="font-mono text-[10px] tracking-widest uppercase text-text-muted truncate">{m.role}</span>
+                  </div>
                 </div>
               ))}
             </div>
@@ -716,35 +763,35 @@ export default function ArtemisTrackerDemo() {
           {/* Right: mission time on mobile, stats on desktop */}
           <div>
             {/* Mobile: mission time */}
-            <div className="sm:hidden px-4 py-4">
+            <div className="sm:hidden px-4 pt-2 pb-4">
               <div className="flex items-center gap-2 mb-2">
-                <Clock size={13} style={{ color: '#f59e0b', flexShrink: 0 }} />
-                <span className="font-mono text-[11px] tracking-wide" style={{ color: '#0AFF9D' }}>Mission time</span>
+                <Clock size={13} className="text-amber-400 flex-shrink-0" />
+                <span className="font-mono text-[11px] tracking-wide text-accent text-[13px]">Mission time</span>
               </div>
-              <span className="font-mono text-[18px] sm:font-bold text-text-primary" style={{ fontVariantNumeric: 'tabular-nums' }}>{met || '—'}</span>
+              <span className="font-mono text-[18px] sm:font-bold text-text-primary tabular-nums">{met || '—'}</span>
             </div>
 
             {/* Desktop: 2x2 stats */}
             {fetchError ? (
               <div className="hidden sm:block px-4 py-4">
                 <div className="flex items-center gap-2 mb-2.5">
-                  <AlertTriangle size={13} style={{ color: '#ff4d4d', flexShrink: 0 }} />
-                  <span className="font-mono text-[11px] tracking-wide" style={{ color: '#ff4d4d' }}>Telemetry unavailable</span>
+                  <AlertTriangle size={13} className="text-[#ff4d4d] flex-shrink-0" />
+                  <span className="font-mono text-[11px] tracking-wide text-[#ff4d4d]">Telemetry unavailable</span>
                 </div>
-                <span className="font-mono text-[12px]" style={{ color: 'rgba(255,77,77,0.85)' }}>{fetchError}</span>
+                <span className="font-mono text-[12px] text-[rgba(255,77,77,0.85)]">{fetchError}</span>
               </div>
             ) : (loading || !current) ? (
               <div className="hidden sm:flex items-center gap-3 px-4 py-4">
-                <div className="relative flex-shrink-0" style={{ width: 28, height: 28 }}>
-                  <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', border: '1px solid rgba(10,255,157,0.15)' }} />
-                  <div className="animate-spin" style={{ position: 'absolute', inset: 0, borderRadius: '50%', border: '2px solid transparent', borderTopColor: '#0AFF9D' }} />
-                  <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#0AFF9D', boxShadow: '0 0 6px #0AFF9D' }} />
+                <div className="relative flex-shrink-0 w-7 h-7">
+                  <div className="absolute inset-0 rounded-full border border-accent/[15%]" />
+                  <div className="animate-spin absolute inset-0 rounded-full border-2 border-transparent" style={{ borderTopColor: '#0AFF9D' }} />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-1 h-1 rounded-full bg-accent" style={{ boxShadow: '0 0 6px #0AFF9D' }} />
                   </div>
                 </div>
                 <div className="flex flex-col gap-0.5">
-                  <span className="font-mono text-[10px] tracking-widest uppercase" style={{ color: '#0AFF9D' }}>Acquiring telemetry</span>
-                  <span className="font-mono text-[9px]" style={{ color: 'rgba(10,255,157,0.4)' }}>NASA / JPL Horizons</span>
+                  <span className="font-mono text-[10px] tracking-widest uppercase text-accent">Acquiring telemetry</span>
+                  <span className="font-mono text-[9px] text-accent/40">NASA / JPL Horizons</span>
                 </div>
               </div>
             ) : (
@@ -755,9 +802,9 @@ export default function ArtemisTrackerDemo() {
                   { label: 'Speed',               value: posSpeed ? mph(posSpeed) + ' mph' : '—' },
                   { label: 'Closest flyby',        value: closestApproach ? mi(closestApproach.dist) + ' mi' : '—' },
                 ].map(({ label, value }, i) => (
-                  <div key={label} className="px-4 py-4" style={{ borderLeft: i % 2 === 1 ? '1px solid rgba(10,255,157,0.07)' : undefined, borderTop: i >= 2 ? '1px solid rgba(10,255,157,0.07)' : undefined }}>
-                    <span className="font-mono text-[11px] tracking-wide block mb-2.5" style={{ color: '#0AFF9D' }}>{label}</span>
-                    <span className="font-mono text-[14px] font-bold text-text-primary" style={{ fontVariantNumeric: 'tabular-nums' }}>{value}</span>
+                  <div key={label} className={`px-4 py-4 ${i % 2 === 1 ? 'border-l border-accent/[7%]' : ''} ${i >= 2 ? 'border-t border-accent/[7%]' : ''}`}>
+                    <span className="font-mono text-[11px] tracking-wide block mb-2.5 text-accent">{label}</span>
+                    <span className="font-mono text-[14px] font-bold text-text-primary tabular-nums">{value}</span>
                   </div>
                 ))}
               </div>
@@ -767,27 +814,27 @@ export default function ArtemisTrackerDemo() {
         </div>
 
         {/* Mobile stats */}
-        <div className="sm:hidden grid grid-cols-2" style={{ borderBottom: '1px solid rgba(10,255,157,0.07)' }}>
+        <div className="sm:hidden grid grid-cols-2 border-b border-accent/[7%]">
           {fetchError ? (
             <div className="col-span-2 px-4 py-4">
               <div className="flex items-center gap-2 mb-2.5">
-                <AlertTriangle size={13} style={{ color: '#ff4d4d', flexShrink: 0 }} />
-                <span className="font-mono text-[11px] tracking-wide" style={{ color: '#ff4d4d' }}>Telemetry unavailable</span>
+                <AlertTriangle size={13} className="text-[#ff4d4d] flex-shrink-0" />
+                <span className="font-mono text-[11px] tracking-wide text-[#ff4d4d]">Telemetry unavailable</span>
               </div>
-              <span className="font-mono text-[12px]" style={{ color: 'rgba(255,77,77,0.85)' }}>{fetchError}</span>
+              <span className="font-mono text-[12px] text-[rgba(255,77,77,0.85)]">{fetchError}</span>
             </div>
           ) : (loading || !current) ? (
             <div className="col-span-2 flex items-center gap-3 px-4 py-4">
-              <div className="relative flex-shrink-0" style={{ width: 28, height: 28 }}>
-                <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', border: '1px solid rgba(10,255,157,0.15)' }} />
-                <div className="animate-spin" style={{ position: 'absolute', inset: 0, borderRadius: '50%', border: '2px solid transparent', borderTopColor: '#0AFF9D' }} />
-                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#0AFF9D', boxShadow: '0 0 6px #0AFF9D' }} />
+              <div className="relative flex-shrink-0 w-7 h-7">
+                <div className="absolute inset-0 rounded-full border border-accent/[15%]" />
+                <div className="animate-spin absolute inset-0 rounded-full border-2 border-transparent" style={{ borderTopColor: '#0AFF9D' }} />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-1 h-1 rounded-full bg-accent" style={{ boxShadow: '0 0 6px #0AFF9D' }} />
                 </div>
               </div>
               <div className="flex flex-col gap-0.5">
-                <span className="font-mono text-[10px] tracking-widest uppercase" style={{ color: '#0AFF9D' }}>Acquiring telemetry</span>
-                <span className="font-mono text-[9px]" style={{ color: 'rgba(10,255,157,0.4)' }}>NASA / JPL Horizons</span>
+                <span className="font-mono text-[10px] tracking-widest uppercase text-accent">Acquiring telemetry</span>
+                <span className="font-mono text-[9px] text-accent/40">NASA / JPL Horizons</span>
               </div>
             </div>
           ) : (
@@ -797,16 +844,16 @@ export default function ArtemisTrackerDemo() {
               { label: 'Speed',               value: posSpeed ? mph(posSpeed) + ' mph' : '—' },
               { label: 'Closest flyby',        value: closestApproach ? mi(closestApproach.dist) + ' mi' : '—' },
             ].map(({ label, value }, i) => (
-              <div key={label} className="px-4 py-4" style={{ borderLeft: i % 2 === 1 ? '1px solid rgba(10,255,157,0.07)' : undefined, borderTop: i >= 2 ? '1px solid rgba(10,255,157,0.07)' : undefined }}>
-                <span className="font-mono text-[11px] tracking-wide block mb-2.5" style={{ color: '#0AFF9D' }}>{label}</span>
-                <span className="font-mono text-[14px] text-text-primary" style={{ fontVariantNumeric: 'tabular-nums' }}>{value}</span>
+              <div key={label} className={`px-4 py-4 ${i % 2 === 1 ? 'border-l border-accent/[7%]' : ''} ${i >= 2 ? 'border-t border-accent/[7%]' : ''}`}>
+                <span className="font-mono text-[11px] tracking-wide block mb-2.5 text-accent">{label}</span>
+                <span className="font-mono text-[14px] text-text-primary tabular-nums">{value}</span>
               </div>
             ))
           )}
         </div>
 
         {/* Mobile bottom bar */}
-        <div className="flex sm:hidden items-center justify-between px-4 py-3" style={{ borderTop: '1px solid rgba(10,255,157,0.07)' }}>
+        <div className="flex sm:hidden items-center justify-between px-4 py-3 border-t border-accent/[7%]">
           <a
             href="https://www.youtube.com/watch?v=m3kR2KK8TEs"
             target="_blank"
@@ -816,21 +863,21 @@ export default function ArtemisTrackerDemo() {
             NASA Broadcast
             <Tv size={11} />
           </a>
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full" style={{ background: 'rgba(10,255,157,0.06)', border: '1px solid rgba(10,255,157,0.15)' }}>
-            <span className="pulse-dot w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#0AFF9D', boxShadow: '0 0 6px #0AFF9D' }} />
-            <span className="font-mono text-[9px] tracking-widest uppercase" style={{ color: '#0AFF9D' }}>Live</span>
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-accent/[6%] border border-accent/[15%]">
+            <span className="pulse-dot w-1.5 h-1.5 rounded-full flex-shrink-0 bg-accent" style={{ boxShadow: '0 0 6px #0AFF9D' }} />
+            <span className="font-mono text-[9px] tracking-widest uppercase text-accent">Live</span>
           </div>
         </div>
 
       </div>
 
-      <div className="order-1 sm:order-2 mb-2 sm:mb-0 rounded-xl overflow-hidden" style={{ border: '1px solid rgba(10,255,157,0.12)', background: '#080d12' }}>
+      <div className="order-1 sm:order-2 mb-2 sm:mb-0 rounded-xl overflow-hidden border border-accent/[12%] bg-[#080d12]">
 
         <div className="relative w-full" style={{ height: 'clamp(260px, 56vw, 520px)' }}>
           <div
             ref={mountRef}
-            className="absolute inset-0"
-            style={{ background: '#000306', cursor: isDragging.current ? 'grabbing' : 'grab', touchAction: 'pan-y' }}
+            className="absolute inset-0 bg-[#000306]"
+            style={{ cursor: isDragging.current ? 'grabbing' : 'grab', touchAction: 'pan-y' }}
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
@@ -839,9 +886,8 @@ export default function ArtemisTrackerDemo() {
 
           {/* Loading skeleton overlay — fades out once all data has arrived */}
           <div
-            className="absolute inset-0 flex flex-col items-center justify-center gap-4 pointer-events-none"
+            className="absolute inset-0 flex flex-col items-center justify-center gap-4 pointer-events-none bg-[#000306]"
             style={{
-              background: '#000306',
               transition: 'opacity 0.8s ease',
               opacity: sceneReady && !fetchError ? 0 : 1,
             }}
@@ -849,30 +895,27 @@ export default function ArtemisTrackerDemo() {
           >
             {fetchError ? (
               <div className="flex flex-col items-center gap-2">
-                <span className="font-mono text-[11px] tracking-widest uppercase" style={{ color: '#ff4d4d' }}>
+                <span className="font-mono text-[11px] tracking-widest uppercase text-[#ff4d4d]">
                   Telemetry unavailable
                 </span>
-                <span className="font-mono text-[9px] tracking-wider text-center" style={{ color: 'rgba(255,77,77,0.85)' }}>
+                <span className="font-mono text-[9px] tracking-wider text-center text-[rgba(255,77,77,0.85)]">
                   {fetchError}
                 </span>
               </div>
             ) : (
               <>
                 {/* Animated radar ring */}
-                <div className="relative flex items-center justify-center" style={{ width: 72, height: 72 }}>
-                  <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', border: '1px solid rgba(10,255,157,0.15)' }} />
-                  <div style={{ position: 'absolute', inset: 6, borderRadius: '50%', border: '1px solid rgba(10,255,157,0.1)' }} />
-                  <div className="animate-spin" style={{
-                    position: 'absolute', inset: 0, borderRadius: '50%',
-                    border: '2px solid transparent', borderTopColor: '#0AFF9D',
-                  }} />
-                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#0AFF9D', boxShadow: '0 0 8px #0AFF9D' }} />
+                <div className="relative flex items-center justify-center w-[72px] h-[72px]">
+                  <div className="absolute inset-0 rounded-full border border-accent/[15%]" />
+                  <div className="absolute inset-[6px] rounded-full border border-accent/10" />
+                  <div className="animate-spin absolute inset-0 rounded-full border-2 border-transparent" style={{ borderTopColor: '#0AFF9D' }} />
+                  <div className="w-1.5 h-1.5 rounded-full bg-accent" style={{ boxShadow: '0 0 8px #0AFF9D' }} />
                 </div>
                 <div className="flex flex-col items-center gap-1.5">
-                  <span className="font-mono text-[11px] tracking-widest uppercase" style={{ color: '#0AFF9D' }}>
+                  <span className="font-mono text-[11px] tracking-widest uppercase text-accent">
                     Acquiring telemetry
                   </span>
-                  <span className="font-mono text-[9px] tracking-wider" style={{ color: 'rgba(10,255,157,0.4)' }}>
+                  <span className="font-mono text-[9px] tracking-wider text-accent/40">
                     NASA / JPL Horizons
                   </span>
                 </div>
@@ -880,10 +923,9 @@ export default function ArtemisTrackerDemo() {
             )}
           </div>
 
-          <div className="absolute bottom-0 left-0 right-0 hidden sm:flex items-center justify-between px-3 py-1.5"
-            style={{ background: 'rgba(8,13,18,0.7)', borderTop: '1px solid rgba(10,255,157,0.08)' }}>
-            <span style={{ ...dim, fontSize: 7 }}>Trajectory: <span style={{ color: '#3d6070' }}>NASA/JPL Horizons (−1024)</span></span>
-            <span style={{ ...dim, fontSize: 7 }}>Earth texture: <span style={{ color: '#3d6070' }}>Solar System Scope (CC BY 4.0)</span></span>
+          <div className="absolute bottom-0 left-0 right-0 hidden sm:flex items-center justify-between px-3 py-1.5 bg-[rgba(8,13,18,0.7)] border-t border-accent/[8%]">
+            <span className="font-mono text-[7px] text-[#3d5060]">Trajectory: <span className="text-[#3d6070]">NASA/JPL Horizons (−1024)</span></span>
+            <span className="font-mono text-[7px] text-[#3d5060]">Earth texture: <span className="text-[#3d6070]">Solar System Scope (CC BY 4.0)</span></span>
           </div>
         </div>
 

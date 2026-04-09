@@ -19,6 +19,8 @@ export default function ISSTrackerDemo() {
   const sunLightRef     = useRef<THREE.DirectionalLight | null>(null)
   const fillLightRef    = useRef<THREE.DirectionalLight | null>(null)
   const issGeoRef       = useRef<{ lat: number; lon: number } | null>(null)
+  const prevApiWorld    = useRef<THREE.Vector3 | null>(null)
+  const orbitNormalRef  = useRef<THREE.Vector3 | null>(null)
 
   const userControlled  = useRef(false)
   const isDragging      = useRef(false)
@@ -278,6 +280,10 @@ export default function ISSTrackerDemo() {
     return () => {
       cancelAnimationFrame(frameRef.current)
       ro.disconnect()
+      const dayTex   = earthMat.uniforms.dayMap.value as THREE.Texture | null
+      const nightTex = earthMat.uniforms.nightMap.value as THREE.Texture | null
+      if (dayTex)   dayTex.dispose()
+      if (nightTex) nightTex.dispose()
       renderer.dispose()
       if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement)
     }
@@ -354,47 +360,40 @@ export default function ISSTrackerDemo() {
 
   const craftGroups = crew.reduce<Record<string,string[]>>((acc,m) => { const k = m.craft||'ISS'; ;(acc[k]??=[]).push(m.name); return acc }, {})
 
-  const panel: React.CSSProperties = {
-    background: 'rgba(8,13,18,0.9)', border: '1px solid rgba(10,255,157,0.18)',
-    backdropFilter: 'blur(10px)', borderRadius: 8, padding: '9px 12px', fontFamily: 'monospace',
-  }
-  const lbl:  React.CSSProperties = { fontSize: 8, letterSpacing:'0.15em', textTransform:'uppercase', color:'#0AFF9D', marginBottom:6, display:'block' }
-  const val:  React.CSSProperties = { fontSize: 11, color:'#dde6ee', lineHeight: 1.65 }
-  const dim:  React.CSSProperties = { fontSize: 9, color:'#3d5060' }
-  const hi:   React.CSSProperties = { color:'#8bb8cc' }
-
-  void val; void hi
+  const panel = 'font-mono bg-[rgba(8,13,18,0.9)] border border-accent/[18%] backdrop-blur-[10px] rounded-lg px-3 py-[9px]'
+  const lbl   = 'font-mono text-[9px] tracking-[0.15em] uppercase text-accent mb-1.5 block'
+  const dim   = 'font-mono text-[10px] text-[#3d5060]'
 
   const posPanel = (
-    <div style={{ ...panel, flex: 1, minWidth: 0 }}>
-      <span style={lbl}>ISS Position</span>
+    <div className={`${panel} flex-1 min-w-0`}>
+      <span className={lbl}>ISS Position</span>
       {issData ? (
         <div>
-          <div style={{ fontSize:13, color:'#dde6ee', fontFamily:'monospace', lineHeight:1.5 }}>
+          <div className="font-mono text-[13px] text-[#dde6ee] leading-[1.5]">
             {Math.abs(issData.latitude).toFixed(3)}° {issData.latitude>=0?'N':'S'}&nbsp;&nbsp;{Math.abs(issData.longitude).toFixed(3)}° {issData.longitude>=0?'E':'W'}
           </div>
-          <div style={{ marginTop:8, display:'flex', flexDirection:'column', gap:3 }}>
-            <div style={{ fontSize:12, color:'#8bb8cc', fontFamily:'monospace' }}>Alt &nbsp;<span style={{ color:'#dde6ee' }}>{issData.altitude.toFixed(1)} km</span></div>
-            <div style={{ fontSize:12, color:'#8bb8cc', fontFamily:'monospace' }}>Speed <span style={{ color:'#dde6ee' }}>{(issData.velocity/3.6).toFixed(0)} m/s</span></div>
+          <div className="mt-2 flex flex-col gap-[3px]">
+            <div className="font-mono text-[12px] text-[#8bb8cc]">Alt &nbsp;<span className="text-[#dde6ee]">{issData.altitude.toFixed(1)} km</span></div>
+            <div className="font-mono text-[12px] text-[#8bb8cc]">Speed <span className="text-[#dde6ee]">{(issData.velocity/3.6).toFixed(0)} m/s</span></div>
           </div>
         </div>
-      ) : <div style={{ ...dim, fontSize:10 }}>Fetching…</div>}
+      ) : <div className={dim}>Fetching…</div>}
     </div>
   )
 
   const crewPanel = (
-    <div style={{ ...panel, flex: 1, minWidth: 0, maxHeight: 220, overflowY: 'auto' }}>
-      <span style={lbl}>People in Space {crew.length > 0 && <span style={{ color:'#5a8a9a' }}>({crew.length})</span>}</span>
+    <div className={`${panel} flex-1 min-w-0 max-h-[220px] overflow-y-auto`}>
+      <span className={lbl}>People in Space {crew.length > 0 && <span className="text-[#5a8a9a]">({crew.length})</span>}</span>
       {crew.length > 0
         ? Object.entries(craftGroups).map(([craft, names]) => (
-            <div key={craft} style={{ marginBottom:6 }}>
-              <div style={{ ...dim, marginBottom:2 }}>{craft}</div>
-              {names.map(n => <div key={n} style={{ fontSize:10, color:'#dde6ee', lineHeight:1.65 }}>{n}</div>)}
+            <div key={craft} className="mb-1.5">
+              <div className={`${dim} mb-0.5`}>{craft}</div>
+              {names.map(n => <div key={n} className="font-mono text-[10px] text-[#dde6ee] leading-[1.65]">{n}</div>)}
             </div>
           ))
         : crewFailed
-          ? <div style={{ fontSize:10, color:'rgba(255,77,77,0.7)', fontFamily:'monospace' }}>Unavailable</div>
-          : <div style={{ ...dim, fontSize:10 }}>Fetching…</div>
+          ? <div className="font-mono text-[10px] text-[rgba(255,77,77,0.7)]">Unavailable</div>
+          : <div className={dim}>Fetching…</div>
       }
     </div>
   )
@@ -425,13 +424,13 @@ export default function ISSTrackerDemo() {
     <div className="mb-5">
       <p className="font-mono text-[10px] tracking-widest uppercase text-text-muted mb-3">Live demo</p>
 
-      <div className="rounded-xl overflow-hidden" style={{ border:'1px solid rgba(10,255,157,0.12)', background:'#080d12' }}>
+      <div className="rounded-xl overflow-hidden border border-accent/[12%] bg-[#080d12]">
 
         <div className="relative w-full" style={{ height: 'clamp(260px, 45vw, 440px)' }}>
           <div
             ref={mountRef}
-            className="absolute inset-0"
-            style={{ background: '#000306', cursor: isDragging.current ? 'grabbing' : 'grab', touchAction: 'pan-y' }}
+            className="absolute inset-0 bg-[#000306]"
+            style={{ cursor: isDragging.current ? 'grabbing' : 'grab', touchAction: 'pan-y' }}
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
@@ -439,9 +438,8 @@ export default function ISSTrackerDemo() {
 
           {/* Loading skeleton overlay — fades out once ISS data has arrived */}
           <div
-            className="absolute inset-0 flex flex-col items-center justify-center gap-4 pointer-events-none"
+            className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-[#000306]"
             style={{
-              background: '#000306',
               transition: 'opacity 0.8s ease',
               opacity: loading || fetchFailed ? 1 : 0,
               pointerEvents: loading || fetchFailed ? 'auto' : 'none',
@@ -450,29 +448,26 @@ export default function ISSTrackerDemo() {
           >
             {fetchFailed ? (
               <div className="flex flex-col items-center gap-2">
-                <span className="font-mono text-[11px] tracking-widest uppercase" style={{ color: '#ff4d4d' }}>
+                <span className="font-mono text-[11px] tracking-widest uppercase text-[#ff4d4d]">
                   Telemetry unavailable
                 </span>
-                <span className="font-mono text-[9px] tracking-wider text-center" style={{ color: 'rgba(255,77,77,0.5)' }}>
+                <span className="font-mono text-[9px] tracking-wider text-center text-[rgba(255,77,77,0.5)]">
                   Could not reach wheretheiss.at
                 </span>
               </div>
             ) : (
               <>
-                <div className="relative flex items-center justify-center" style={{ width: 72, height: 72 }}>
-                  <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', border: '1px solid rgba(10,255,157,0.15)' }} />
-                  <div style={{ position: 'absolute', inset: 6, borderRadius: '50%', border: '1px solid rgba(10,255,157,0.1)' }} />
-                  <div className="animate-spin" style={{
-                    position: 'absolute', inset: 0, borderRadius: '50%',
-                    border: '2px solid transparent', borderTopColor: '#0AFF9D',
-                  }} />
-                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#0AFF9D', boxShadow: '0 0 8px #0AFF9D' }} />
+                <div className="relative flex items-center justify-center w-[72px] h-[72px]">
+                  <div className="absolute inset-0 rounded-full border border-accent/[15%]" />
+                  <div className="absolute inset-[6px] rounded-full border border-accent/10" />
+                  <div className="animate-spin absolute inset-0 rounded-full border-2 border-transparent" style={{ borderTopColor: '#0AFF9D' }} />
+                  <div className="w-1.5 h-1.5 rounded-full bg-accent" style={{ boxShadow: '0 0 8px #0AFF9D' }} />
                 </div>
                 <div className="flex flex-col items-center gap-1.5">
-                  <span className="font-mono text-[11px] tracking-widest uppercase" style={{ color: '#0AFF9D' }}>
+                  <span className="font-mono text-[11px] tracking-widest uppercase text-accent">
                     Acquiring telemetry
                   </span>
-                  <span className="font-mono text-[9px] tracking-wider" style={{ color: 'rgba(10,255,157,0.4)' }}>
+                  <span className="font-mono text-[9px] tracking-wider text-accent/40">
                     wheretheiss.at
                   </span>
                 </div>
@@ -480,33 +475,25 @@ export default function ISSTrackerDemo() {
             )}
           </div>
 
-          <div className="absolute top-3 left-3 hidden sm:block" style={{ minWidth: 195, opacity: loading ? 0 : 1, transition: 'opacity 0.6s ease', pointerEvents: loading ? 'none' : 'auto' }}>{posPanel}</div>
-          <div className="absolute top-3 right-3 hidden sm:block" style={{ maxWidth: 172, opacity: loading ? 0 : 1, transition: 'opacity 0.6s ease', pointerEvents: loading ? 'none' : 'auto' }}>{crewPanel}</div>
+          <div className="absolute top-3 left-3 hidden sm:block min-w-[195px]" style={{ opacity: loading ? 0 : 1, transition: 'opacity 0.6s ease', pointerEvents: loading ? 'none' : 'auto' }}>{posPanel}</div>
+          <div className="absolute top-3 right-3 hidden sm:block max-w-[172px]" style={{ opacity: loading ? 0 : 1, transition: 'opacity 0.6s ease', pointerEvents: loading ? 'none' : 'auto' }}>{crewPanel}</div>
 
           {/* Centre on ISS button — panel style, bottom left */}
           <div className="absolute bottom-9 left-3 hidden sm:block" style={{ opacity: loading ? 0 : 1, transition: 'opacity 0.6s ease', pointerEvents: loading ? 'none' : 'auto' }}>
             <button
               onClick={centreOnISS}
               disabled={following}
-              style={{
-                ...panel,
-                display: 'flex',
-                alignItems: 'center',
-                gap: 7,
-                cursor: following ? 'default' : 'pointer',
-                opacity: following ? 0.55 : 1,
-                transition: 'opacity 0.2s',
-                border: `1px solid ${following ? 'rgba(10,255,157,0.18)' : 'rgba(10,255,157,0.5)'}`,
-              }}
+              className={`${panel} flex items-center gap-[7px] transition-opacity duration-200 ${following ? 'cursor-default opacity-55' : 'cursor-pointer'} ${following ? 'border-accent/[18%]' : 'border-accent/50'}`}
             >
-              <span style={{
-                width: 7, height: 7, borderRadius: '50%', flexShrink: 0,
-                background: following ? '#0AFF9D' : 'transparent',
-                border: following ? 'none' : '1.5px solid #0AFF9D',
-                boxShadow: following ? '0 0 6px #0AFF9D88' : 'none',
-                transition: 'all 0.2s',
-              }} />
-              <span style={{ ...lbl, marginBottom: 0, fontSize: 9 }}>
+              <span
+                className="w-[7px] h-[7px] rounded-full flex-shrink-0 transition-all duration-200"
+                style={{
+                  background: following ? '#0AFF9D' : 'transparent',
+                  border: following ? 'none' : '1.5px solid #0AFF9D',
+                  boxShadow: following ? '0 0 6px #0AFF9D88' : 'none',
+                }}
+              />
+              <span className="font-mono text-[9px] tracking-[0.15em] uppercase text-accent">
                 {following ? 'Following ISS' : 'Centre on ISS'}
               </span>
             </button>
@@ -514,43 +501,43 @@ export default function ISSTrackerDemo() {
 
         </div>
 
-        <div className="hidden sm:flex items-center justify-end px-3 py-1.5" style={{ background:'rgba(8,13,18,0.7)', borderTop:'1px solid rgba(10,255,157,0.08)' }}>
-          <span style={{ ...dim, fontSize:7 }}>Earth texture: <span style={{ color:'#3d6070' }}>Solar System Scope (CC BY 4.0)</span></span>
+        <div className="hidden sm:flex items-center justify-end px-3 py-1.5 bg-[rgba(8,13,18,0.7)] border-t border-accent/[8%]">
+          <span className="font-mono text-[7px] text-[#3d5060]">Earth texture: <span className="text-[#3d6070]">Solar System Scope (CC BY 4.0)</span></span>
         </div>
 
         <div className="block sm:hidden">
-          <div className="px-4 py-3" style={{ borderTop:'1px solid rgba(10,255,157,0.1)' }}>
-            <div style={{ ...lbl, marginBottom:6 }}>ISS Position</div>
+          <div className="px-4 py-3 border-t border-accent/10">
+            <div className={lbl}>ISS Position</div>
             {issData ? (
-              <div style={{ display:'flex', flexDirection:'column', gap:4 }}>
-                <span style={{ fontSize:12, color:'#dde6ee', fontFamily:'monospace' }}>
+              <div className="flex flex-col gap-1">
+                <span className="font-mono text-[12px] text-[#dde6ee]">
                   {Math.abs(issData.latitude).toFixed(2)}° {issData.latitude>=0?'N':'S'}&nbsp;&nbsp;{Math.abs(issData.longitude).toFixed(2)}° {issData.longitude>=0?'E':'W'}
                 </span>
-                <span style={{ fontSize:11, color:'#8bb8cc', fontFamily:'monospace' }}>Alt <span style={{ color:'#dde6ee' }}>{issData.altitude.toFixed(1)} km</span></span>
-                <span style={{ fontSize:11, color:'#8bb8cc', fontFamily:'monospace' }}>Speed <span style={{ color:'#dde6ee' }}>{(issData.velocity/3.6).toFixed(0)} m/s</span></span>
+                <span className="font-mono text-[11px] text-[#8bb8cc]">Alt <span className="text-[#dde6ee]">{issData.altitude.toFixed(1)} km</span></span>
+                <span className="font-mono text-[11px] text-[#8bb8cc]">Speed <span className="text-[#dde6ee]">{(issData.velocity/3.6).toFixed(0)} m/s</span></span>
               </div>
-            ) : <span style={{ ...dim, fontSize:10 }}>Fetching…</span>}
+            ) : <span className={dim}>Fetching…</span>}
           </div>
 
-          <div className="px-4 py-3" style={{ borderTop:'1px solid rgba(10,255,157,0.1)' }}>
-            <div style={{ ...lbl, marginBottom:6 }}>People in Space {crew.length > 0 && <span style={{ color:'#5a8a9a' }}>({crew.length})</span>}</div>
+          <div className="px-4 py-3 border-t border-accent/10">
+            <div className={lbl}>People in Space {crew.length > 0 && <span className="text-[#5a8a9a]">({crew.length})</span>}</div>
             {crew.length > 0
               ? Object.entries(craftGroups).map(([craft, names]) => (
-                  <div key={craft} style={{ marginBottom:6 }}>
-                    <div style={{ ...dim, marginBottom:2 }}>{craft}</div>
-                    <div style={{ display:'flex', flexWrap:'wrap', gap:'2px 12px' }}>
-                      {names.map(n => <span key={n} style={{ fontSize:10, color:'#dde6ee', fontFamily:'monospace' }}>{n}</span>)}
+                  <div key={craft} className="mb-1.5">
+                    <div className={`${dim} mb-0.5`}>{craft}</div>
+                    <div className="flex flex-wrap gap-x-3 gap-y-0.5">
+                      {names.map(n => <span key={n} className="font-mono text-[10px] text-[#dde6ee]">{n}</span>)}
                     </div>
                   </div>
                 ))
               : crewFailed
-                ? <span style={{ fontSize:10, color:'rgba(255,77,77,0.7)', fontFamily:'monospace' }}>Unavailable</span>
-                : <span style={{ ...dim, fontSize:10 }}>Fetching…</span>
+                ? <span className="font-mono text-[10px] text-[rgba(255,77,77,0.7)]">Unavailable</span>
+                : <span className={dim}>Fetching…</span>
             }
           </div>
 
-          <div className="px-4 py-2 text-right" style={{ borderTop:'1px solid rgba(10,255,157,0.06)' }}>
-            <span style={{ ...dim, fontSize:7 }}>Earth texture: <span style={{ color:'#3d6070' }}>Solar System Scope (CC BY 4.0)</span></span>
+          <div className="px-4 py-2 text-right border-t border-accent/[6%]">
+            <span className="font-mono text-[7px] text-[#3d5060]">Earth texture: <span className="text-[#3d6070]">Solar System Scope (CC BY 4.0)</span></span>
           </div>
         </div>
 

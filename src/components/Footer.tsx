@@ -30,7 +30,7 @@ export default function Footer() {
               font-mono text-[11px] text-text-muted tracking-wide
               max-w-0 overflow-hidden opacity-0 whitespace-nowrap
               group-hover:max-w-[400px] group-hover:opacity-100
-              transition-all duration-500 ease-out
+              transition-all duration-1000 ease-in-out
             "
           >
             · available now for remote or Belfast-based roles
