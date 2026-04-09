@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect } from 'react'
+import ErrorBoundary from './components/ErrorBoundary'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, LazyMotion, domAnimation } from 'framer-motion'
 import Nav from './components/Nav'
@@ -44,6 +45,7 @@ export default function App() {
       <Nav />
 
       <main id="main-content" className="flex-1 pt-[72px]">
+        <ErrorBoundary>
         <AnimatePresence initial={false}>
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={
@@ -108,6 +110,7 @@ export default function App() {
             } />
           </Routes>
         </AnimatePresence>
+        </ErrorBoundary>
       </main>
 
       <Footer />
