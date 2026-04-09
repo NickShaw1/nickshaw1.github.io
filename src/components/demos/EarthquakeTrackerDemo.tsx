@@ -269,7 +269,7 @@ export default function EarthquakeTrackerDemo() {
         const tgt = lerpTarget.current
         if (tgt) {
           let dt = tgt.theta - spherical.current.theta
-          dt = ((dt + Math.PI) % (Math.PI * 2)) - Math.PI
+          dt = (((dt + Math.PI) % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2) - Math.PI
           spherical.current.theta += dt * 0.04
           spherical.current.phi   += (tgt.phi - spherical.current.phi) * 0.04
           if (Math.abs(dt) < 0.001 && Math.abs(tgt.phi - spherical.current.phi) < 0.001) {

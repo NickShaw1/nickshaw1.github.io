@@ -117,6 +117,7 @@ export default function ArtemisTrackerDemo() {
   const moonMeshRef    = useRef<THREE.Mesh | null>(null)
   const moonGlowRef    = useRef<THREE.Mesh | null>(null)
   const moonOrbitRingRef = useRef<THREE.Line | null>(null)
+  const sunMeshRef       = useRef<THREE.Group | null>(null)
   const pathRef        = useRef<THREE.Mesh | null>(null)
   const fullPathRef    = useRef<THREE.Mesh | null>(null)
   const sunLightRef    = useRef<THREE.DirectionalLight | null>(null)
@@ -425,6 +426,31 @@ export default function ArtemisTrackerDemo() {
     // Store ref so we can billboard it each frame
     ;(marker as THREE.Mesh & { bracketGroup?: THREE.Group }).bracketGroup = bracketGroup
 
+    // Sun visual — bright sphere + additive glow, positioned each frame along the real solar vector
+    {
+      const sunGroup = new THREE.Group()
+      // Core sphere
+      const sunMat = new THREE.MeshBasicMaterial({ color: 0xfffbe6 })
+      loader.load('/textures/2k_sun.jpg', (tex) => {
+        tex.colorSpace = THREE.SRGBColorSpace
+        sunMat.map = tex
+        sunMat.needsUpdate = true
+      })
+      sunGroup.add(new THREE.Mesh(new THREE.SphereGeometry(4, 24, 24), sunMat))
+      // Inner corona glow
+      sunGroup.add(new THREE.Mesh(
+        new THREE.SphereGeometry(6, 24, 24),
+        new THREE.MeshBasicMaterial({ color: 0xffe066, transparent: true, opacity: 0.18, depthWrite: false, side: THREE.BackSide }),
+      ))
+      // Outer haze
+      sunGroup.add(new THREE.Mesh(
+        new THREE.SphereGeometry(10, 24, 24),
+        new THREE.MeshBasicMaterial({ color: 0xffaa00, transparent: true, opacity: 0.07, depthWrite: false, side: THREE.BackSide }),
+      ))
+      scene.add(sunGroup)
+      sunMeshRef.current = sunGroup
+    }
+
     // Lighting: sun positioned from real solar direction (updated each frame)
     const sun = new THREE.DirectionalLight(0xfff8e7, 2.2)
     scene.add(sun)
@@ -465,9 +491,11 @@ export default function ArtemisTrackerDemo() {
         const sy = Math.cos(eps) * Math.sin(lam)
         const sz = Math.sin(eps) * Math.sin(lam)
         // ICRF → Three.js (same transform as icrf() helper: swap Y↔Z, negate X)
-        const sunDir = new THREE.Vector3(-sx, sz, sy).multiplyScalar(500)
+        const sunUnit = new THREE.Vector3(-sx, sz, sy)
+        const sunDir  = sunUnit.clone().multiplyScalar(500)
         if (sunLightRef.current)  sunLightRef.current.position.copy(sunDir)
         if (fillLightRef.current) fillLightRef.current.position.copy(sunDir.clone().negate())
+        if (sunMeshRef.current)   sunMeshRef.current.position.copy(sunUnit.multiplyScalar(350))
       }
 
       // Pulse ring
@@ -629,21 +657,45 @@ export default function ArtemisTrackerDemo() {
   }, [moonCurrent])
 
   // Drag handlers
+  const touchLocked   = useRef<'h' | 'v' | null>(null)  // 'h' = horizontal captured, 'v' = released to scroll
+  const pointerDownPos = useRef({ x: 0, y: 0 })
+
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    isDragging.current  = true
-    userDragged.current = true
-    lastMouse.current  = { x: e.clientX, y: e.clientY }
+    isDragging.current   = true
+    userDragged.current  = true
+    lastMouse.current    = { x: e.clientX, y: e.clientY }
+    pointerDownPos.current = { x: e.clientX, y: e.clientY }
+    touchLocked.current  = null
     if (e.pointerType !== 'touch') e.currentTarget.setPointerCapture(e.pointerId)
   }
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!isDragging.current) return
+
+    // On touch: wait until the gesture direction is clear, then lock or release
+    if (e.pointerType === 'touch' && touchLocked.current === null) {
+      const totalDx = Math.abs(e.clientX - pointerDownPos.current.x)
+      const totalDy = Math.abs(e.clientY - pointerDownPos.current.y)
+      if (totalDx < 4 && totalDy < 4) return  // not enough movement yet
+      if (totalDx >= totalDy * 1.2) {
+        // Clearly horizontal — capture so the page won't scroll
+        touchLocked.current = 'h'
+        e.currentTarget.setPointerCapture(e.pointerId)
+      } else {
+        // Clearly vertical — release so the page can scroll
+        touchLocked.current = 'v'
+        isDragging.current  = false
+        return
+      }
+    }
+    if (touchLocked.current === 'v') return
+
     const dx = e.clientX - lastMouse.current.x
     const dy = e.clientY - lastMouse.current.y
     lastMouse.current = { x: e.clientX, y: e.clientY }
     spherical.current.theta += dx * 0.005
     if (e.pointerType !== 'touch') spherical.current.phi = Math.max(0.05, Math.min(Math.PI - 0.05, spherical.current.phi - dy * 0.005))
   }
-  const handlePointerUp = () => { isDragging.current = false }
+  const handlePointerUp = () => { isDragging.current = false; touchLocked.current = null }
 
   // Derived telemetry — distances are surface-to-surface to match NASA's public figures
   const EARTH_RADIUS_KM = 6371
