@@ -124,18 +124,24 @@ function ResultRow({ entry, query, active, onSelect, id }: {
 
 // ── Results panel ────────────────────────────────────────────
 
-function ResultsPanel({ results, query, activeIndex, onSelect, loading, listboxId, reduced }: {
+function ResultsPanel({ results, query, activeIndex, onSelect, loading, indexError, listboxId, reduced }: {
   results: SearchEntry[]; query: string; activeIndex: number
-  onSelect: (e: SearchEntry) => void; loading: boolean
+  onSelect: (e: SearchEntry) => void; loading: boolean; indexError: boolean
   listboxId: string; reduced: boolean
 }) {
+  if (indexError) return (
+    <div role="status" aria-live="polite" className="px-3 py-4 flex items-center gap-2.5">
+      <SearchX size={15} className="text-text-muted flex-shrink-0" aria-hidden="true" />
+      <p className="font-mono text-[12px] text-text-secondary">Search unavailable. Try refreshing.</p>
+    </div>
+  )
   if (loading) return (
     <div role="status" aria-live="polite" className="px-3 py-4 text-center">
       <p className="font-mono text-[11px] text-text-muted animate-pulse">Loading…</p>
     </div>
   )
   if (query.length >= 2 && results.length === 0) return (
-    <div role="status" aria-live="polite" className="px-3 py-4 flex items-center gap-2.5">
+    <div role="status" aria-live="polite" className="px-3 py-3 flex items-center gap-2.5">
       <SearchX size={15} className="text-text-muted flex-shrink-0" aria-hidden="true" />
       <p className="font-mono text-[12px] text-text-secondary">
         No results for <span className="text-text-primary">"{query}"</span>
@@ -252,13 +258,20 @@ export default function KBSearch({
 
   const showSectionDefault = !!sectionArticles && query.length < 2
 
+  const [indexError, setIndexError] = useState(false)
+
   const loadIndex = useCallback(async () => {
-    if (indexData) return
+    if (indexData || indexError) return
     setLoading(true)
-    const mod = await import('../../data/kb/search-index')
-    setIndexData(mod.searchIndex)
-    setLoading(false)
-  }, [indexData])
+    try {
+      const mod = await import('../../data/kb/search-index')
+      setIndexData(mod.searchIndex)
+    } catch {
+      setIndexError(true)
+    } finally {
+      setLoading(false)
+    }
+  }, [indexData, indexError])
 
   const handleSelect = useCallback((entry: SearchEntry) => {
     navigate(`/knowledge-base/${entry.sectionSlug}/${entry.articleSlug}`)
@@ -360,7 +373,7 @@ export default function KBSearch({
       <div className="max-h-[420px] overflow-y-auto overscroll-contain">
         <ResultsPanel
           results={results} query={query} activeIndex={activeIndex}
-          onSelect={handleSelect} loading={loading}
+          onSelect={handleSelect} loading={loading} indexError={indexError}
           listboxId={desktopListboxId} reduced={reduced}
         />
       </div>
@@ -439,7 +452,7 @@ export default function KBSearch({
             <div className="max-h-[60vh] overflow-y-auto overscroll-contain">
               <ResultsPanel
                 results={results} query={query} activeIndex={activeIndex}
-                onSelect={handleSelect} loading={loading}
+                onSelect={handleSelect} loading={loading} indexError={indexError}
                 listboxId={mobileListboxId} reduced={reduced}
               />
             </div>
