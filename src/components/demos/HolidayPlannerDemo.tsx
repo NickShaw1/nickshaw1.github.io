@@ -19,7 +19,7 @@ export default function HolidayPlannerDemo() {
     { label: '', cost: '' },
   ])
 
-  const labelClass  = 'font-mono text-[10px] tracking-widest uppercase text-text-muted mb-1'
+  const labelClass  = 'font-mono text-[11px] tracking-widest uppercase text-text-secondary mb-1'
   const inputClass  = 'w-full bg-bg-base border border-bg-border rounded px-3 py-2 text-text-primary text-[13px] font-mono placeholder:text-text-muted/40 focus:outline-none focus:border-accent/40 transition-colors duration-150 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
   const dateClass   = 'w-full bg-bg-base border border-bg-border rounded px-3 py-2 text-text-primary text-[13px] font-mono text-left focus:outline-none focus:border-accent/40 transition-colors duration-150 cursor-pointer'
   const selectClass = 'demo-select w-full bg-bg-base border border-bg-border rounded px-3 py-2 text-text-primary text-[13px] font-mono focus:outline-none focus:border-accent/40 cursor-pointer transition-colors duration-150'
@@ -70,22 +70,22 @@ export default function HolidayPlannerDemo() {
     <div className="mb-5">
       <p className="font-mono text-[10px] tracking-widest uppercase text-text-muted mb-3">Live demo</p>
 
-      <div className="rounded-xl overflow-hidden bg-[#0d0f11] border border-[#3d5260]">
+      <div className="rounded-xl overflow-hidden bg-bg-base border border-bg-border">
 
-        <div className="px-4 py-2.5 flex items-center justify-between bg-[#111316] border-b border-[#3d5260]">
+        <div className="px-4 py-2.5 flex items-center justify-between bg-bg-surface border-b border-bg-border">
           <div className="flex items-baseline gap-2">
             <span className="font-mono font-bold text-[13px] tracking-[0.15em] uppercase text-accent">
               {destination || 'Holiday Planner'}
             </span>
             {nights !== null && nights > 0 && (
-              <span className="font-mono text-[8px] tracking-widest uppercase text-[#7a9fad]">
+              <span className="font-mono text-[10px] tracking-widest uppercase text-text-muted">
                 {nights} night{nights !== 1 ? 's' : ''}
               </span>
             )}
           </div>
           <button
             onClick={() => { setDestination(''); setStartDate(''); setEndDate(''); setCurrency('GBP'); setItems([{ label: '', cost: '' }]) }}
-            className="font-mono text-[8px] tracking-widest uppercase px-2.5 py-1 rounded border border-[#3d5260] bg-transparent text-[#94b8c4] transition-colors duration-150 hover:text-red-400 hover:border-red-400"
+            className="font-mono text-[10px] tracking-widest uppercase px-2.5 py-1 rounded border border-bg-border bg-transparent text-text-secondary transition-colors duration-150 hover:text-red-400 hover:border-red-400"
           >Reset</button>
         </div>
 
@@ -141,15 +141,15 @@ export default function HolidayPlannerDemo() {
             </div>
           </div>
 
-          <div className="border-t border-[#3d5260] pt-4">
+          <div className="border-t border-bg-border pt-4">
             <div className="flex items-center justify-between mb-2">
               <p className={labelClass}>Itinerary &amp; costs</p>
               <span className={`${labelClass} mb-0 ${items.length >= 10 ? 'text-accent' : ''}`}>{items.length}/10</span>
             </div>
 
             <div className="flex gap-2 mb-1 px-0.5">
-              <span className="flex-[4] font-mono text-[9px] tracking-widest uppercase text-[#2a3a40]">Item</span>
-              <span className="flex-[1] font-mono text-[9px] tracking-widest uppercase text-right text-[#2a3a40]">Cost ({symbol})</span>
+              <span className="flex-[3] font-mono text-[11px] tracking-wide uppercase text-text-secondary">Item</span>
+              <span className="flex-[2] font-mono text-[11px] tracking-wide uppercase text-right text-text-secondary whitespace-nowrap">Cost ({symbol})</span>
               <span className="w-5" />
             </div>
 
@@ -162,7 +162,7 @@ export default function HolidayPlannerDemo() {
                     onChange={e => updateItem(i, 'label', e.target.value)}
                     placeholder={`Item ${i + 1}`}
                     maxLength={50}
-                    className={`${inputClass} flex-[4]`}
+                    className={`${inputClass} flex-[3]`}
                   />
                   <input
                     type="number"
@@ -172,7 +172,7 @@ export default function HolidayPlannerDemo() {
                     value={item.cost}
                     onChange={e => updateItem(i, 'cost', e.target.value)}
                     placeholder="0"
-                    className={`${inputClass} flex-[1] text-right`}
+                    className={`${inputClass} flex-[2] text-right`}
                   />
                   <button
                     onClick={() => {
@@ -197,9 +197,9 @@ export default function HolidayPlannerDemo() {
             )}
           </div>
 
-          <div className="flex items-center justify-between rounded-lg px-4 py-3 bg-[#111316] border border-[#3d5260]">
-            <span className="font-mono text-[10px] tracking-widest uppercase text-[#7a9fad]">Total</span>
-            <span className={`font-display font-bold text-[1.5rem] tabular-nums ${total > 0 ? 'text-accent' : 'text-[#94b8c4]'}`}>
+          <div className="flex items-center justify-between rounded-lg px-4 py-3 bg-bg-surface border border-bg-border">
+            <span className="font-mono text-[12px] tracking-widest uppercase text-text-muted">Total</span>
+            <span className={`font-display font-bold text-[1.5rem] tabular-nums ${total > 0 ? 'text-accent' : 'text-text-secondary'}`}>
               {symbol}{total.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </span>
           </div>

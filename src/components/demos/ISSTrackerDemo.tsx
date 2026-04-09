@@ -218,7 +218,7 @@ export default function ISSTrackerDemo() {
       const T       = (jd - 2451545.0) / 36525
       const gmstDeg = (280.46061837 + 360.98564736629 * (jd - 2451545.0) + 0.000387933 * T * T) % 360
       const gmstRad = (gmstDeg * Math.PI) / 180
-      const earthRotY = -gmstRad - Math.PI / 2
+      const earthRotY = -gmstRad
       if (earthMeshRef.current) earthMeshRef.current.rotation.y = earthRotY
 
       // Sun direction from real solar coordinates (low-precision, ~0.01° accuracy)
@@ -301,7 +301,7 @@ export default function ISSTrackerDemo() {
       const jdNow    = Date.now() / 86400000 + 2440587.5
       const tNow     = (jdNow - 2451545.0) / 36525
       const gmstNow  = (280.46061837 + 360.98564736629 * (jdNow - 2451545.0) + 0.000387933 * tNow * tNow) % 360
-      const rotY     = -(gmstNow * Math.PI / 180) - Math.PI / 2
+      const rotY     = -(gmstNow * Math.PI / 180)
       const worldPos = issLatLonToVec3(d.latitude, d.longitude, 1.065).applyEuler(new THREE.Euler(0, rotY, 0))
       if (prevApiWorld.current) {
         const rawNormal = new THREE.Vector3().crossVectors(prevApiWorld.current.normalize(), worldPos.clone().normalize()).normalize()

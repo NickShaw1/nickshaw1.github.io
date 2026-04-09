@@ -33,7 +33,7 @@ function quakeRadius(mag: number): number {
 function getQuakeSpherical(lat: number, lon: number): { theta: number; phi: number } {
   const jd      = Date.now() / 86400000 + 2440587.5
   const gmstDeg = (280.46061837 + 360.98564736629 * (jd - 2451545.0)) % 360
-  const rotY    = -(gmstDeg * Math.PI / 180) - Math.PI / 2
+  const rotY    = -(gmstDeg * Math.PI / 180)
   // Unit vector in Earth local space
   const lp = (90 - lat) * Math.PI / 180
   const lt = (lon + 180) * Math.PI / 180
@@ -257,7 +257,7 @@ export default function EarthquakeTrackerDemo() {
       // Earth rotation via GMST
       const jd      = Date.now() / 86400000 + 2440587.5
       const gmstDeg = (280.46061837 + 360.98564736629 * (jd - 2451545.0)) % 360
-      earth.rotation.y = -(gmstDeg * Math.PI / 180) - Math.PI / 2
+      earth.rotation.y = -(gmstDeg * Math.PI / 180)
 
       // Real solar direction (Meeus Ch.25 low-precision, accurate to ~0.01°)
       {

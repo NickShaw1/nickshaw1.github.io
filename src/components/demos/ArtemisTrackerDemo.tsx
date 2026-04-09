@@ -500,7 +500,7 @@ export default function ArtemisTrackerDemo() {
       const gmstRad = (gmstDeg * Math.PI) / 180
       // The earth.jpg texture has the prime meridian (0° lon) at the centre-right seam.
       // An offset of -π/2 aligns that seam with Three.js's default sphere UV mapping.
-      earth.rotation.y = -gmstRad - Math.PI / 2
+      earth.rotation.y = -gmstRad
 
       // Sun direction in ICRF (low-precision solar coordinates, accurate to ~0.01°)
       // Source: Astronomical Algorithms, Meeus Ch.25 / JPL low-precision formulae
