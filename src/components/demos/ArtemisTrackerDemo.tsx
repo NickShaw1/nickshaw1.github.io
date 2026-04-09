@@ -204,7 +204,8 @@ export default function ArtemisTrackerDemo() {
     })
 
     // Full mission arc — coarse resolution just for the trajectory shape
-    fetchTarget('-1024', '2026-04-01T00:00', '2026-04-13T00:00', '6h').then(({ pts }) => {
+    // Stop at splashdown; Horizons has no trajectory data for -1024 beyond mission end
+    fetchTarget('-1024', '2026-04-01T00:00', '2026-04-11T01:00', '6h').then(({ pts }) => {
       setFullTrajPts(pts)
     })
 
@@ -620,7 +621,7 @@ export default function ArtemisTrackerDemo() {
   useEffect(() => {
     const scene = sceneRef.current
     if (!scene) return
-    if (!fullTrajPts.length) { console.warn('Artemis: full trajectory empty — fetch may have failed'); return }
+    if (!fullTrajPts.length) return
     if (fullPathRef.current) { scene.remove(fullPathRef.current); fullPathRef.current = null }
     fullPathRef.current = buildLine(scene, fullTrajPts, 0x4488ff, 0.55) as unknown as THREE.Mesh
   }, [fullTrajPts])

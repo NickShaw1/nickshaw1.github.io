@@ -505,6 +505,11 @@ export default function EarthquakeTrackerDemo() {
     }
     pingDataRef.current = []
 
+    if (crownMeshRef.current) {
+      earth.remove(crownMeshRef.current)
+      crownMeshRef.current = null
+    }
+
     if (!quakes.length) return
 
     const dummy = new THREE.Object3D()
@@ -609,11 +614,6 @@ export default function EarthquakeTrackerDemo() {
     }
 
     // Crown marker for the single most recent quake — white ring + larger hit area so it's always on top in clusters
-    // Remove previous crown before recreating (filter changes cause this effect to re-run)
-    if (crownMeshRef.current) {
-      earth.remove(crownMeshRef.current)
-      crownMeshRef.current = null
-    }
     const newest = quakes.reduce<QuakeProps | null>((b, q) => (!b || q.time > b.time ? q : b), null)
     if (newest) {
       const crownGeo = new THREE.RingGeometry(0.85, 1.15, 48)
