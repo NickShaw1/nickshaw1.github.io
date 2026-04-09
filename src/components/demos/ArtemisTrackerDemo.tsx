@@ -854,7 +854,10 @@ export default function ArtemisTrackerDemo() {
                       onMouseEnter={() => setHoveredCrew(m.name)}
                       onMouseLeave={() => setHoveredCrew(null)}
                     >{m.name}</a>
-                    <span className="font-mono text-[10px] tracking-widest uppercase text-text-muted truncate">{m.role}</span>
+                    <span className="font-mono text-[10px] tracking-widest uppercase text-text-muted truncate">
+                      <span className="sm:hidden">{m.role === 'Mission Spec.' ? 'Mission Specialist' : m.role}</span>
+                      <span className="hidden sm:inline">{m.role}</span>
+                    </span>
                   </div>
                 </div>
               ))}
