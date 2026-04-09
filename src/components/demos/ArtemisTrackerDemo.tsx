@@ -151,6 +151,7 @@ export default function ArtemisTrackerDemo() {
   const [loading,       setLoading]       = useState(true)
   const [sceneReady,    setSceneReady]    = useState(false)
   const [fetchError,    setFetchError]    = useState<string | null>(null)
+  const [retryKey,      setRetryKey]      = useState(0)
   const [hoveredCrew,   setHoveredCrew]   = useState<string | null>(null)
 
   const FALLBACK_CREW = [
@@ -161,8 +162,10 @@ export default function ArtemisTrackerDemo() {
   ]
   const crew = FALLBACK_CREW
 
-  // Fetch Horizons data on mount — fetches are independent so Moon failure doesn't kill Artemis
+  // Fetch Horizons data on mount (or retry) — fetches are independent so Moon failure doesn't kill Artemis
   useEffect(() => {
+    setLoading(true)
+    setFetchError(null)
     const now   = new Date()
     const back  = new Date(now.getTime() - 8 * 3600_000)
     const fwd   = new Date(now.getTime() + 4 * 3600_000)
@@ -206,7 +209,7 @@ export default function ArtemisTrackerDemo() {
       setMoonPts(pts)
     })
 
-  }, [])
+  }, [retryKey])
 
   // Mission Elapsed Time — T+ since launch
   const LAUNCH_TIME      = new Date('2026-04-01T22:35:12Z')
@@ -991,6 +994,12 @@ export default function ArtemisTrackerDemo() {
                 <span className="font-mono text-[9px] tracking-wider text-center text-[rgba(255,77,77,0.85)]">
                   {fetchError}
                 </span>
+                <button
+                  onClick={() => setRetryKey(k => k + 1)}
+                  className="font-mono text-[9px] tracking-widest uppercase px-4 py-1.5 rounded border border-[#ff4d4d]/30 text-[#ff4d4d] bg-[rgba(255,77,77,0.08)] hover:opacity-75 transition-opacity cursor-pointer"
+                >
+                  Retry
+                </button>
               </div>
             ) : (
               <>

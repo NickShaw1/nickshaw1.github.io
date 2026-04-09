@@ -454,6 +454,17 @@ export default function ISSTrackerDemo() {
                 <span className="font-mono text-[9px] tracking-wider text-center text-[rgba(255,77,77,0.5)]">
                   Could not reach wheretheiss.at
                 </span>
+                <button
+                  onClick={() => {
+                    setFetchFailed(false)
+                    dataArrivedRef.current  = false
+                    issRetriedRef.current   = false
+                    fetchISS()
+                  }}
+                  className="font-mono text-[9px] tracking-widest uppercase px-4 py-1.5 rounded border border-[#ff4d4d]/30 text-[#ff4d4d] bg-[rgba(255,77,77,0.08)] hover:opacity-75 transition-opacity cursor-pointer"
+                >
+                  Retry
+                </button>
               </div>
             ) : (
               <>

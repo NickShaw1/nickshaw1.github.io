@@ -149,6 +149,7 @@ export default function EarthquakeTrackerDemo() {
   const [loading,    setLoading]    = useState(true)
   const [error,      setError]      = useState<string | null>(null)
   const [showPlates, setShowPlates] = useState(true)
+  const [retryKey,   setRetryKey]   = useState(0)
 
   const selectedRef = useRef<QuakeProps | null>(null)
 
@@ -473,7 +474,7 @@ export default function EarthquakeTrackerDemo() {
       })
 
     return () => controller.abort()
-  }, [timeRange, magFilter])
+  }, [timeRange, magFilter, retryKey])
 
   // Rebuild instanced mesh when quakes change
   useEffect(() => {
@@ -797,16 +798,44 @@ export default function EarthquakeTrackerDemo() {
           <div className="grid grid-cols-1 sm:grid-cols-3">
             <div className="px-4 py-3 min-w-0 overflow-hidden border-b sm:border-b-0 sm:border-r border-accent/[7%]">
               <span className="font-mono text-[10px] tracking-[0.15em] uppercase text-text-muted block mb-1">Events</span>
-              <div className="flex items-center gap-3 h-7">
-                <span className="font-mono text-[13px] font-bold text-text-primary tabular-nums">
-                  {loading ? '—' : quakes.length.toLocaleString()}
-                </span>
-              </div>
-              <span className="font-mono text-[12px] tracking-wide block mt-0.5 text-text-secondary min-h-[1.125rem]">{recentCount > 0 ? `${recentCount} in the past hour` : ''}</span>
+              {loading ? (
+                <div className="flex items-center gap-3 h-7">
+                  <div className="relative flex-shrink-0 w-5 h-5">
+                    <div className="absolute inset-0 rounded-full border border-accent/[15%]" />
+                    <div className="animate-spin absolute inset-0 rounded-full border-2 border-transparent" style={{ borderTopColor: '#0AFF9D' }} />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-1 h-1 rounded-full bg-accent" style={{ boxShadow: '0 0 6px #0AFF9D' }} />
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-0.5">
+                    <span className="font-mono text-[10px] tracking-widest uppercase text-accent">Acquiring seismic feed</span>
+                    <span className="font-mono text-[9px] text-accent/40">USGS Earthquake Hazards Program</span>
+                  </div>
+                </div>
+              ) : error ? (
+                <div className="flex items-center gap-3 h-7">
+                  <span className="font-mono text-[11px] tracking-wide text-[#ff4d4d]">USGS feed unreachable</span>
+                </div>
+              ) : (
+                <div className="flex items-center gap-3 h-7">
+                  <span className="font-mono text-[13px] font-bold text-text-primary tabular-nums">
+                    {quakes.length.toLocaleString()}
+                  </span>
+                </div>
+              )}
+              <span className="font-mono text-[12px] tracking-wide block mt-0.5 text-text-secondary min-h-[1.125rem]">{(!loading && !error && recentCount > 0) ? `${recentCount} in the past hour` : ''}</span>
             </div>
             <div className="px-4 py-3 min-w-0 overflow-hidden border-b sm:border-b-0 sm:border-r border-accent/[7%]">
               <span className="font-mono text-[10px] tracking-[0.15em] uppercase text-text-muted block mb-1">Latest earthquake</span>
-              {loading || !mostRecent ? (
+              {loading ? (
+                <div className="flex items-center gap-3 h-7">
+                  <span className="font-mono text-[13px] font-bold text-text-primary">—</span>
+                </div>
+              ) : error ? (
+                <div className="flex items-center gap-3 h-7">
+                  <span className="font-mono text-[11px] tracking-wide text-[#ff4d4d]">—</span>
+                </div>
+              ) : !mostRecent ? (
                 <div className="flex items-center gap-3 h-7">
                   <span className="font-mono text-[13px] font-bold text-text-primary">—</span>
                 </div>
@@ -836,7 +865,7 @@ export default function EarthquakeTrackerDemo() {
                   </span>
                 </>
               )}
-              {(loading || !mostRecent) && (
+              {(loading || !mostRecent) && !error && (
                 <span className="block mt-0.5 min-h-[1.125rem]" />
               )}
             </div>
@@ -845,11 +874,11 @@ export default function EarthquakeTrackerDemo() {
               <span className="font-mono text-[10px] tracking-[0.15em] uppercase text-text-muted block mb-1">Largest magnitude</span>
               <div className="flex items-center gap-3 h-7">
                 <span className="font-mono text-[13px] font-bold text-text-primary tabular-nums">
-                  {loading || !strongest ? '—' : `M${strongest.mag.toFixed(1)}`}
+                  {loading || error || !strongest ? '—' : `M${strongest.mag.toFixed(1)}`}
                 </span>
               </div>
               <span className="font-mono text-[12px] tracking-wide block mt-0.5 text-text-secondary truncate min-h-[1.125rem]">
-                {strongest ? strongest.place : ''}
+                {(!loading && !error && strongest) ? strongest.place : ''}
               </span>
             </div>
           </div>
@@ -857,10 +886,10 @@ export default function EarthquakeTrackerDemo() {
           <div className="sm:hidden px-4 py-3 min-w-0 overflow-hidden border-t border-accent/[7%]">
             <span className="font-mono text-[10px] tracking-[0.15em] uppercase text-text-muted block mb-1">Largest magnitude</span>
             <span className="font-mono text-[13px] font-bold text-text-primary tabular-nums block">
-              {loading || !strongest ? '—' : `M${strongest.mag.toFixed(1)}`}
+              {loading || error || !strongest ? '—' : `M${strongest.mag.toFixed(1)}`}
             </span>
             <span className="font-mono text-[12px] tracking-wide block mt-0.5 text-text-secondary truncate min-h-[1.125rem]">
-              {strongest ? strongest.place : ''}
+              {(!loading && !error && strongest) ? strongest.place : ''}
             </span>
           </div>
         </div>
@@ -936,12 +965,32 @@ export default function EarthquakeTrackerDemo() {
       >
         {loading && (
           <div className="absolute inset-0 flex items-center justify-center bg-bg-surface/80 z-10">
-            <span className="font-mono text-[11px] animate-pulse text-accent">Fetching data…</span>
+            <div className="flex items-center gap-3">
+              <div className="relative flex-shrink-0 w-7 h-7">
+                <div className="absolute inset-0 rounded-full border border-accent/[15%]" />
+                <div className="animate-spin absolute inset-0 rounded-full border-2 border-transparent" style={{ borderTopColor: '#0AFF9D' }} />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-1 h-1 rounded-full bg-accent" style={{ boxShadow: '0 0 6px #0AFF9D' }} />
+                </div>
+              </div>
+              <div className="flex flex-col gap-0.5">
+                <span className="font-mono text-[10px] tracking-widest uppercase text-accent">Acquiring seismic feed</span>
+                <span className="font-mono text-[9px] text-accent/40">USGS Earthquake Hazards Program</span>
+              </div>
+            </div>
           </div>
         )}
         {error && (
-          <div className="absolute inset-0 flex items-center justify-center z-10">
-            <span className="font-mono text-[11px] text-red-400">{error}</span>
+          <div className="absolute inset-0 flex items-center justify-center bg-bg-surface/80 z-10">
+            <div className="flex flex-col items-center gap-3">
+              <span className="font-mono text-[11px] tracking-wide text-[#ff4d4d]">USGS feed unreachable — check your connection or try again shortly</span>
+              <button
+                onClick={() => setRetryKey(k => k + 1)}
+                className="font-mono text-[9px] tracking-widest uppercase px-4 py-1.5 rounded border border-[#ff4d4d]/30 text-[#ff4d4d] bg-[rgba(255,77,77,0.08)] hover:opacity-75 transition-opacity cursor-pointer"
+              >
+                Retry
+              </button>
+            </div>
           </div>
         )}
 
