@@ -496,6 +496,7 @@ export default function EarthquakeTrackerDemo() {
 
     const dummy = new THREE.Object3D()
     const now   = Date.now()
+    const markerScale = window.innerWidth < 640 ? 1.8 : 1
 
     // Outer glow ring (permanent, behind core)
     const glowGeo = new THREE.RingGeometry(0.8, 1.4, 32)
@@ -506,7 +507,7 @@ export default function EarthquakeTrackerDemo() {
       const pos = latLonToVec3(q.lat, q.lon, EARTH_R * 1.009)
       dummy.position.copy(pos)
       dummy.lookAt(0, 0, 0)
-      dummy.scale.setScalar(quakeRadius(q.mag) * 0.7)
+      dummy.scale.setScalar(quakeRadius(q.mag) * 0.7 * markerScale)
       dummy.updateMatrix()
       glowMesh.setMatrixAt(i, dummy.matrix)
       glowMesh.setColorAt(i, magColor(q.mag))
@@ -526,7 +527,7 @@ export default function EarthquakeTrackerDemo() {
       const pos = latLonToVec3(q.lat, q.lon, EARTH_R * 1.011)
       dummy.position.copy(pos)
       dummy.lookAt(0, 0, 0)
-      dummy.scale.setScalar(quakeRadius(q.mag) * 0.45)
+      dummy.scale.setScalar(quakeRadius(q.mag) * 0.45 * markerScale)
       dummy.updateMatrix()
       mesh.setMatrixAt(i, dummy.matrix)
       mesh.setColorAt(i, magColor(q.mag))
@@ -546,7 +547,7 @@ export default function EarthquakeTrackerDemo() {
       const pos = latLonToVec3(q.lat, q.lon, EARTH_R * 1.015)
       dummy.position.copy(pos)
       dummy.lookAt(0, 0, 0)
-      dummy.scale.setScalar(Math.max(0.18, quakeRadius(q.mag) * 2))
+      dummy.scale.setScalar(Math.max(0.18, quakeRadius(q.mag) * 2) * markerScale)
       dummy.updateMatrix()
       hitMesh.setMatrixAt(i, dummy.matrix)
     })
@@ -569,7 +570,7 @@ export default function EarthquakeTrackerDemo() {
 
       pingDataRef.current = recent.map(q => ({
         pos: latLonToVec3(q.lat, q.lon, EARTH_R * 1.012),
-        baseScale: quakeRadius(q.mag) * 1.8,
+        baseScale: quakeRadius(q.mag) * 1.8 * markerScale,
         color: new THREE.Color(0xff2222),
       }))
 
@@ -592,6 +593,33 @@ export default function EarthquakeTrackerDemo() {
 
       pingMeshRef.current  = ringMeshA
       pingMeshBRef.current = ringMeshB
+    }
+
+    // Crown marker for the single most recent quake — white ring + larger hit area so it's always on top in clusters
+    const newest = quakes.reduce<QuakeProps | null>((b, q) => (!b || q.time > b.time ? q : b), null)
+    if (newest) {
+      const crownGeo = new THREE.RingGeometry(0.85, 1.15, 48)
+      const crownMat = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide, transparent: true, opacity: 0.9, depthWrite: false })
+      const crownMesh = new THREE.Mesh(crownGeo, crownMat)
+      const crownPos = latLonToVec3(newest.lat, newest.lon, EARTH_R * 1.013)
+      crownMesh.position.copy(crownPos)
+      crownMesh.lookAt(0, 0, 0)
+      crownMesh.scale.setScalar(quakeRadius(newest.mag) * 1.1)
+      crownMesh.renderOrder = 5
+      earth.add(crownMesh)
+
+      // Bump the hit mesh for the most recent quake so it wins raycasts in clusters
+      const newestIdx = quakes.indexOf(newest)
+      if (hitMeshRef.current && newestIdx !== -1) {
+        const hm = hitMeshRef.current
+        const tmpObj = new THREE.Object3D()
+        tmpObj.position.copy(latLonToVec3(newest.lat, newest.lon, EARTH_R * 1.02))
+        tmpObj.lookAt(0, 0, 0)
+        tmpObj.scale.setScalar(Math.max(0.28, quakeRadius(newest.mag) * 2.5))
+        tmpObj.updateMatrix()
+        hm.setMatrixAt(newestIdx, tmpObj.matrix)
+        hm.instanceMatrix.needsUpdate = true
+      }
     }
   }, [quakes])
 
@@ -754,8 +782,8 @@ export default function EarthquakeTrackerDemo() {
                   {loading ? '—' : quakes.length.toLocaleString()}
                 </span>
               </div>
-              {recentCount > 0 && (
-                <span className="font-mono text-[12px] tracking-wide block mt-0.5 text-text-secondary">{recentCount} in the past hour</span>
+              {true && (
+                <span className="font-mono text-[12px] tracking-wide block mt-0.5 text-text-secondary min-h-[1.125rem]">{recentCount > 0 ? `${recentCount} in the past hour` : ''}</span>
               )}
             </div>
             <div className="px-4 py-3 min-w-0 overflow-hidden border-b sm:border-b-0 sm:border-r border-accent/[7%]">
@@ -784,10 +812,13 @@ export default function EarthquakeTrackerDemo() {
                       Locate ↗
                     </button>
                   </div>
-                  <span className="font-mono text-[12px] tracking-wide block mt-0.5 text-text-secondary truncate">
+                  <span className="font-mono text-[12px] tracking-wide block mt-0.5 text-text-secondary truncate min-h-[1.125rem]">
                     {mostRecent.place}
                   </span>
                 </>
+              )}
+              {(loading || !mostRecent) && (
+                <span className="block mt-0.5 min-h-[1.125rem]" />
               )}
             </div>
             {/* Largest magnitude — hidden on mobile, shown inline on sm+ */}
@@ -798,11 +829,9 @@ export default function EarthquakeTrackerDemo() {
                   {loading || !strongest ? '—' : `M${strongest.mag.toFixed(1)}`}
                 </span>
               </div>
-              {strongest && (
-                <span className="font-mono text-[12px] tracking-wide block mt-0.5 text-text-secondary truncate">
-                  {strongest.place}
-                </span>
-              )}
+              <span className="font-mono text-[12px] tracking-wide block mt-0.5 text-text-secondary truncate min-h-[1.125rem]">
+                {strongest ? strongest.place : ''}
+              </span>
             </div>
           </div>
           {/* Largest magnitude — mobile only, full width */}
@@ -811,11 +840,9 @@ export default function EarthquakeTrackerDemo() {
             <span className="font-mono text-[13px] font-bold text-text-primary tabular-nums block">
               {loading || !strongest ? '—' : `M${strongest.mag.toFixed(1)}`}
             </span>
-            {strongest && (
-              <span className="font-mono text-[12px] tracking-wide block mt-0.5 text-text-secondary truncate">
-                {strongest.place}
-              </span>
-            )}
+            <span className="font-mono text-[12px] tracking-wide block mt-0.5 text-text-secondary truncate min-h-[1.125rem]">
+              {strongest ? strongest.place : ''}
+            </span>
           </div>
         </div>
 
