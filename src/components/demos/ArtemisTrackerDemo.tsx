@@ -267,7 +267,7 @@ export default function ArtemisTrackerDemo() {
 
     const scene  = new THREE.Scene()
     scene.background = new THREE.Color(0x010209)
-    const camera = new THREE.PerspectiveCamera(55, W / H, 0.1, 2000)
+    const camera = new THREE.PerspectiveCamera(55, W / H, 0.1, 3000)
     camera.position.set(0, 25, 85)
     camera.lookAt(0, 0, 0)
     cameraRef.current = camera
@@ -436,15 +436,15 @@ export default function ArtemisTrackerDemo() {
         sunMat.map = tex
         sunMat.needsUpdate = true
       })
-      sunGroup.add(new THREE.Mesh(new THREE.SphereGeometry(4, 24, 24), sunMat))
+      sunGroup.add(new THREE.Mesh(new THREE.SphereGeometry(7, 24, 24), sunMat))
       // Inner corona glow
       sunGroup.add(new THREE.Mesh(
-        new THREE.SphereGeometry(6, 24, 24),
+        new THREE.SphereGeometry(10.5, 24, 24),
         new THREE.MeshBasicMaterial({ color: 0xffe066, transparent: true, opacity: 0.18, depthWrite: false, side: THREE.BackSide }),
       ))
       // Outer haze
       sunGroup.add(new THREE.Mesh(
-        new THREE.SphereGeometry(10, 24, 24),
+        new THREE.SphereGeometry(17.5, 24, 24),
         new THREE.MeshBasicMaterial({ color: 0xffaa00, transparent: true, opacity: 0.07, depthWrite: false, side: THREE.BackSide }),
       ))
       scene.add(sunGroup)
@@ -495,7 +495,7 @@ export default function ArtemisTrackerDemo() {
         const sunDir  = sunUnit.clone().multiplyScalar(500)
         if (sunLightRef.current)  sunLightRef.current.position.copy(sunDir)
         if (fillLightRef.current) fillLightRef.current.position.copy(sunDir.clone().negate())
-        if (sunMeshRef.current)   sunMeshRef.current.position.copy(sunUnit.multiplyScalar(350))
+        if (sunMeshRef.current)   sunMeshRef.current.position.copy(sunUnit.multiplyScalar(1500))
       }
 
       // Pulse ring
@@ -657,45 +657,21 @@ export default function ArtemisTrackerDemo() {
   }, [moonCurrent])
 
   // Drag handlers
-  const touchLocked   = useRef<'h' | 'v' | null>(null)  // 'h' = horizontal captured, 'v' = released to scroll
-  const pointerDownPos = useRef({ x: 0, y: 0 })
-
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    isDragging.current   = true
-    userDragged.current  = true
-    lastMouse.current    = { x: e.clientX, y: e.clientY }
-    pointerDownPos.current = { x: e.clientX, y: e.clientY }
-    touchLocked.current  = null
+    isDragging.current  = true
+    userDragged.current = true
+    lastMouse.current  = { x: e.clientX, y: e.clientY }
     if (e.pointerType !== 'touch') e.currentTarget.setPointerCapture(e.pointerId)
   }
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!isDragging.current) return
-
-    // On touch: wait until the gesture direction is clear, then lock or release
-    if (e.pointerType === 'touch' && touchLocked.current === null) {
-      const totalDx = Math.abs(e.clientX - pointerDownPos.current.x)
-      const totalDy = Math.abs(e.clientY - pointerDownPos.current.y)
-      if (totalDx < 4 && totalDy < 4) return  // not enough movement yet
-      if (totalDx >= totalDy * 1.2) {
-        // Clearly horizontal — capture so the page won't scroll
-        touchLocked.current = 'h'
-        e.currentTarget.setPointerCapture(e.pointerId)
-      } else {
-        // Clearly vertical — release so the page can scroll
-        touchLocked.current = 'v'
-        isDragging.current  = false
-        return
-      }
-    }
-    if (touchLocked.current === 'v') return
-
     const dx = e.clientX - lastMouse.current.x
     const dy = e.clientY - lastMouse.current.y
     lastMouse.current = { x: e.clientX, y: e.clientY }
     spherical.current.theta += dx * 0.005
     if (e.pointerType !== 'touch') spherical.current.phi = Math.max(0.05, Math.min(Math.PI - 0.05, spherical.current.phi - dy * 0.005))
   }
-  const handlePointerUp = () => { isDragging.current = false; touchLocked.current = null }
+  const handlePointerUp = () => { isDragging.current = false }
 
   // Derived telemetry — distances are surface-to-surface to match NASA's public figures
   const EARTH_RADIUS_KM = 6371
