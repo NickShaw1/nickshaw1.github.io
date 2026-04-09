@@ -611,7 +611,7 @@ export default function ArtemisTrackerDemo() {
     })
     const geo = new THREE.BufferGeometry()
     geo.setAttribute('position', new THREE.BufferAttribute(positions, 3))
-    const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity })
+    const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity, depthTest: false })
     const line = new THREE.Line(geo, mat)
     scene.add(line)
     return line
@@ -619,7 +619,8 @@ export default function ArtemisTrackerDemo() {
 
   useEffect(() => {
     const scene = sceneRef.current
-    if (!scene || !fullTrajPts.length) return
+    if (!scene) return
+    if (!fullTrajPts.length) { console.warn('Artemis: full trajectory empty — fetch may have failed'); return }
     if (fullPathRef.current) { scene.remove(fullPathRef.current); fullPathRef.current = null }
     fullPathRef.current = buildLine(scene, fullTrajPts, 0x4488ff, 0.55) as unknown as THREE.Mesh
   }, [fullTrajPts])
