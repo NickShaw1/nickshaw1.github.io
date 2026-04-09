@@ -224,7 +224,6 @@ export default function EarthquakeTrackerDemo() {
     // Lighting
     scene.add(new THREE.AmbientLight(0x6080aa, 0.6))
     const sun = new THREE.DirectionalLight(0xfff8e7, 2.0)
-    sun.position.set(100, 50, 80)
     scene.add(sun)
 
     // Tectonic plate boundaries
@@ -255,6 +254,19 @@ export default function EarthquakeTrackerDemo() {
       const jd      = Date.now() / 86400000 + 2440587.5
       const gmstDeg = (280.46061837 + 360.98564736629 * (jd - 2451545.0)) % 360
       earth.rotation.y = -(gmstDeg * Math.PI / 180) - Math.PI / 2
+
+      // Real solar direction (Meeus Ch.25 low-precision, accurate to ~0.01°)
+      {
+        const D   = jd - 2451545.0
+        const g   = (357.528 + 0.9856003 * D) * Math.PI / 180
+        const L   = (280.460 + 0.9856474 * D) * Math.PI / 180
+        const lam = L + (1.915 * Math.sin(g) + 0.020 * Math.sin(2 * g)) * Math.PI / 180
+        const eps = (23.439 - 0.0000004 * D) * Math.PI / 180
+        const sx  = Math.cos(lam)
+        const sy  = Math.cos(eps) * Math.sin(lam)
+        const sz  = Math.sin(eps) * Math.sin(lam)
+        sun.position.set(-sx * 100, sz * 100, sy * 100)
+      }
 
       // Lerp camera distance
       if (lerpDistTarget.current !== null) {
