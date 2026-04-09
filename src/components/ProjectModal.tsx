@@ -1,8 +1,47 @@
-import { useEffect, useRef, lazy, Suspense } from 'react'
+import { useEffect, useRef, lazy, Suspense, Component, type ReactNode } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import type { ProjectItem } from '../data/projects'
+
+class DemoBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+  state = { failed: false }
+  static getDerivedStateFromError() { return { failed: true } }
+  componentDidCatch(error: Error) {
+    const isChunkError =
+      error.message.includes('Failed to fetch dynamically imported module') ||
+      error.message.includes('Importing a module script failed') ||
+      error.name === 'ChunkLoadError'
+    if (isChunkError && !sessionStorage.getItem('chunkReload')) {
+      sessionStorage.setItem('chunkReload', '1')
+      window.location.reload()
+    }
+  }
+  render() {
+    if (!this.state.failed) return this.props.children
+    return (
+      <div className="mb-5 flex items-center justify-center py-8 bg-bg-surface border border-bg-border rounded-card">
+        <p className="font-mono text-[11px] tracking-widest uppercase text-text-muted">Demo unavailable</p>
+      </div>
+    )
+  }
+}
+import {
+  CounterDemoSkeleton,
+  ColourFlipperDemoSkeleton,
+  SimpleModalDemoSkeleton,
+  CalculatorDemoSkeleton,
+  AccordionDemoSkeleton,
+  TabsDemoSkeleton,
+  ReviewsCarouselDemoSkeleton,
+  CurrencyConverterDemoSkeleton,
+  WeatherDemoSkeleton,
+  SynthDemoSkeleton,
+  ArtemisDemoSkeleton,
+  EarthquakeDemoSkeleton,
+  ISSDemoSkeleton,
+  HolidayPlannerDemoSkeleton,
+} from './DemoSkeletons'
 
 function renderHighlight(text: string) {
   const parts = text.split(/(\[[^\]]+\]\([^)]+\))/)
@@ -25,6 +64,23 @@ interface ProjectModalProps {
   onClose: () => void
 }
 
+const DEMO_SKELETONS: Partial<Record<string, () => React.ReactElement>> = {
+  'counter':            CounterDemoSkeleton,
+  'colour-flipper':     ColourFlipperDemoSkeleton,
+  'simple-modal':       SimpleModalDemoSkeleton,
+  'calculator':         CalculatorDemoSkeleton,
+  'accordion':          AccordionDemoSkeleton,
+  'tabs':               TabsDemoSkeleton,
+  'reviews-carousel':   ReviewsCarouselDemoSkeleton,
+  'currency-converter': CurrencyConverterDemoSkeleton,
+  'weather-app':        WeatherDemoSkeleton,
+  'piano':              SynthDemoSkeleton,
+  'artemis-tracker':    ArtemisDemoSkeleton,
+  'earthquake-tracker': EarthquakeDemoSkeleton,
+  'iss-tracker':        ISSDemoSkeleton,
+  'holiday-planner':    HolidayPlannerDemoSkeleton,
+}
+
 const DEMO_COMPONENTS: Partial<Record<string, React.LazyExoticComponent<() => React.ReactElement>>> = {
   'counter':            lazy(() => import('./demos/CounterDemo')),
   'colour-flipper':     lazy(() => import('./demos/ColourFlipperDemo')),
@@ -43,8 +99,8 @@ const DEMO_COMPONENTS: Partial<Record<string, React.LazyExoticComponent<() => Re
 }
 
 export default function ProjectModal({ project, onClose }: ProjectModalProps) {
-  const reduced  = useReducedMotion()
-  const closeRef = useRef<HTMLButtonElement>(null)
+  const reduced   = useReducedMotion()
+  const closeRef  = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     if (project) {
@@ -69,7 +125,8 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
     return () => document.removeEventListener('keydown', onKey)
   }, [onClose])
 
-  const DemoComponent = project?.id ? DEMO_COMPONENTS[project.id] : undefined
+  const DemoComponent     = project?.id ? DEMO_COMPONENTS[project.id] : undefined
+  const DemoSkeleton      = project?.id ? DEMO_SKELETONS[project.id] : undefined
 
   return (
     <AnimatePresence>
@@ -152,15 +209,11 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 </p>
 
                 {DemoComponent && (
-                  <Suspense fallback={
-                    <div className="mb-5 h-24 flex items-center justify-center">
-                      <span className="font-mono text-[11px] tracking-widest uppercase text-accent animate-pulse">
-                        Loading demo…
-                      </span>
-                    </div>
-                  }>
-                    <DemoComponent />
-                  </Suspense>
+                  <DemoBoundary>
+                    <Suspense fallback={DemoSkeleton ? <DemoSkeleton /> : null}>
+                      <DemoComponent />
+                    </Suspense>
+                  </DemoBoundary>
                 )}
 
                 <div className="mb-5">

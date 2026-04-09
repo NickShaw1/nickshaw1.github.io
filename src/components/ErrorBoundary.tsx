@@ -24,6 +24,19 @@ export default class ErrorBoundary extends Component<Props, State> {
   }
 
   render() {
-    return this.state.crashed ? null : this.props.children
+    if (!this.state.crashed) return this.props.children
+    return (
+      <div className="flex flex-col items-center justify-center gap-4 py-32 px-6 text-center">
+        <p className="font-mono text-[11px] tracking-widest uppercase text-text-muted">
+          Something went wrong
+        </p>
+        <button
+          onClick={() => window.location.reload()}
+          className="font-mono text-[10px] tracking-widest uppercase px-4 py-2 rounded-pill border border-accent text-accent hover:bg-accent/10 transition-colors duration-150"
+        >
+          Reload page
+        </button>
+      </div>
+    )
   }
 }

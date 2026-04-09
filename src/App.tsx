@@ -4,19 +4,11 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, LazyMotion, domAnimation } from 'framer-motion'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
-import {
-  HomePageSkeleton,
-  BlogPageSkeleton,
-  BlogPostSkeleton,
-  ProjectsPageSkeleton,
-  AboutPageSkeleton,
-  CVPageSkeleton,
-  KBArticleSkeleton,
-  KBGlossarySkeleton,
-  KBChecklistSkeleton,
-  KBTestingResourcesSkeleton,
-  KnowledgeBaseSkeleton,
-} from './components/SkeletonScreen'
+import { HomePageSkeleton } from './components/HomeSkeletons'
+import { BlogPageSkeleton, BlogPostSkeleton } from './components/BlogSkeletons'
+import { ProjectsPageSkeleton } from './components/ProjectsSkeletons'
+import { AboutPageSkeleton, CVPageSkeleton } from './components/AboutSkeletons'
+import { KnowledgeBaseSkeleton, KBArticleSkeleton, KBGlossarySkeleton, KBChecklistSkeleton, KBTestingResourcesSkeleton } from './components/KBSkeletons'
 
 const Home      = lazy(() => import('./pages/Home'))
 const About     = lazy(() => import('./pages/About'))
