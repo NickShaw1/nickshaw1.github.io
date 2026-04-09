@@ -121,7 +121,6 @@ export default function ArtemisTrackerDemo() {
   const sunMeshRef       = useRef<THREE.Group | null>(null)
   const labelRendererRef = useRef<CSS2DRenderer | null>(null)
   const pathRef        = useRef<THREE.Mesh | null>(null)
-  const fullPathRef    = useRef<THREE.Mesh | null>(null)
   const sunLightRef    = useRef<THREE.DirectionalLight | null>(null)
   const fillLightRef   = useRef<THREE.DirectionalLight | null>(null)
   const sceneRef       = useRef<THREE.Scene | null>(null)
@@ -144,7 +143,6 @@ export default function ArtemisTrackerDemo() {
   const lookTargetRef  = useRef(new THREE.Vector3(0, 0, 0))
 
   const [artemisPts,    setArtemisPts]    = useState<HorizonsPoint[]>([])
-  const [fullTrajPts,   setFullTrajPts]   = useState<HorizonsPoint[]>([])
   const [moonPts,       setMoonPts]       = useState<HorizonsPoint[]>([])
   const [current,       setCurrent]       = useState<HorizonsPoint | null>(null)
   const [moonCurrent,   setMoonCurrent]   = useState<HorizonsPoint | null>(null)
@@ -203,11 +201,6 @@ export default function ArtemisTrackerDemo() {
       setLoading(false)
     })
 
-    // Full mission arc — coarse resolution just for the trajectory shape
-    // Stop at splashdown; Horizons has no trajectory data for -1024 beyond mission end
-    fetchTarget('-1024', '2026-04-01T00:00', '2026-04-11T01:00', '6h').then(({ pts }) => {
-      setFullTrajPts(pts)
-    })
 
     fetchTarget('301', isoHorizons(back), isoHorizons(fwd), '1h').then(({ pts }) => {
       setMoonPts(pts)
@@ -618,14 +611,6 @@ export default function ArtemisTrackerDemo() {
     return line
   }
 
-  useEffect(() => {
-    const scene = sceneRef.current
-    if (!scene) return
-    if (!fullTrajPts.length) { console.warn('[Artemis] full traj empty'); return }
-    console.log('[Artemis] full traj pts:', fullTrajPts.length, 'first:', fullTrajPts[0]?.x, fullTrajPts[0]?.y)
-    if (fullPathRef.current) { scene.remove(fullPathRef.current); fullPathRef.current = null }
-    fullPathRef.current = buildLine(scene, fullTrajPts, 0xffffff, 1.0) as unknown as THREE.Mesh
-  }, [fullTrajPts])
 
   useEffect(() => {
     const scene = sceneRef.current
