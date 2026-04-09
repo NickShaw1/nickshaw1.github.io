@@ -607,16 +607,19 @@ export default function ArtemisTrackerDemo() {
   }
   const handlePointerUp = () => { isDragging.current = false }
 
-  // Derived telemetry
+  // Derived telemetry — distances are surface-to-surface to match NASA's public figures
+  const EARTH_RADIUS_KM = 6371
+  const MOON_RADIUS_KM  = 1737.4
+
   const distEarth = current
-    ? Math.sqrt(current.x ** 2 + current.y ** 2 + current.z ** 2)
+    ? Math.sqrt(current.x ** 2 + current.y ** 2 + current.z ** 2) - EARTH_RADIUS_KM
     : null
   const distMoon = (current && moonCurrent)
     ? Math.sqrt(
         (current.x - moonCurrent.x) ** 2 +
         (current.y - moonCurrent.y) ** 2 +
         (current.z - moonCurrent.z) ** 2
-      )
+      ) - MOON_RADIUS_KM
     : null
   const altMoon = distMoon
 
@@ -749,7 +752,7 @@ export default function ArtemisTrackerDemo() {
                       href={m.wiki}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-mono text-[13px] font-semibold text-text-primary leading-snug hover:text-[#38bdf8] transition-colors duration-150 truncate"
+                      className="font-mono text-[13px] font-semibold leading-snug hover:text-[#38bdf8] transition-colors duration-150 truncate text-[#F5A623] sm:text-text-primary"
                       onMouseEnter={() => setHoveredCrew(m.name)}
                       onMouseLeave={() => setHoveredCrew(null)}
                     >{m.name}</a>

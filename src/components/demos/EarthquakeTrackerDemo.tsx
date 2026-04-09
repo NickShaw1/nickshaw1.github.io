@@ -782,9 +782,7 @@ export default function EarthquakeTrackerDemo() {
                   {loading ? '—' : quakes.length.toLocaleString()}
                 </span>
               </div>
-              {true && (
-                <span className="font-mono text-[12px] tracking-wide block mt-0.5 text-text-secondary min-h-[1.125rem]">{recentCount > 0 ? `${recentCount} in the past hour` : ''}</span>
-              )}
+              <span className="font-mono text-[12px] tracking-wide block mt-0.5 text-text-secondary min-h-[1.125rem]">{recentCount > 0 ? `${recentCount} in the past hour` : ''}</span>
             </div>
             <div className="px-4 py-3 min-w-0 overflow-hidden border-b sm:border-b-0 sm:border-r border-accent/[7%]">
               <span className="font-mono text-[10px] tracking-[0.15em] uppercase text-text-muted block mb-1">Latest earthquake</span>
