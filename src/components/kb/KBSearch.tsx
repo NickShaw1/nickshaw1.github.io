@@ -25,7 +25,7 @@ const SECTION_ICONS: Record<string, ComponentType<{ size?: number }>> = {
 // ── Search logic ─────────────────────────────────────────────
 
 function tokenize(text: string): string[] {
-  return text.split(/[\s\-\/]+/).filter(Boolean)
+  return text.split(/[\s\-/]+/).filter(Boolean)
 }
 
 function wordMatch(text: string, q: string): 'exact' | 'start' | 'none' {
