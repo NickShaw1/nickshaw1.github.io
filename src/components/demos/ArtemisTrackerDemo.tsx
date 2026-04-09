@@ -419,7 +419,7 @@ export default function ArtemisTrackerDemo() {
     const markerLight = new THREE.PointLight(0x0AFF9D, 2.5, 20)
     marker.add(markerLight)
     const orionLabel = new CSS2DObject(makeLabel('Orion'))
-    orionLabel.position.set(0, 2, 0)
+    orionLabel.position.set(0, 4, 0)
     marker.add(orionLabel)
     scene.add(marker)
     markerRef.current = marker
