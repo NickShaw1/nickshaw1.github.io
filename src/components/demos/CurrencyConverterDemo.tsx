@@ -17,6 +17,7 @@ export default function CurrencyConverterDemo() {
     try {
       const res  = await fetch(`https://api.frankfurter.dev/v2/rates?base=${fromCcy}&quotes=${toCcy}`)
       const data = await res.json()
+      if (!Array.isArray(data) || !data.length) throw new Error('Unexpected response')
       const r    = data[0].rate
       setRate(r)
       setResult(parseFloat(amt) * r)

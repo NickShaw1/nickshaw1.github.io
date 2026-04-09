@@ -137,7 +137,7 @@ export async function loadSection(slug: string): Promise<KBSectionData | undefin
 }
 
 export function prefetchSection(slug: string): void {
-  SECTION_LOADERS[slug]?.load()
+  SECTION_LOADERS[slug]?.load().catch(() => {})
 }
 
 export function getAdjacentArticles(articles: KBArticle[], articleSlug: string) {

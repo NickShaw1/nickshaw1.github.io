@@ -150,6 +150,8 @@ export default function EarthquakeTrackerDemo() {
   const [error,      setError]      = useState<string | null>(null)
   const [showPlates, setShowPlates] = useState(true)
 
+  const selectedRef = useRef<QuakeProps | null>(null)
+
   // Keep selectedRef in sync so the scheduleResume timer can check it without a stale closure
   useEffect(() => { selectedRef.current = selected }, [selected])
 
@@ -648,7 +650,6 @@ export default function EarthquakeTrackerDemo() {
   }, [showPlates])
 
   // Resume auto-orbit 8s after user stops dragging
-  const selectedRef = useRef<QuakeProps | null>(null)
 
   const scheduleResume = useCallback(() => {
     if (resumeTimer.current) clearTimeout(resumeTimer.current)

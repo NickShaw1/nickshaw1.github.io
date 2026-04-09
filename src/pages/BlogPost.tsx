@@ -47,7 +47,7 @@ export default function BlogPost() {
         navigator.clipboard.writeText(code).then(() => {
           renderIcon(true)
           setTimeout(() => renderIcon(false), 2000)
-        })
+        }).catch(() => {})
       })
       pre.style.position = 'relative'
       pre.appendChild(btn)

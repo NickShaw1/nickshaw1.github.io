@@ -118,8 +118,8 @@ export default function WeatherDemo() {
           humidity: data.current.relative_humidity_2m,
           hourly:   data.hourly.time.map((t: string, i: number) => ({
             time: t,
-            temp: Math.round(data.hourly.temperature_2m[i]),
-            code: data.hourly.weather_code[i],
+            temp: Math.round(data.hourly.temperature_2m[i] ?? 0),
+            code: data.hourly.weather_code[i] ?? 0,
           })).filter((_: unknown, i: number) => i % 3 === 0).slice(0, 8),
         }
         cache.current[cityIdx] = w

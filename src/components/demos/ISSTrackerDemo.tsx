@@ -479,7 +479,7 @@ export default function ISSTrackerDemo() {
           <div className="absolute top-3 right-3 hidden sm:block max-w-[172px]" style={{ opacity: loading ? 0 : 1, transition: 'opacity 0.6s ease', pointerEvents: loading ? 'none' : 'auto' }}>{crewPanel}</div>
 
           {/* Centre on ISS button — panel style, bottom left */}
-          <div className="absolute bottom-9 left-3 hidden sm:block" style={{ opacity: loading ? 0 : 1, transition: 'opacity 0.6s ease', pointerEvents: loading ? 'none' : 'auto' }}>
+          <div className="absolute bottom-3 left-3 hidden sm:block" style={{ opacity: loading ? 0 : 1, transition: 'opacity 0.6s ease', pointerEvents: loading ? 'none' : 'auto' }}>
             <button
               onClick={centreOnISS}
               disabled={following}
