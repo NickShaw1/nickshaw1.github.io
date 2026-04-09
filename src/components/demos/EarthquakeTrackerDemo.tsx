@@ -815,6 +815,7 @@ export default function EarthquakeTrackerDemo() {
                         lerpTarget.current     = sp
                         if (cameraDistRef.current > 8) lerpDistTarget.current = 8
                         userDragged.current    = true
+                        selLocalPos.current    = latLonToVec3(q.lat, q.lon, EARTH_R * 1.01)
                         setSelected(q)
                       }}
                       className="font-mono text-[9px] tracking-widest uppercase px-3 py-1 rounded transition-colors cursor-pointer hover:opacity-75 bg-[rgba(255,215,0,0.08)] border border-[rgba(255,215,0,0.3)] text-[#ffd700]"
