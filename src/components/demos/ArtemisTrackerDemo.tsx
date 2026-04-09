@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Rocket, Tv, Orbit, Timer, Clock, AlertTriangle } from 'lucide-react'
 import * as THREE from 'three'
+import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js'
 
 // Positional scale: 1 unit = Earth's radius (6,371 km)
 // Visual radii are exaggerated so bodies are legible at the full Earth-Moon distance (~60 units)
@@ -118,6 +119,7 @@ export default function ArtemisTrackerDemo() {
   const moonGlowRef    = useRef<THREE.Mesh | null>(null)
   const moonOrbitRingRef = useRef<THREE.Line | null>(null)
   const sunMeshRef       = useRef<THREE.Group | null>(null)
+  const labelRendererRef = useRef<CSS2DRenderer | null>(null)
   const pathRef        = useRef<THREE.Mesh | null>(null)
   const fullPathRef    = useRef<THREE.Mesh | null>(null)
   const sunLightRef    = useRef<THREE.DirectionalLight | null>(null)
@@ -259,11 +261,27 @@ export default function ArtemisTrackerDemo() {
     if (!mount) return
     const W = mount.clientWidth, H = mount.clientHeight
 
+    function makeLabel(text: string): HTMLDivElement {
+      const el = document.createElement('div')
+      el.textContent = text
+      el.style.cssText = 'font-family:monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.55);pointer-events:none;user-select:none;text-shadow:0 0 6px rgba(0,0,0,0.9)'
+      return el
+    }
+
     const renderer = new THREE.WebGLRenderer({ antialias: true })
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     renderer.setSize(W, H)
     renderer.shadowMap.enabled = false
     mount.appendChild(renderer.domElement)
+
+    const labelRenderer = new CSS2DRenderer()
+    labelRenderer.setSize(W, H)
+    labelRenderer.domElement.style.position = 'absolute'
+    labelRenderer.domElement.style.top      = '0'
+    labelRenderer.domElement.style.left     = '0'
+    labelRenderer.domElement.style.pointerEvents = 'none'
+    mount.appendChild(labelRenderer.domElement)
+    labelRendererRef.current = labelRenderer
 
     const scene  = new THREE.Scene()
     scene.background = new THREE.Color(0x010209)
@@ -321,6 +339,9 @@ export default function ArtemisTrackerDemo() {
     const earthMat = new THREE.MeshPhongMaterial({ specular: new THREE.Color(0x1a3a5c), shininess: 12, emissive: new THREE.Color(0x112233), emissiveIntensity: 0.4 })
     const earth    = new THREE.Mesh(new THREE.SphereGeometry(EARTH_VR, 64, 64), earthMat)
     scene.add(earth)
+    const earthLabel = new CSS2DObject(makeLabel('Earth'))
+    earthLabel.position.set(0, EARTH_VR + 1.5, 0)
+    earth.add(earthLabel)
     loader.load('/textures/earth.jpg', (tex) => {
       tex.colorSpace = THREE.SRGBColorSpace
       earthMat.map = tex
@@ -349,6 +370,9 @@ export default function ArtemisTrackerDemo() {
     moonMesh.position.set(0, 0, -60)   // default; updated each frame from data
     scene.add(moonMesh)
     moonMeshRef.current = moonMesh
+    const moonLabel = new CSS2DObject(makeLabel('Moon'))
+    moonLabel.position.set(0, MOON_VR + 1.2, 0)
+    moonMesh.add(moonLabel)
 
     // Moon glow (very faint) — stored in ref so it follows the moon
     const moonGlow = new THREE.Mesh(
@@ -394,6 +418,9 @@ export default function ArtemisTrackerDemo() {
     // Point light on the marker so it casts a green glow onto nearby space
     const markerLight = new THREE.PointLight(0x0AFF9D, 2.5, 20)
     marker.add(markerLight)
+    const orionLabel = new CSS2DObject(makeLabel('Orion'))
+    orionLabel.position.set(0, 2, 0)
+    marker.add(orionLabel)
     scene.add(marker)
     markerRef.current = marker
 
@@ -546,12 +573,14 @@ export default function ArtemisTrackerDemo() {
       camera.lookAt(lookTargetRef.current)
 
       renderer.render(scene, camera)
+      labelRenderer.render(scene, camera)
     }
     animate()
 
     const ro = new ResizeObserver(() => {
       const w = mount.clientWidth, h = mount.clientHeight
       renderer.setSize(w, h)
+      labelRenderer.setSize(w, h)
       camera.aspect = w / h
       camera.updateProjectionMatrix()
     })
@@ -564,6 +593,7 @@ export default function ArtemisTrackerDemo() {
       if (moonMat.map)  moonMat.map.dispose()
       renderer.dispose()
       if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement)
+      if (mount.contains(labelRenderer.domElement)) mount.removeChild(labelRenderer.domElement)
     }
   }, [])
 
@@ -591,7 +621,7 @@ export default function ArtemisTrackerDemo() {
     const scene = sceneRef.current
     if (!scene || !fullTrajPts.length) return
     if (fullPathRef.current) { scene.remove(fullPathRef.current); fullPathRef.current = null }
-    fullPathRef.current = buildLine(scene, fullTrajPts, 0x0AFF9D, 0.35) as unknown as THREE.Mesh
+    fullPathRef.current = buildLine(scene, fullTrajPts, 0x4488ff, 0.55) as unknown as THREE.Mesh
   }, [fullTrajPts])
 
   useEffect(() => {
