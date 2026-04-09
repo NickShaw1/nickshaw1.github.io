@@ -246,9 +246,9 @@ export default function KBGlossaryPage() {
         <div className="mb-6">
           <Link
             to="/knowledge-base"
-            className="inline-flex items-center gap-1.5 font-mono text-[11px] tracking-wider text-text-muted hover:text-link transition-colors duration-150"
+            className="inline-flex items-center gap-1.5 font-mono text-[12px] tracking-wider text-text-muted hover:text-link transition-colors duration-150"
           >
-            <ArrowLeft size={12} /> Back to Knowledge Base
+            <ArrowLeft size={13} /> Back to Knowledge Base
           </Link>
         </div>
 
@@ -361,9 +361,9 @@ export default function KBGlossaryPage() {
         <div className="mt-10 md:mt-16 pt-6 md:pt-8 border-t border-bg-border">
           <Link
             to="/knowledge-base"
-            className="inline-flex items-center gap-1.5 font-mono text-[11px] tracking-wider text-text-muted hover:text-link transition-colors duration-150"
+            className="inline-flex items-center gap-1.5 font-mono text-[12px] tracking-wider text-text-muted hover:text-link transition-colors duration-150"
           >
-            <ArrowLeft size={12} /> Back to Knowledge Base
+            <ArrowLeft size={13} /> Back to Knowledge Base
           </Link>
         </div>
       </div>

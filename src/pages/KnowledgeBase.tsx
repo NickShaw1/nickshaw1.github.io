@@ -14,6 +14,7 @@ import { collectionPageSchema } from '../seo/structured-data'
 import SectionLabel from '../components/SectionLabel'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { prefetchSection } from '../data/kb'
+import KBSearch from '../components/kb/KBSearch'
 
 interface KBCard {
   title: string
@@ -161,7 +162,10 @@ export default function KnowledgeBase() {
           transition={{ duration: 0.55, ease: 'easeOut' }}
           className="mb-10"
         >
-          <SectionLabel>Knowledge Base</SectionLabel>
+          <div className="relative mb-3">
+            <SectionLabel className="mb-0">Knowledge Base</SectionLabel>
+            <KBSearch />
+          </div>
           <h1 className="font-display font-bold text-[clamp(2rem,5vw,3rem)] text-text-primary leading-tight tracking-[-0.02em] mb-4">
             Software Testing.
           </h1>

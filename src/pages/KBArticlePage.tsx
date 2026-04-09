@@ -10,6 +10,7 @@ import KBRightToc from '../components/KBRightToc'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { loadSection, getAdjacentArticles, readingTime } from '../data/kb'
 import KBArticleSkeleton from '../components/kb/KBArticleSkeleton'
+import KBSearch from '../components/kb/KBSearch'
 import type { KBSectionData } from '../data/kb'
 
 export default function KBArticlePage() {
@@ -67,29 +68,30 @@ export default function KBArticlePage() {
       <div className="max-w-6xl mx-auto px-6 md:px-10 py-8 md:py-16">
 
         {/* ── Mobile top bar ───────────────────────── */}
-        <div className="md:hidden mb-6">
-          <select
-            value={articleSlug}
-            onChange={(e) => navigate(`/knowledge-base/${sectionSlug}/${e.target.value}`)}
-            aria-label={`Navigate within ${sectionData.title}`}
-            className="w-full font-mono text-[11px] tracking-wide text-text-secondary bg-bg-surface border border-accent/30 rounded-card px-3 py-2.5 appearance-none cursor-pointer focus:outline-none focus:border-accent"
-          >
-            {sectionData.articles.map((a) => (
-              <option key={a.slug} value={a.slug}>
-                {a.shortTitle ?? a.title}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* ── Back link (desktop) ──────────────────── */}
-        <div className="hidden md:block mb-8">
+        <div className="md:hidden mb-6 flex items-center justify-between">
           <Link
             to="/knowledge-base"
-            className="inline-flex items-center gap-2 font-mono text-[11px] tracking-wider text-text-muted hover:text-link transition-colors duration-150"
+            className="inline-flex items-center gap-1.5 font-mono text-[12px] tracking-wider text-text-muted hover:text-link transition-colors duration-150"
           >
             <ArrowLeft size={13} /> Back to Knowledge Base
           </Link>
+          <KBSearch
+            inlineMobile
+            sectionArticles={sectionData.articles}
+            currentArticleSlug={articleSlug}
+            sectionSlug={sectionSlug}
+          />
+        </div>
+
+        {/* ── Back link (desktop) ──────────────────── */}
+        <div className="hidden md:flex items-center justify-between mb-8 -mt-1">
+          <Link
+            to="/knowledge-base"
+            className="inline-flex items-center gap-2 font-mono text-[12px] tracking-wider text-text-muted hover:text-link transition-colors duration-150"
+          >
+            <ArrowLeft size={14} /> Back to Knowledge Base
+          </Link>
+          <KBSearch floating={false} />
         </div>
 
         {/* ── Three-column layout ──────────────────── */}
@@ -175,9 +177,9 @@ export default function KBArticlePage() {
             <div className="mt-8">
               <Link
                 to="/knowledge-base"
-                className="inline-flex items-center gap-1.5 font-mono text-[11px] tracking-wider text-text-muted hover:text-link transition-colors duration-150"
+                className="inline-flex items-center gap-1.5 font-mono text-[12px] tracking-wider text-text-muted hover:text-link transition-colors duration-150"
               >
-                <ArrowLeft size={12} /> Back to Knowledge Base
+                <ArrowLeft size={13} /> Back to Knowledge Base
               </Link>
             </div>
 
