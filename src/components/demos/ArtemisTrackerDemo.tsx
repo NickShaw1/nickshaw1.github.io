@@ -116,6 +116,7 @@ export default function ArtemisTrackerDemo() {
   const ringMatRef     = useRef<THREE.MeshBasicMaterial | null>(null)
   const moonMeshRef    = useRef<THREE.Mesh | null>(null)
   const moonGlowRef    = useRef<THREE.Mesh | null>(null)
+  const moonOrbitRingRef = useRef<THREE.Line | null>(null)
   const pathRef        = useRef<THREE.Mesh | null>(null)
   const fullPathRef    = useRef<THREE.Mesh | null>(null)
   const sunLightRef    = useRef<THREE.DirectionalLight | null>(null)
@@ -362,6 +363,26 @@ export default function ArtemisTrackerDemo() {
     scene.add(moonGlow)
     moonGlowRef.current = moonGlow
 
+    // Moon orbit ring — oriented when moonPts data arrives
+    {
+      const segments = 128
+      const ringPos = new Float32Array((segments + 1) * 3)
+      for (let i = 0; i <= segments; i++) {
+        const a = (i / segments) * Math.PI * 2
+        ringPos[i * 3]     = Math.cos(a)
+        ringPos[i * 3 + 1] = 0
+        ringPos[i * 3 + 2] = Math.sin(a)
+      }
+      const ringGeo = new THREE.BufferGeometry()
+      ringGeo.setAttribute('position', new THREE.BufferAttribute(ringPos, 3))
+      const moonOrbitRing = new THREE.Line(
+        ringGeo,
+        new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.22, depthWrite: false }),
+      )
+      scene.add(moonOrbitRing)
+      moonOrbitRingRef.current = moonOrbitRing
+    }
+
     // Trajectory path line (updated when data arrives)
 
     // Artemis marker
@@ -551,6 +572,23 @@ export default function ArtemisTrackerDemo() {
     if (pathRef.current) { scene.remove(pathRef.current); pathRef.current = null }
     pathRef.current = buildLine(scene, artemisPts, 0x0AFF9D, 1.0) as unknown as THREE.Mesh
   }, [artemisPts])
+
+  // Orient moon orbit ring from real ephemeris data
+  useEffect(() => {
+    const ring = moonOrbitRingRef.current
+    if (!ring || moonPts.length < 3) return
+    // Sample three positions spread across the dataset to define the orbital plane
+    const n = moonPts.length
+    const p0 = icrf(moonPts[0].x,           moonPts[0].y,           moonPts[0].z)
+    const p1 = icrf(moonPts[Math.floor(n / 3)].x, moonPts[Math.floor(n / 3)].y, moonPts[Math.floor(n / 3)].z)
+    const p2 = icrf(moonPts[Math.floor(2 * n / 3)].x, moonPts[Math.floor(2 * n / 3)].y, moonPts[Math.floor(2 * n / 3)].z)
+    const normal = p1.clone().sub(p0).cross(p2.clone().sub(p0)).normalize()
+    // Average orbital radius in scene units
+    const avgRadius = moonPts.reduce((sum, p) =>
+      sum + Math.sqrt(p.x ** 2 + p.y ** 2 + p.z ** 2), 0) / moonPts.length / KM_PER_UNIT
+    ring.scale.setScalar(avgRadius)
+    ring.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), normal)
+  }, [moonPts])
 
   // Mark scene ready once the two live datasets have arrived (full trajectory is cosmetic, not blocking)
   useEffect(() => {
