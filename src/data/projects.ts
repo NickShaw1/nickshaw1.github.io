@@ -26,57 +26,6 @@ export interface ProjectItem {
 export const projects: ProjectItem[] = [
   // ── Exercises ────────────────────────────────────────────
   {
-    id: 'artemis-tracker',
-    title: 'Artemis II Tracker',
-    description: 'Live 3D tracker for the Artemis II mission.',
-    stack: ['TypeScript', 'Three.js', 'NASA API'],
-    category: 'Exercises',
-    featured: true,
-    highlighted: true,
-    modalSize: 'expanded',
-    icon: 'Rocket',
-    detail: {
-      body: 'A live 3D tracker for the Artemis II mission powered by NASA\'s JPL Horizons API. Spacecraft and Moon positions are fetched as Earth-centred ICRF vectors, parsed with independent regexes for robustness, and interpolated client-side between ephemeris steps for smooth per-second updates. The Three.js scene shows a textured Earth and Moon at their true scaled positions, the Orion capsule marker and two trajectory lines: a full mission arc and a high-resolution live window around the current position.',
-      highlights: [
-        'Querying JPL Horizons (target -1024) via a CORS proxy across two independent fetches: a coarse full-mission arc and a fine live window, so a failure on one does not block the other',
-        'Parsing the Horizons text response with separate regexes for dates, XYZ positions and velocity components, zipped by index for resilience against format variations',
-        'Mapping Earth-centred ICRF coordinates to Three.js by negating X and swapping Y and Z axes to correct coordinate handedness and place the north celestial pole as scene Y-up',
-        'Linearly interpolating between 30-minute ephemeris steps every second to produce smooth real-time motion',
-'Atmospheric and lunar glow via custom GLSL fresnel shaders on transparent spheres layered over each body',
-        'Camera auto-orbits the Earth-Moon midpoint, fits both bodies in view at any aspect ratio and orients initially to the Artemis-facing side of the Moon',
-        'Skeleton loading overlay with a timeout-based fetch-failure state, clearing only once both live datasets have arrived',
-      ],
-      codeSnippet: `// Parse Horizons text: independent regexes for each data type,
-// zipped by index — robust against whitespace or format differences
-function parseHorizons(text: string): HorizonsPoint[] {
-  const block = text.slice(
-    text.indexOf('$$SOE') + 5,
-    text.indexOf('$$EOE')
-  )
-  const dates: Date[]                  = []
-  const pos:   [number,number,number][] = []
-  const vel:   [number,number,number][] = []
-
-  const dateRe = /A\\.D\\.\\s+([\\d]{4}-\\w{3}-\\d{2}\\s+[\\d:.]+)\\s+TDB/g
-  const xyzRe  = /\\bX\\s*=\\s*([\\d.E+-]+)\\s+Y\\s*=\\s*([\\d.E+-]+)\\s+Z\\s*=\\s*([\\d.E+-]+)/g
-  const vRe    = /VX\\s*=\\s*([\\d.E+-]+)\\s+VY\\s*=\\s*([\\d.E+-]+)\\s+VZ\\s*=\\s*([\\d.E+-]+)/g
-
-  let m: RegExpExecArray | null
-  while ((m = dateRe.exec(block)) !== null) dates.push(parseHorizonsDate(m[1]))
-  while ((m = xyzRe.exec(block))  !== null) pos.push([+m[1], +m[2], +m[3]])
-  while ((m = vRe.exec(block))    !== null) vel.push([+m[1], +m[2], +m[3]])
-
-  return pos.map((p, i) => ({
-    t: dates[i] ?? new Date(),
-    x: p[0], y: p[1], z: p[2],
-    vx: vel[i]?.[0] ?? 0,
-    vy: vel[i]?.[1] ?? 0,
-    vz: vel[i]?.[2] ?? 0,
-  }))
-}`,
-    },
-  },
-  {
     id: 'earthquake-tracker',
     title: 'Earthquake Tracker',
     description: 'Real-time global earthquake map with tectonic plate boundaries on a 3D globe.',
@@ -152,6 +101,7 @@ camera.position.lerp(
     description: 'A polyphonic synthesizer with ADSR envelope, filter, distortion, reverb and LFO.',
     stack: ['TypeScript', 'React', 'Web Audio API'],
     category: 'Exercises',
+    featured: true,
     modalSize: 'expanded',
     icon: 'Music',
     detail: {

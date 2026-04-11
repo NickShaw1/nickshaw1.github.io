@@ -86,27 +86,7 @@ function interpolate(pts: HorizonsPoint[], now: Date): HorizonsPoint | null {
 }
 
 
-function horizonsUrl(target: string, start: string, stop: string, step: string) {
-  const p = new URLSearchParams({
-    format:     'json',
-    COMMAND:    target,
-    OBJ_DATA:   'NO',
-    MAKE_EPHEM: 'YES',
-    EPHEM_TYPE: 'VECTORS',
-    CENTER:     '500@399',
-    START_TIME: start,
-    STOP_TIME:  stop,
-    STEP_SIZE:  step,
-    VEC_TABLE:  '2',
-    OUT_UNITS:  'KM-S',
-  })
-  const horizons = `https://ssd.jpl.nasa.gov/api/horizons.api?${p}`
-  return `https://horizons-proxy.culturebombadil.workers.dev/?url=${encodeURIComponent(horizons)}`
-}
-
-function isoHorizons(d: Date): string {
-  return d.toISOString().slice(0, 16)   // keep T — Horizons accepts ISO format
-}
+// #APIGOESHERE
 
 export default function ArtemisTrackerDemo() {
   const mountRef       = useRef<HTMLDivElement>(null)
@@ -162,53 +142,9 @@ export default function ArtemisTrackerDemo() {
   ]
   const crew = FALLBACK_CREW
 
-  // Fetch Horizons data on mount (or retry) — fetches are independent so Moon failure doesn't kill Artemis
+  // #APIGOESHERE
   useEffect(() => {
-    setLoading(true)
-    setFetchError(null)
-    const now   = new Date()
-    const back  = new Date(now.getTime() - 8 * 3600_000)
-    const fwd   = new Date(now.getTime() + 4 * 3600_000)
-
-    const fetchTarget = async (target: string, start: string, stop: string, step: string): Promise<{ pts: HorizonsPoint[], status: number }> => {
-      const attempt = async () => {
-        const r = await fetch(horizonsUrl(target, start, stop, step))
-        const status = r.status
-        if (!r.ok) return { pts: [], status }
-        try {
-          const d = await r.json()
-          return { pts: parseHorizons(d.result as string), status }
-        } catch {
-          return { pts: [], status }
-        }
-      }
-      try {
-        const first = await attempt()
-        if (first.pts.length) return first
-        if (first.status !== 200) return first   // don't retry a known error
-        return await attempt()
-      } catch {
-        return { pts: [], status: 0 }
-      }
-    }
-
-    // Live window — fine resolution for accurate current position
-    fetchTarget('-1024', isoHorizons(back), isoHorizons(fwd), '30m').then(({ pts, status }) => {
-      if (pts.length) {
-        setArtemisPts(pts)
-      } else {
-        if (status === 503) setFetchError('JPL Horizons offline. Service unavailable.')
-        else if (status === 0)  setFetchError('No contact with JPL Horizons. Check network.')
-        else                    setFetchError(`JPL Horizons fault. Status ${status}.`)
-      }
-      setLoading(false)
-    })
-
-
-    fetchTarget('301', isoHorizons(back), isoHorizons(fwd), '1h').then(({ pts }) => {
-      setMoonPts(pts)
-    })
-
+    setLoading(false)
   }, [retryKey])
 
   // Mission Elapsed Time — T+ since launch

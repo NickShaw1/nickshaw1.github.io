@@ -108,7 +108,6 @@ const PROJECTS = [
     period:      'Nov 2024 – present',
     description: 'A production site built in React and TypeScript using Claude Code, using Playwright MCP for visual verification and sanity testing throughout. Houses a 105+ article QA knowledge base across 13 structured topic areas, covering the full testing landscape from foundations and manual techniques through to Playwright automation, AI-generated tests, MCP-assisted test execution and LLM evaluation. A portfolio of 15+ projects including:',
     points: [
-      "Live Artemis II mission tracker powered by NASA's JPL Horizons API",
       'Live ISS tracker with a custom GLSL atmospheric shader',
       'Polyphonic synthesiser built on the Web Audio API',
       'Playwright test suite and a wider collection of React and TypeScript exercises',
