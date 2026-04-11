@@ -1,3 +1,4 @@
+/*
 import React, { useState, useEffect, useRef } from 'react'
 import { Rocket, Tv, Orbit, Timer, Clock, AlertTriangle } from 'lucide-react'
 import * as THREE from 'three'
@@ -36,7 +37,7 @@ function parseHorizonsDate(s: string): Date {
 }
 
 // Extract each data type independently — robust against any inter-line whitespace or extra columns
-function parseHorizons(text: string): HorizonsPoint[] {
+function _parseHorizons(text: string): HorizonsPoint[] {
   const soe = text.indexOf('$$SOE')
   const eoe = text.indexOf('$$EOE')
   if (soe === -1 || eoe === -1) return []
@@ -122,15 +123,15 @@ export default function ArtemisTrackerDemo() {
   })())
   const lookTargetRef  = useRef(new THREE.Vector3(0, 0, 0))
 
-  const [artemisPts,    setArtemisPts]    = useState<HorizonsPoint[]>([])
-  const [moonPts,       setMoonPts]       = useState<HorizonsPoint[]>([])
+  const [artemisPts,    _setArtemisPts]   = useState<HorizonsPoint[]>([])
+  const [moonPts,       _setMoonPts]      = useState<HorizonsPoint[]>([])
   const [current,       setCurrent]       = useState<HorizonsPoint | null>(null)
   const [moonCurrent,   setMoonCurrent]   = useState<HorizonsPoint | null>(null)
   const [posSpeed,      setPosSpeed]      = useState<number | null>(null)
   const [met,           setMet]           = useState('')
   const [loading,       setLoading]       = useState(true)
   const [sceneReady,    setSceneReady]    = useState(false)
-  const [fetchError,    setFetchError]    = useState<string | null>(null)
+  const [fetchError,    _setFetchError]   = useState<string | null>(null)
   const [retryKey,      setRetryKey]      = useState(0)
   const [hoveredCrew,   setHoveredCrew]   = useState<string | null>(null)
 
@@ -969,3 +970,5 @@ export default function ArtemisTrackerDemo() {
     </div>
   )
 }
+
+*/
