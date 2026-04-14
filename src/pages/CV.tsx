@@ -93,7 +93,7 @@ const EARLIER = [
 const COMPETENCIES = [
   'QA Strategy, Governance and Test Lifecycle Leadership',
   'Test Automation and Quality Engineering (Playwright, BDD, CI/CD Integration)',
-  'AI-Assisted Development and Testing (Claude Code, Playwright MCP, LLM Evaluation)',
+  'AI-Assisted Development and Testing (Claude Code, Playwright MCP)',
   'Multi-Team Leadership, Resourcing and Delivery Management',
   'Agile Delivery and Product Leadership (Scrum Master, Product Owner)',
   'Risk-Based Testing, Defect Management and Regulatory Compliance',
@@ -243,7 +243,7 @@ export default function CV() {
         >
           <SectionHeading icon={User} color={C.summary}>Professional Summary</SectionHeading>
           <p className="text-text-secondary text-[15px] leading-[1.85]">
-            Head of QA and Delivery with 12 years' experience leading teams of up to 25 across SaaS, enterprise, public sector and healthcare environments. Proven in QA strategy, Playwright automation and regulated programme delivery, with a track record of measurable improvement in coverage, release cadence and production stability. Cross-functional leader with Scrum Master and Product Owner experience across Agile and Waterfall programmes, hands-on in AI-assisted testing using Claude Code, Playwright MCP and LLM evaluation.
+            Head of QA and Delivery with 12 years' experience leading teams of up to 25 across SaaS, enterprise, public sector and healthcare environments. Proven in QA strategy, Playwright automation and regulated programme delivery, with a track record of measurable improvement in coverage, release cadence and production stability. Cross-functional leader with Scrum Master and Product Owner experience across Agile and Waterfall programmes, hands-on in AI-assisted testing using Claude Code and Playwright MCP.
           </p>
         </m.div>
 
