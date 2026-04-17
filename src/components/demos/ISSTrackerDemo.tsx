@@ -231,7 +231,7 @@ export default function ISSTrackerDemo() {
         const sx  = Math.cos(lam)
         const sy  = Math.cos(eps) * Math.sin(lam)
         const sz  = Math.sin(eps) * Math.sin(lam)
-        return new THREE.Vector3(-sx, sz, sy).normalize()
+        return new THREE.Vector3(sx, sz, -sy).normalize()
       })()
       if (sunLightRef.current)  sunLightRef.current.position.copy(sunDirNorm.clone().multiplyScalar(500))
       if (fillLightRef.current) fillLightRef.current.position.copy(sunDirNorm.clone().negate().multiplyScalar(500))

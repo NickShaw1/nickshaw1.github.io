@@ -269,7 +269,7 @@ export default function EarthquakeTrackerDemo() {
         const sx  = Math.cos(lam)
         const sy  = Math.cos(eps) * Math.sin(lam)
         const sz  = Math.sin(eps) * Math.sin(lam)
-        sun.position.set(-sx * 100, sz * 100, sy * 100)
+        sun.position.set(sx * 100, sz * 100, -sy * 100)
       }
 
       // Lerp camera distance
