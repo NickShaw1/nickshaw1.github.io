@@ -479,7 +479,7 @@ btns.forEach(btn => {
   },
   {
     id: 'stormontwatch',
-    title: 'stormontwatch.com',
+    title: 'Stormont Watch',
     description: 'A civic transparency platform tracking every vote, bill and MLA expense in the Northern Ireland Assembly.',
     stack: ['Next.js', 'TypeScript', 'PostgreSQL', 'GitHub Actions'],
     category: 'Sites',
