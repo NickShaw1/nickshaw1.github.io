@@ -478,6 +478,15 @@ btns.forEach(btn => {
     icon: 'Monitor',
   },
   {
+    id: 'stormontwatch',
+    title: 'stormontwatch.com',
+    description: 'A civic transparency platform tracking every vote, bill and MLA expense in the Northern Ireland Assembly.',
+    stack: ['Next.js', 'TypeScript', 'PostgreSQL', 'GitHub Actions'],
+    category: 'Sites',
+    liveUrl: 'https://www.stormontwatch.com',
+    icon: 'Monitor',
+  },
+  {
     id: 'asaware',
     title: 'AS Aware',
     description: 'A website raising awareness of Ankylosing Spondylitis, built with React, TypeScript and Vite.',

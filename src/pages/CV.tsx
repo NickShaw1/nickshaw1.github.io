@@ -33,6 +33,7 @@ const ROLES = [
       'Reduced manual regression effort by 50% through targeted automation and tightened sprint scope',
       "Overhauled the organisation's Agile delivery approach, improving release cadence from monthly to twice-monthly",
       'Architected Playwright automation frameworks (JavaScript/TypeScript) for critical end-to-end workflows using AI-assisted development, establishing scalable automated regression capability',
+      'Managed test delivery across cloud-native SaaS applications hosted on Azure/AWS.',
       'Implemented accessibility-first delivery (WCAG 2.1), embedding standards into sprint execution and supporting team adoption',
     ],
     closing: 'Operated across the full delivery lifecycle, bridging QA, product ownership and programme governance within a fast-moving SaaS environment. Managed all aspects of team leadership including resourcing, hiring and performance, while maintaining active Scrum Master and Product Owner responsibilities across the roadmap.',
@@ -103,16 +104,28 @@ const COMPETENCIES = [
 
 const PROJECTS = [
   {
+    name:        'stormontwatch.com',
+    subtitle:    'NI Assembly Transparency Platform',
+    period:      'Jan 2026 – present',
+    description: 'A civic transparency platform tracking every vote, bill and MLA expense in the Northern Ireland Assembly. Built in Next.js 14, TypeScript and PostgreSQL, deployed on Cloudflare Pages.',
+    points: [
+      'Automated daily sync pipeline integrating the NI Assembly public API across 10 data sources',
+      'Static-first ISR architecture serving 300+ pre-built pages from Cloudflare\'s global CDN with near-zero runtime database load',
+      'End-to-end CI/CD with automated lint, type check, build, deploy and daily sync with integrity guards',
+    ],
+    closing: null,
+  },
+  {
     name:        'nickshawqa.com',
     subtitle:    'QA Knowledge Base & Portfolio',
     period:      'Nov 2024 – present',
-    description: 'A production site built in React and TypeScript using Claude Code, using Playwright MCP for visual verification and sanity testing throughout. Houses a 105+ article QA knowledge base across 13 structured topic areas, covering the full testing landscape from foundations and manual techniques through to Playwright automation, AI-generated tests, MCP-assisted test execution and LLM evaluation. A portfolio of 15+ projects including:',
+    description: 'A production site built in React and TypeScript using Claude Code, using Playwright MCP for visual verification and sanity testing throughout. Houses a 105+ article QA knowledge base across 13 structured topic areas. A portfolio of 15+ projects including:',
     points: [
+      'Live 3D global earthquake tracker powered by USGS real-time GeoJSON feed',
       'Live ISS tracker with a custom GLSL atmospheric shader',
-      'Polyphonic synthesiser built on the Web Audio API',
       'Playwright test suite and a wider collection of React and TypeScript exercises',
     ],
-    closing: 'A self-directed, end-to-end demonstration of technical range, applied AI-assisted development and sustained independent delivery.',
+    closing: null,
   },
   {
     name:        'asaware.org',
