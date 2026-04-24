@@ -14,11 +14,11 @@ export const meta = {
 
   seo: {
     home: {
-      title:       'Nick Shaw | QA Engineer, Belfast',
+      title:       'Nick Shaw | Senior QA and Delivery, Belfast',
       description: 'Nick Shaw is a Head of QA based in County Down, Northern Ireland, with 12 years of experience in software testing and delivery.',
     },
     about: {
-      title:       'About Nick Shaw | QA Engineer, Belfast',
+      title:       'About Nick Shaw | Senior QA and Delivery, Belfast',
       description: 'Nick Shaw is a Head of QA and software delivery professional based in County Down, Northern Ireland, with 12 years of experience.',
     },
     blog: {
