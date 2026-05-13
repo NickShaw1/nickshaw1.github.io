@@ -65,22 +65,6 @@ export default function Home() {
             {/* ── Left: text ── */}
             <div className="flex-1 min-w-0">
 
-              {/* Available badge */}
-              <m.div {...anim(0)} className="mb-8">
-                <span
-                  className="
-                    inline-flex items-center gap-2
-                    border border-accent/40 rounded-pill
-                    px-3 py-1.5
-                    font-mono text-[11px] tracking-wider uppercase text-accent
-                  "
-                  aria-label="Employment status: available for work"
-                >
-                  <span aria-hidden="true" className="pulse-dot w-2 h-2 rounded-full bg-accent flex-shrink-0" />
-                  Available for work
-                </span>
-              </m.div>
-
               {/* Headline */}
               <m.h1
                 {...anim(0.1)}

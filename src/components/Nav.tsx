@@ -269,13 +269,9 @@ export default function Nav() {
               </m.li>
             </m.ul>
 
-            {/* Bottom status */}
-            <div className="absolute bottom-8 left-8 right-8 flex items-center justify-between gap-4 overflow-hidden">
+            {/* Bottom domain */}
+            <div className="absolute bottom-8 left-8 right-8">
               <p className="font-mono text-[11px] text-text-muted tracking-wide truncate">{meta.domain}</p>
-              <div className="flex items-center gap-2 flex-shrink-0">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
-                <span className="font-mono text-[11px] text-accent tracking-widest uppercase">open to roles</span>
-              </div>
             </div>
           </m.div>
         )}

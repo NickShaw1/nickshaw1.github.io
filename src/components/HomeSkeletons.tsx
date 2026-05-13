@@ -20,8 +20,6 @@ export function HomePageSkeleton() {
 
             {/* Left */}
             <div className="flex-1 min-w-0">
-              {/* Available badge */}
-              <SkeletonBlock className="h-7 w-40 rounded-pill mb-8" />
               {/* Headline */}
               <SkeletonBlock className="h-16 w-3/4 mb-2" />
               <SkeletonBlock className="h-16 w-1/2 mb-8" />
