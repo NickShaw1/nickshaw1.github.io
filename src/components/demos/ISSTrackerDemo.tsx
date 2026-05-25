@@ -218,7 +218,7 @@ export default function ISSTrackerDemo() {
       const T       = (jd - 2451545.0) / 36525
       const gmstDeg = (280.46061837 + 360.98564736629 * (jd - 2451545.0) + 0.000387933 * T * T) % 360
       const gmstRad = (gmstDeg * Math.PI) / 180
-      const earthRotY = -gmstRad
+      const earthRotY = gmstRad
       if (earthMeshRef.current) earthMeshRef.current.rotation.y = earthRotY
 
       // Sun direction from real solar coordinates (low-precision, ~0.01° accuracy)

@@ -471,7 +471,7 @@ btns.forEach(btn => {
   {
     id: 'testing-kb',
     title: 'Software Testing Knowledge Base',
-    description: 'A wiki-style knowledge base covering software testing concepts, techniques and tooling. Currently in development.',
+    description: 'A wiki-style knowledge base covering software testing concepts, techniques and tooling.',
     stack: ['Testing', 'Knowledge'],
     category: 'Sites',
     internalUrl: '/knowledge-base',
