@@ -49,6 +49,7 @@ const SECTIONS = [
 ] as const
 
 const ROLES = [
+  { title: 'QA Lead',             company: 'CitNOW Group',      period: '2026' },
   { title: 'Head of QA',         company: 'Cloudbooking',      period: '2025' },
   { title: 'Test Manager',       company: 'ITS Computing Ltd', period: '2021 – 2024' },
   { title: 'Senior QA Engineer', company: 'HHA Exchange',      period: '2019 – 2021' },
@@ -317,8 +318,8 @@ export default function About() {
                         <div className="w-0.5 bg-accent/30 group-hover:bg-accent flex-shrink-0 transition-colors duration-150" />
                         <div className="flex-1 flex items-baseline justify-between gap-2">
                           <div>
-                            <p className="font-display font-medium text-[13px] text-text-primary leading-snug">{c.name}</p>
-                            <p className="font-mono text-[10px] text-text-muted mt-0.5">{c.issuer}</p>
+                            <p className="font-display font-medium text-[13px] sm:text-[14px] text-text-primary leading-snug">{c.name}</p>
+                            <p className="font-mono text-[11px] text-text-muted mt-0.5">{c.issuer}</p>
                           </div>
                           <span className="font-mono text-[11px] text-text-muted flex-shrink-0">{c.year}</span>
                         </div>
@@ -336,8 +337,8 @@ export default function About() {
                         <div className="w-0.5 bg-[#ff2d9b]/40 group-hover:bg-[#ff2d9b] flex-shrink-0 transition-colors duration-150" />
                         <div className="flex-1 flex items-baseline justify-between gap-2">
                           <div>
-                            <p className="font-display font-medium text-[13px] text-text-primary leading-snug">{c.name}</p>
-                            <p className="font-mono text-[10px] text-text-muted mt-0.5">{c.issuer}</p>
+                            <p className="font-display font-medium text-[13px] sm:text-[14px] text-text-primary leading-snug">{c.name}</p>
+                            <p className="font-mono text-[11px] text-text-muted mt-0.5">{c.issuer}</p>
                           </div>
                           <span className="font-mono text-[11px] text-text-muted flex-shrink-0">{c.year}</span>
                         </div>

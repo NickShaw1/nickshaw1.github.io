@@ -350,6 +350,7 @@ export default function Home() {
 
           <div className="flex flex-col gap-0">
             {[
+              { period: '2026',        role: 'QA Lead',             company: 'CitNOW Group' },
               { period: '2025',        role: 'Head of QA',          company: 'Cloudbooking' },
               { period: '2021 – 2024', role: 'Test Manager',         company: 'ITS Computing Ltd' },
               { period: '2019 – 2021', role: 'Senior QA Engineer',   company: 'HHA Exchange' },
@@ -400,7 +401,7 @@ export default function Home() {
             id="contact-heading"
             className="font-display font-semibold text-[clamp(1.5rem,3vw,2rem)] text-text-primary mb-10"
           >
-            Let's work together.
+            Contact me.
           </h2>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 xl:gap-24 items-start">
