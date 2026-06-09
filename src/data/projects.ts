@@ -21,6 +21,7 @@ export interface ProjectItem {
   modalSize?: ModalSize
   icon?: string
   detail?: ProjectDetail
+  hidden?: boolean
 }
 
 export const projects: ProjectItem[] = [
@@ -479,6 +480,7 @@ btns.forEach(btn => {
   },
   {
     id: 'stormontwatch',
+    hidden: true,
     title: 'Stormont Watch',
     description: 'A civic transparency platform tracking every vote, bill and MLA expense in the Northern Ireland Assembly.',
     stack: ['Next.js', 'TypeScript', 'PostgreSQL', 'GitHub Actions'],
@@ -518,6 +520,6 @@ btns.forEach(btn => {
 ]
 
 export const projectsByCategory = (category: ProjectCategory): ProjectItem[] =>
-  projects.filter((p) => p.category === category)
+  projects.filter((p) => p.category === category && !p.hidden)
 
-export const featuredProjects: ProjectItem[] = projects.filter((p) => p.featured)
+export const featuredProjects: ProjectItem[] = projects.filter((p) => p.featured && !p.hidden)
