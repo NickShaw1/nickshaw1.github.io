@@ -119,7 +119,7 @@ const PROJECTS = [
     name:        'nickshawqa.com',
     subtitle:    'QA Knowledge Base & Portfolio',
     period:      'Nov 2024 – present',
-    description: 'A production site built in React and TypeScript using Claude Code, using Playwright MCP for visual verification and sanity testing throughout. Houses a 105+ article QA knowledge base across 13 structured topic areas. A portfolio of 15+ projects including:',
+    description: 'A QA-focused portfolio and knowledge base built with React and TypeScript using Claude Code, using Playwright MCP for visual verification and sanity testing throughout. Houses a 105+ article QA knowledge base across 13 structured topic areas. A portfolio of 15+ projects including:',
     points: [
       'Live 3D global earthquake tracker powered by USGS real-time GeoJSON feed',
       'Live ISS tracker with a custom GLSL atmospheric shader',
