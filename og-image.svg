@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#0a0a0a"/>
+  <rect x="60" y="60" width="1080" height="510" rx="12" fill="#111111" stroke="#222222" stroke-width="1"/>
+  <text x="100" y="240" font-family="monospace" font-size="16" fill="#0AFF9D" letter-spacing="4">NICK SHAW</text>
+  <text x="100" y="320" font-family="sans-serif" font-size="72" font-weight="700" fill="#F0EDE6">Senior QA</text>
+  <text x="100" y="410" font-family="sans-serif" font-size="72" font-weight="700" fill="#F0EDE6">&amp; Delivery</text>
+  <text x="100" y="490" font-family="monospace" font-size="18" fill="#888888">Belfast, Northern Ireland · nickshawqa.com</text>
+  <circle cx="1080" cy="120" r="40" fill="#0AFF9D" opacity="0.15"/>
+  <circle cx="1080" cy="120" r="20" fill="#0AFF9D" opacity="0.3"/>
+</svg>

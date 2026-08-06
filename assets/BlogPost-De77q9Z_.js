@@ -1,0 +1,27 @@
+import{o as e}from"./rolldown-runtime-Bhmf7a9N.js";import{a as t,n,o as r,r as i,t as a}from"./markdown-hfXSdh9Q.js";import{i as o,l as s,u as c}from"./react-vendor-BU2m2gkB.js";import{n as l}from"./motion-DK-c0cBg.js";import{t as u}from"./arrow-left-DzbkSYCW.js";import{t as d}from"./arrow-right-BpFmWsbm.js";import{t as f}from"./useReducedMotion-r9V97KZk.js";import{t as p}from"./meta-Bf9fSIDA.js";/* empty css                    */import{t as m}from"./SEOHead-CfNqQ8gt.js";import{t as h}from"./structured-data-DOzpZjKD.js";import{i as g,n as _,r as v}from"./blog-C_aXMl_P.js";var y=e(r(),1),b=t();function x(){let{slug:e}=c(),t=s(),r=f(),x=(0,y.useRef)(null),S=e?g(e):void 0;if((0,y.useEffect)(()=>{S||t(`/blog`,{replace:!0})},[S,t]),(0,y.useEffect)(()=>{x.current&&x.current.querySelectorAll(`pre`).forEach(e=>{if(e.querySelector(`.code-copy-btn`))return;let t=document.createElement(`button`);t.className=`code-copy-btn`,t.setAttribute(`aria-label`,`Copy code to clipboard`);let n=e=>{t.innerHTML=e?`<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`:`<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`};n(!1),t.addEventListener(`click`,()=>{let t=e.querySelector(`code`)?.innerText??``;navigator.clipboard.writeText(t).then(()=>{n(!0),setTimeout(()=>n(!1),2e3)}).catch(()=>{})}),e.style.position=`relative`,e.appendChild(t)})},[S]),!S)return null;let{prev:C,next:w}=v(S.slug);return(0,b.jsxs)(b.Fragment,{children:[(0,b.jsx)(m,{title:`${S.title} | ${p.name}`,description:S.excerpt,ogType:`article`,canonicalUrl:`/blog/${S.slug}`,jsonLd:h({headline:S.title,description:S.excerpt,datePublished:S.date,dateModified:S.date,url:`/blog/${S.slug}`})}),(0,b.jsxs)(`div`,{className:`max-w-3xl mx-auto px-6 md:px-10 py-10 md:py-16`,children:[(0,b.jsx)(l.div,{initial:r?void 0:{opacity:0,x:-12},animate:r?void 0:{opacity:1,x:0},transition:{duration:.4,ease:`easeOut`},className:`mb-10`,children:(0,b.jsxs)(o,{to:`/blog`,className:`
+              inline-flex items-center gap-2
+              font-mono text-[11px] tracking-wider text-text-muted
+              hover:text-link transition-colors duration-150
+            `,children:[(0,b.jsx)(u,{size:13}),` Back to blog`]})}),(0,b.jsxs)(l.header,{initial:r?void 0:{opacity:0,y:20},animate:r?void 0:{opacity:1,y:0},transition:{duration:.55,ease:`easeOut`,delay:.05},className:`mb-8 md:mb-12`,children:[(0,b.jsxs)(`div`,{className:`flex items-center gap-3 mb-4`,children:[(0,b.jsx)(`span`,{className:`
+              font-mono text-[10px] tracking-widest uppercase
+              bg-accent/10 text-accent px-2 py-0.5 rounded-tag
+            `,children:S.category}),(0,b.jsx)(`span`,{className:`font-mono text-[11px] text-text-muted`,children:S.readingTime})]}),(0,b.jsx)(`h1`,{className:`
+            font-display font-bold
+            text-[clamp(1.75rem,4vw,2.75rem)]
+            leading-[1.1] tracking-[-0.025em]
+            text-text-primary mb-5
+          `,children:S.title}),(0,b.jsx)(`p`,{className:`text-text-secondary text-[15px] leading-relaxed mb-5 max-w-2xl`,children:S.excerpt}),(0,b.jsx)(`time`,{dateTime:S.date,className:`font-mono text-[11px] text-text-muted`,children:_(S.date)}),(0,b.jsx)(`hr`,{className:`border-0 border-t border-bg-border mt-8`})]}),(0,b.jsx)(l.div,{ref:x,initial:r?void 0:{opacity:0,y:16},animate:r?void 0:{opacity:1,y:0},transition:{duration:.55,ease:`easeOut`,delay:.15},className:`prose-blog`,children:(0,b.jsx)(i,{remarkPlugins:[n],rehypePlugins:[a],children:S.body})}),(C||w)&&(0,b.jsxs)(`nav`,{"aria-label":`Post navigation`,className:`
+              mt-10 md:mt-16 pt-6 md:pt-8 border-t border-bg-border
+              grid grid-cols-1 sm:grid-cols-2 gap-4
+            `,children:[C?(0,b.jsxs)(o,{to:`/blog/${C.slug}`,className:`
+                  group flex flex-col gap-1
+                  bg-bg-surface border border-bg-border rounded-card
+                  p-4 hover:border-accent/30
+                  transition-colors duration-150
+                `,children:[(0,b.jsxs)(`span`,{className:`flex items-center gap-1.5 font-mono text-[10px] tracking-wider uppercase text-text-muted mb-1`,children:[(0,b.jsx)(u,{size:11}),` Previous`]}),(0,b.jsx)(`span`,{className:`font-display text-[15px] text-text-primary group-hover:text-link transition-colors duration-150 leading-snug`,children:C.title})]}):(0,b.jsx)(`div`,{}),w?(0,b.jsxs)(o,{to:`/blog/${w.slug}`,className:`
+                  group flex flex-col gap-1 text-right
+                  bg-bg-surface border border-bg-border rounded-card
+                  p-4 hover:border-accent/30
+                  transition-colors duration-150
+                  sm:col-start-2
+                `,children:[(0,b.jsxs)(`span`,{className:`flex items-center justify-end gap-1.5 font-mono text-[10px] tracking-wider uppercase text-text-muted mb-1`,children:[`Next `,(0,b.jsx)(d,{size:11})]}),(0,b.jsx)(`span`,{className:`font-display text-[15px] text-text-primary group-hover:text-link transition-colors duration-150 leading-snug`,children:w.title})]}):(0,b.jsx)(`div`,{})]})]})]})}export{x as default};
