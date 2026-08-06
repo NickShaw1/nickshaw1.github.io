@@ -70,7 +70,7 @@ The gardening is a year-round project with mixed results. Some things thrive, so
 
     writing: `Before moving into software, I studied English at Queen's University Belfast, followed by an MA in Creative Writing at the [Seamus Heaney Centre](https://www.qub.ac.uk/schools/seamus-heaney-centre/), also at Queen's. The writing that came out of that period led to screenplays and plays, a few of which were performed at venues including the Lyric Theatre, Grand Opera House, MAC Theatre and Crescent Arts Centre.
 
-> I'm currently collaborating on an exciting creative project that I'll be able to share details about soon.`,
+A short story I wrote, [Kootenai Falls](https://humag.co/prose/kootenai-falls), was published by The Honest Ulsterman. In 2026, I was also selected as a scriptwriter for the BBC's [Voices development scheme](https://www.bbc.co.uk/writers/blog/voices-2026-belfast) in Belfast.`,
 
     adventures: `We have travelled widely in recent years, from Japan, France and Portugal to four road trips across the USA, taking in Yosemite, the California coast, New York and Cape Cod.
 
